@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class User extends Model
+class Children extends Model
 {
-    public function employee(): BelongsTo
+    public function familyMember(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(FamilyMember::class);
     }
 }

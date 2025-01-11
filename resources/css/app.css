@@ -1,3 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Increase specificity */
+
+/* body.choices{
+    border-radius: 0.375rem;
+    max-height: 100px !important;
+} */
+
+body .choices__input {
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6rem !important;
+}
+
+body .choices__list--dropdown {
+    max-height: 200px !important;
+    overflow-y: auto;
+}
