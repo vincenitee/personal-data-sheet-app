@@ -1,15 +1,18 @@
-@props(['label', 'name'])
+@props(['model' => false, 'icon' => false, 'label', 'name', 'required' => true])
 
 @php
-    $defaults  = [
-        'id' => $name,
+    $hasError = $errors->has($name);
+    $defaults = [
+        'wire:model' => $model,
+        'type' => 'text',
+        'class' => 'form-select',
         'name' => $name,
-        'class' => 'form-select'
+        'id' => $name,
     ];
 @endphp
 
-<x-forms.field :$label :$name >
-    <select {{ $attributes($defaults) }}>
+<x-forms.input-field :$model :$icon :$label :$name :$required>
+    <select {{ $attributes($defaults) }} style="font-size: 0.9rem">
         {{ $slot }}
     </select>
-</x-forms.field>
+</x-forms.input-field>

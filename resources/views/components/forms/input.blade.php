@@ -1,16 +1,17 @@
-@props(['label', 'name'])
+@props(['model' => '', 'icon' => false, 'label' => false, 'name', 'required' => true])
 
 @php
+    $hasError = $errors->has($name);
     $defaults = [
+        'wire:model.defer' => $model,
         'type' => 'text',
+        'class' => 'form-control',
         'name' => $name,
         'id' => $name,
-        'class' => 'form-control',
         'value' => old($name)
-    ]
+    ];
 @endphp
 
-<x-forms.field :$label :$name>
-    <input {{ $attributes($defaults) }} autocomplete="off">
-</x-forms.field>
-
+<x-forms.input-field :$model :$icon :$label :$name :$required>
+    <input {{ $attributes($defaults) }} autocomplete="off" style="font-size: 0.9rem">
+</x-forms.input-field>

@@ -17,8 +17,11 @@
         "vite": "^6.0"
     },
     "dependencies": {
-        "@eonasdan/tempus-dominus": "^6.9.11",
+        "alpinejs": "^3.14.8",
         "bootstrap-icons": "^1.11.3",
-        "choices.js": "^11.0.3"
+        "choices.js": "^11.0.3",
+        "flatpickr": "^4.6.13",
+        "simplebar": "^6.3.0",
+        "sweetalert2": "^11.6.13"
     }
 }

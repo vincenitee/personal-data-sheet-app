@@ -1,67 +1,28 @@
+// Import Bootstrap and dependencies
 import "./bootstrap";
-
 import * as bootstrap from "bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css"; // Bootstrap Icons
 
-import Choices from "choices.js"; // Import Choices.js
-import "choices.js/public/assets/styles/choices.css"; // Import Choices.js CSS
+// Import SimpleBar for custom scrollbars
+import SimpleBar from "simplebar";
+import "simplebar/dist/simplebar.css";
 
-import { TempusDominus } from "@eonasdan/tempus-dominus";
-import "@eonasdan/tempus-dominus/dist/css/tempus-dominus.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+// Import SweetAlert2
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Initialize all inputs with class 'choices'
-    const choiceElements = document.querySelectorAll(".choices");
-    choiceElements.forEach((element) => {
-        new Choices(element, {
-            searchEnabled: true,
-            itemSelectText: "",
-            placeholderValue: "Select an option",
-        });
-    });
+// Import Flatpickr for date pickers
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
-    // Initialize all date inputs
-    const dateInputs = document.querySelectorAll(".datepicker");
-    dateInputs.forEach((input) => {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("input-group");
-        input.parentNode.insertBefore(wrapper, input);
-        wrapper.appendChild(input);
+// Import and initialize Alpine.js
+import Alpine from "alpinejs";
 
-        const icon = document.createElement("span");
-        icon.classList.add("input-group-text");
-        icon.innerHTML = '<i class="bi bi-calendar3"></i>';
-        // Add a calendar icon
-        wrapper.appendChild(icon);
+if (!window.Alpine) {
+    window.Alpine = Alpine;
+    Alpine.start();
+}
 
-        new TempusDominus(wrapper, {
-            display: {
-                theme: "light",
-                components: {
-                    calendar: true,
-                    date: true,
-                    month: true,
-                    year: true,
-                },
-                icons: {
-                    type: "icons",
-                    time: "bi bi-clock",
-                    date: "bi bi-calendar-week",
-                    up: "bi bi-arrow-up-circle",
-                    down: "bi bi-arrow-down-circle",
-                    previous: "bi bi-caret-left",
-                    next: "bi bi-caret-right",
-                    today: "bi bi-calendar2-check",
-                    clear: "bi bi-trash-fill",
-                    close: "bi bi-x-circle",
-                },
-
-                buttons: {
-                    today: true,
-                    clear: true,
-                },
-
-            },
-        });
-    });
-});
+// Expose libraries to the global window object
+window.Swal = Swal;
+window.flatpickr = flatpickr;
