@@ -15,7 +15,7 @@
 @endphp
 
 <nav aria-label="breadcrumb">
-    <h5 class="fw-medium" style="margin-bottom: 0; font-weight: 700 !important;">{{ $currentPage }}</h5>
+    <h4 class="fw-medium" style="margin-bottom: 0;">{{ $currentPage }}</h4>
     <ol class="breadcrumb" style="font-size: 0.9rem">
         <li class="breadcrumb-item"><a href="{{ url(route('employee.dashboard')) }}">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">

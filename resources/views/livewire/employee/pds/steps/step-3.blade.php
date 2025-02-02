@@ -16,12 +16,12 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_start" label="Attendance Start" type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_end" label="Attendance End" type="date">
             </x-forms.input>
         </div>
 
@@ -61,12 +61,12 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_start" label="Attendance Start" type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_end" label="Attendance End" type="date">
             </x-forms.input>
         </div>
 
@@ -106,12 +106,12 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_start" label="Attendance Start" type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_end" label="Attendance End" type="date">
             </x-forms.input>
         </div>
 
@@ -151,12 +151,12 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="college_attendance_start" label="Attendance Start" type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="college_attendance_end" label="Attendance End" type="date">
             </x-forms.input>
         </div>
 
@@ -196,12 +196,12 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_start" label="Attendance Start" type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_end" label="Attendance End" type="date">
             </x-forms.input>
         </div>
 

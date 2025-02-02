@@ -172,8 +172,8 @@
                 <small class="fw-bold">Permanent Address</small>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">
-                        <small>Same as Residential Address</small>
+                    <label class="form-check-label">
+                        <small>Same Address</small>
                     </label>
                 </div>
             </div>

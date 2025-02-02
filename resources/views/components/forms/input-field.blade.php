@@ -1,6 +1,5 @@
 @props(['model', 'icon', 'label', 'name', 'required'])
 
-
 <div>
     @if ($label)
         <x-forms.label :$name :$required>
@@ -16,7 +15,7 @@
         {{ $slot }}
 
     </div>
-    @if ($model !== false)
+    @if ($model)
         @error($model)
             <x-forms.error :error="$message"></x-forms.error>
         @enderror

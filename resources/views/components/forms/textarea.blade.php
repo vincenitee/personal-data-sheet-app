@@ -2,9 +2,11 @@
     'model' => null,
     'type' => 'text',
     'icon' => false,
-    'label' => false,
+    'label' => 'If YES, give details',
     'name',
-    'required' => true
+    'required' => false,
+    'placeholder' => '',
+    'disabled' => true,
 ])
 
 <x-forms.input-field
@@ -14,15 +16,14 @@
     :name="$name"
     :required="$required"
 >
-    <input
-        type="{{ $type }}"
+    <textarea
+        class="form-control"
         name="{{ $name }}"
         id="{{ $name }}"
-        class="form-control"
-        value="{{ old($name) }}"
+        rows="3"
+        placeholder="{{ $placeholder }}"
+        {{ $required ? 'required' : '' }}
+        {{ $disabled ? 'disabled' : '' }}
         @if($model) wire:model="{{ $model }}" @endif
-        autocomplete="off"
-        style="font-size: 0.9rem"
-        {{ $attributes }}
-    >
+    ></textarea>
 </x-forms.input-field>

@@ -31,7 +31,7 @@
                         </div>
                     </div>
 
-                    <x-forms.button>
+                    <x-forms.button class="w-100">
                         <span>Sign in</span>
                         <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
                             <span class="sr-only"></span>

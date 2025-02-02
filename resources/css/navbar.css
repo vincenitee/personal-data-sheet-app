@@ -1,0 +1,12 @@
+.navbar .btn {
+    border: none;
+}
+
+.navbar .employee-avatar {
+    height: auto;
+    width: 35px;
+}
+
+.navbar #role {
+    font-weight: 500;
+}

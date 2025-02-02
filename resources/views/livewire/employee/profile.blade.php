@@ -1,41 +1,34 @@
 
 <div class="row g-3 mb-4">
-    <div class="col-lg-8">
-        <div class="card card-body">
-            <form method="POST" enctype="multipart/form-data" class="row g-3">
+    <div class="col-lg-3">
+        <div class="card card-body position-sticky" style="top: 93px;">
+            <div class="row g-3">
                 <!-- Profile Picture Section -->
-                <div class="col-lg-3 text-center">
+                <div class="col-lg-12 text-center">
                     <img src="{{ Vite::asset('resources/images/hris-logo-black.png') }}" alt="Profile Picture"
                         class="rounded-circle border shadow-sm mb-2"
                         style="height: 100px; width: 100px; object-fit: cover;">
-
-                    <!-- Input to Update Profile Picture -->
-                    <input type="file" name="profile_picture" accept="image/*"
-                        class="form-control form-control-sm mt-2" aria-label="Upload Profile Picture">
                 </div>
 
                 <!-- User Details Section -->
-                <div class="col-lg-9 d-flex flex-column justify-content-center">
+                <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
                     <p class="fw-bold mb-1" style="font-size: 1.2rem;">Bolinget, Vincent A.</p>
-                    <p class="text-muted mb-1" style="font-size: 0.9rem;">
+                    <p class="text-muted mb-1" style="font-size: 0.8rem;">
                         Assigned Role: <span class="badge bg-primary">Employee</span>
                     </p>
-                    <p class="text-muted mb-3" style="font-size: 0.9rem;">
+                    <p class="text-muted mb-3" style="font-size: 0.8rem;">
                         Last Updated: <span>12/12/2024 12:00:08</span>
                     </p>
-
-                    <div class="mt-auto ms-auto">
-                        <button class="btn btn-sm btn-primary">Save Changes</button>
-                    </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
 
     {{-- Profile Tab --}}
-    <div class="col-lg-8">
-        <div class="card card-body">
+    <div class="col-lg-9 gap-2">
+        {{-- Profile --}}
+        <div class="card card-body mb-3">
             <form method="POST" class="row g-2">
                 <div class="col-12">
                     <span class="text-secondary">Basic Information</span>
@@ -85,10 +78,8 @@
                 </div>
             </form>
         </div>
-    </div>
 
-    {{-- Security Tab --}}
-    <div class="col-lg-8">
+        {{-- Security --}}
         <div class="card card-body">
             <form method="POST" class="row g-2">
                 <div class="col-12">
@@ -134,4 +125,5 @@
             </form>
         </div>
     </div>
+
 </div>

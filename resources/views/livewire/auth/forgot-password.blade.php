@@ -26,7 +26,7 @@
                                 :required="false" placeholder="Email Address" />
                     </div>
 
-                    <x-forms.button>
+                    <x-forms.button class="w-100">
                         Send password reset link
                         <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
                             <span class="sr-only"></span>

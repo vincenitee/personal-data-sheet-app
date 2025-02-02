@@ -39,11 +39,7 @@
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            <livewire:forms.date-picker
-                                label="Birthdate"
-                                name="birthdate"
-                                wire:model="form.birthdate"
-                            />
+                            <x-forms.input icon="bi bi-calendar" label="Birthdate" type="date" name="birthdate"></x-forms.input>
                         </div>
 
                         <div class="col-md-6 col-lg-4">
@@ -96,7 +92,7 @@
                         </div>
 
                         <div class="col-12">
-                            <x-forms.button>
+                            <x-forms.button class="w-100">
                                 <span>Register</span>
                                 <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
                                     <span class="sr-only"></span>

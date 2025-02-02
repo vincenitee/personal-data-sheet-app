@@ -103,26 +103,11 @@
 <div class="card card-body mb-2">
     <div class="row g-3">
         <div class="col-12">
-            <div class="d-flex align-items-center justify-content-between">
-                <small class="fw-bold">Children Information</small>
-                <button
-                    wire:ignore
-                    wire:click="addChild()"
-                    type="button"
-                    class="float-end btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
-                >
-                    <i class="bi bi-plus-circle"></i>
-                    <span>Add Row</span>
-
-                    <div wire:loading wire:dirty wire:target="addChild()" class="spinner-border spinner-border-sm" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </button>
-            </div>
+            <small class="fw-bold">Children Information</small>
         </div>
 
         <div class="col-12">
-            <table class="table table-sm table-bordered table-hover align-middle" style="font-size: 14px;">
+            <table class="table table-sm table-borderless align-middle" style="font-size: 14px;">
                 <thead>
                     <tr>
                         <th style="width: 45%">Full Name</th>
@@ -132,31 +117,38 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($children as $index => $child)
-                        <tr>
-                            <td>
-                                <x-forms.input name=""></x-forms.inp>
-                            </td>
-                            <td>
-                                <x-forms.input name="" type="date"></x-forms.inp>
-                            </td>
-                            <td>
-                                <button
-                                    wire:click="removeChild({{ $index }})"
-                                    type="button"
-                                    class="btn btn-sm btn-danger"
-                                    @if(count($children) === 1) disabled @endif
-                                >
-                                    Delete
-                                    <div wire:loading wire:dirty wire:target="removeChild({{ $index }})" class="spinner-border spinner-border-sm" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
+                    <tr>
+                        <td>
+                            <x-forms.input name=""></x-forms.inp>
+                        </td>
+                        <td>
+                            <x-forms.input name="" type="date"></x-forms.inp>
+                        </td>
+                        <td>
+                            <button type="button"
+                                class="btn btn-sm btn-danger w-100">
+                                <i class="bi bi-trash"></i>
+                                <span>Delete</span>
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+            <button wire:ignore wire:click="addChild()" type="button"
+                class="float-end btn btn-sm btn-outline-primary d-flex align-items-center gap-2">
+                <i wire:loading.remove wire:target="addChild()" class="bi bi-plus-circle"></i>
+
+                <div wire:loading wire:target="addChild()" class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span>Add Row</span>
+
+            </button>
         </div>
     </div>
 </div>

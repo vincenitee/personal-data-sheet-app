@@ -1,18 +1,28 @@
-@props(['model' => false, 'icon' => false, 'label', 'name', 'required' => true])
+@props([
+    'model' => null,
+    'icon' => false,
+    'label' => false,
+    'name',
+    'required' => true
+])
 
-@php
-    $hasError = $errors->has($name);
-    $defaults = [
-        'wire:model' => $model,
-        'type' => 'text',
-        'class' => 'form-select',
-        'name' => $name,
-        'id' => $name,
-    ];
-@endphp
 
-<x-forms.input-field :$model :$icon :$label :$name :$required>
-    <select {{ $attributes($defaults) }} style="font-size: 0.9rem">
+<x-forms.input-field
+    :model="$model"
+    :icon="$icon"
+    :label="$label"
+    :name="$name"
+    :required="$required"
+>
+    <select
+        name="{{ $name }}"
+        id="{{ $name }}"
+        class="form-select"
+        value="{{ old($name) }}"
+        @if($model) wire:model="{{ $model }}" @endif
+        style="font-size: 0.9rem"
+        {{ $attributes }}
+    >
         {{ $slot }}
     </select>
 </x-forms.input-field>

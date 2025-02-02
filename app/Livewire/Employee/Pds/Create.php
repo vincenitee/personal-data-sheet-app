@@ -6,10 +6,10 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $currentStep = 4;
-    public $totalSteps = 9;
+    public $currentStep = 10;
 
     public $children = [];
+    public $eligibilities = [];
 
     protected $steps = [
         1 => 'Personal Information',
@@ -20,13 +20,41 @@ class Create extends Component
         6 => 'Voluntary Work',
         7 => 'Learning and Development',
         8 => 'Other Information',
-        9 => 'Additional Questions'
+        9 => 'Additional Questions',
+        10 => 'Attachments',
+    ];
+
+    protected $stepsIcons = [
+        1 => 'bi-person',
+        2 => 'bi-people',
+        3 => 'bi-book',
+        4 => 'bi-award',
+        5 => 'bi-briefcase',
+        6 => 'bi-heart',
+        7 => 'bi-mortarboard',
+        8 => 'bi-info-circle',
+        9 => 'bi-question-circle',
+        10 => 'bi-paperclip'
     ];
 
     public function mount()
     {
         $this->children = [
-            ['name' => '', 'birthdate' => '']
+            [
+                'name' => '',
+                'birthdate' => ''
+            ]
+        ];
+
+        $this->eligibilities = [
+            [
+                'career_service' => '',
+                'ratings' => '',
+                'exam_date' => '',
+                'exam_place' => '',
+                'license_number' => '',
+                'license_validity' => '',
+            ],
         ];
     }
 
@@ -43,9 +71,30 @@ class Create extends Component
         }
     }
 
+    public function addEligibility(){
+        $this->eligibilities[] = [
+            [
+                'career_service' => '',
+                'ratings' => '',
+                'exam_date' => '',
+                'exam_place' => '',
+                'license_number' => '',
+                'license_validity' => '',
+            ]
+        ];
+    }
+
+    public function removeEligibility($index)
+    {
+        if(count($this->eligibilities) > 1){
+            unset($this->eligibilities[$index]);
+            $this->eligibilities = array_values($this->eligibilities);
+        }
+    }
+
     public function incrementSteps()
     {
-        $this->currentStep = min($this->currentStep + 1, 9);
+        $this->currentStep = min($this->currentStep + 1, count($this->steps));
     }
 
     public function decrementSteps()
@@ -75,6 +124,7 @@ class Create extends Component
             7 => 'Document training programs and development interventions you\'ve attended, including titles, dates, and sponsors.',
             8 => 'Highlight your special skills, hobbies, non-academic achievements, and memberships in organizations.',
             9 => 'Provide responses to important questions, including legal disclosures and family-related information.',
+            10 => 'I declare under oath that I have personally accomplished this Personal Data Sheet which is a true, correct and complete statement pursuant to the provisions of pertinent laws, rules and regulations of the Republic of the Philippines. I authorize the agency head/authorized representative to verify/validate the contents stated herein.          I  agree that any misrepresentation made in this document and its attachments shall cause the filing of administrative/criminal case/s against me.',
             default => ''
         };
     }
@@ -82,7 +132,8 @@ class Create extends Component
     public function render()
     {
         return view('livewire.employee.pds.create', [
-            'steps' => $this->steps
+            'steps' => $this->steps,
+            'stepsIcon' => $this->stepsIcons,
         ])
             ->extends('layouts.app')
             ->title('Dashboard')

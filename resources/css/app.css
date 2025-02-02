@@ -1,94 +1,13 @@
+@import './navbar.css';
+@import './tables.css';
+@import './sidebar.css';
+@import './buttons.css';
+
 /* General Styles */
 body {
     min-height: 100vh;
 }
 
-/* SimpleBar Styles */
-.simplebar-scrollbar {
-    max-height: 100px; /* Adjust the height if necessary */
-}
 
-.simplebar-scrollbar:before {
-    background-color: #212529; /* Your scrollbar color */
-}
-
-.simplebar-track {
-    background-color: #f8f9fa; /* Change this to your background */
-}
-
-/* Navigation Bar Styles */
-.navbar .btn {
-    border: none;
-}
-
-.navbar .employee-avatar {
-    height: auto;
-    width: 35px;
-}
-
-.navbar #role {
-    font-weight: 500;
-}
-
-/* Profile Styles */
-/* .overlay {
-    transition: opacity 0.3s ease-in-out;
-    display: none;
-}
-
-[x-show="true"] {
-    display: flex !important;
-} */
-
-/* Sidebar Styles */
-#sidebar {
-    overflow: hidden;
-    transition: width 0.2s ease-in;
-    width: 250px;
-}
-
-#sidebar #logo {
-    height: 45px;
-    object-fit: contain;
-    width: 45px;
-}
-
-#sidebar #logo + span,
-#sidebar .nav-item {
-    text-wrap: nowrap !important;
-    transition: background 0.2s ease-in;
-}
-
-#sidebar .nav-item.active {
-    background: rgba(0, 123, 255, 0.2);
-    border-left: 5px solid #007bff;
-}
-
-#sidebar .nav-item.active > * {
-    color: #007bff !important;
-}
-
-#sidebar .nav-item:hover {
-    background: rgba(0, 123, 255, 0.2);
-}
-
-#sidebar.w-0 {
-    padding: 0 !important;
-    width: 0;
-}
-
-#sidebar.w-250 {
-    width: 250px;
-}
-
-/* Responsive Sidebar Styles */
-@media (max-width: 576px) {
-    #sidebar {
-        left: 0;
-        position: fixed !important;
-        top: 0;
-        z-index: 9999;
-    }
-}
 
 
