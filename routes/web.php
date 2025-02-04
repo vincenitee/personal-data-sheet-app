@@ -7,12 +7,16 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Employee\Dashboard;
 use App\Livewire\Employee\Pds\Create;
 use App\Livewire\Employee\Profile;
+use App\Livewire\Employee\Notification;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
 Route::get('/employee/dashboard', Dashboard::class)
     ->name('employee.dashboard');
+
+Route::get('/employee/notification', Notification::class)
+    ->name('employee.notification');
 
 Route::get('/employee/profile', Profile::class)
     ->name('employee.profile');

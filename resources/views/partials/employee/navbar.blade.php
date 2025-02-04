@@ -8,13 +8,14 @@
         </button>
 
         <div class="d-flex gap-2 align-items-start">
-            <button type="button" class="my-auto btn btn-sm position-relative">
+            {{-- Notification --}}
+            <a wire:navigate href="{{ url(route('employee.notification')) }}" type="button" class="my-auto btn btn-sm position-relative">
                 <i class="bi bi-bell" style="font-size: 1.1rem;"></i>
                 <span
                     class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                     <span class="visually-hidden">New alerts</span>
                 </span>
-            </button>
+            </a>
 
             {{-- Employee Profile --}}
             <div class="dropdown">

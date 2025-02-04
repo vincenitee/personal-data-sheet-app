@@ -30,7 +30,7 @@
         </li>
         <li class="nav-item {{ request()->is('employee/notification') ? 'active' : '' }}">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="" class="nav-link text-white">
+                <a wire:navigate href="{{ url(route('employee.notification')) }}" class="nav-link text-white">
                     <i class="bi bi-bell me-1" style="font-size: 1.1rem;"></i>
                     Notification</a>
                 <span class="badge bg-danger me-2" style="font-size: 0.8rem;">5</span>

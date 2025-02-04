@@ -2,6 +2,16 @@
     <div class="row h-100">
         <div class="col-lg-8 p-4 mx-auto">
             <div class="card p-4 card-body shadow">
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <x-forms.form wire:submit="save" method="POST">
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-3">
@@ -30,30 +40,17 @@
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            <livewire:forms.select
-                                wire:model="form.sex"
-                                label="Sex"
-                                name="sex"
-                                :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']"
-                            />
+                            <x-forms.select label="Sex" name="sex" model="form.sex">
+                                <option value="">Choose an option</option>
+                                @foreach (['male' => 'Male', 'female' => 'Female'] as $index => $value)
+                                    <option value="{{ $index }}"> {{ $value }} </option>
+                                @endforeach
+                            </x-forms.select>
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            <x-forms.input icon="bi bi-calendar" label="Birthdate" type="date" name="birthdate"></x-forms.input>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <x-forms.input type="number" model="form.telephone_no" name="telephone_no"
-                                label="Telephone Number" :required="false" />
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <x-forms.input type="number" model="form.mobile_no" name="mobile_no"
-                                label="Mobile Number" />
+                            <x-forms.input model="form.birth_date" icon="bi bi-calendar" label="Birthdate"
+                                type="date" name="birthdate"></x-forms.input>
                         </div>
 
                         <div class="col-md-6 col-lg-4">
@@ -66,12 +63,13 @@
 
                         <div class="col-12">
                             <div class="row g-3">
-                                <div class="col-md-6">
-                                    <x-forms.input class="mb-3" type="password" model="form.password" name="password" label="Password"
-                                        required />
+                                <div class="col-md-6 d-flex flex-column gap-3">
+                                    <x-forms.input type="password" model="form.password" name="password"
+                                        label="Password" required />
 
-                                    <x-forms.input type="password" model="form.password_confirmation" name="password_confirmation"
-                                        label="Password Confirmation" required />
+                                    <x-forms.input type="password" model="form.password_confirmation"
+                                        name="password_confirmation" label="Password Confirmation" required />
+
                                 </div>
 
                                 <div class="col-md-6 align-items-center">
@@ -94,7 +92,8 @@
                         <div class="col-12">
                             <x-forms.button class="w-100">
                                 <span>Register</span>
-                                <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
+                                <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading
+                                    wire:target="save">
                                     <span class="sr-only"></span>
                                 </div>
                             </x-forms.button>

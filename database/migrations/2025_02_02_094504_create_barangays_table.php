@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\FamilyMember;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('childrens', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(FamilyMember::class)
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->date('birthdate');
+        Schema::create('barangays', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary;
+            $table->unsignedBigInteger('municipality_id');
+            $table->foreign('municipality_id')->references('id')->on('municipalities');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('childrens');
+        Schema::dropIfExists('barangays');
     }
 };

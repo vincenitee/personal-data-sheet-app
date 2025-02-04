@@ -70,5 +70,42 @@
                 <x-forms.input label="Upload Signature" name="signature" type="file" class="form-control-file"></x-forms.input>
             </div>
         </div>
+
+        {{-- OTR --}}
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <div class="card-title mb-0">
+                    <span class="small text-muted">Occupational Tax Receipt (TOR)</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <x-forms.input label="Upload OTR" name="otr" type="file" class="form-control-file"></x-forms.input>
+            </div>
+        </div>
+
+        {{-- Diploma --}}
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <div class="card-title mb-0">
+                    <span class="small text-muted">Diploma</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <x-forms.input label="Upload Diploma" name="diploma" type="file" class="form-control-file"></x-forms.input>
+            </div>
+        </div>
+
+        {{-- Employment Certificate --}}
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <div class="card-title mb-0">
+                    <span class="small text-muted">Employment Certificate</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <x-forms.input label="Upload Employement Certificate" name="employment_certificate" type="file" class="form-control-file"></x-forms.input>
+            </div>
+        </div>
+
     </div>
 </div>

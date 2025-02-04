@@ -4,8 +4,10 @@
             <div class="card p-4 card-body shadow">
                 <x-forms.form wire:submit="save" method="POST">
                     {{-- Logo and Text --}}
-                    @if (session('status'))
-                        <x-flash-message />
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
                     @endif
 
                     <div class="d-flex flex-column gap-1 align-items-center">

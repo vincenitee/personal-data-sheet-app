@@ -127,8 +127,8 @@
                         <td>
                             <button type="button"
                                 class="btn btn-sm btn-danger w-100">
-                                <i class="bi bi-trash"></i>
-                                <span>Delete</span>
+                                <i wire:loading.remove class="bi bi-trash"></i>
+                                <span class="d-none d-md-block">Delete</span>
                                 <div class="spinner-border spinner-border-sm" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>

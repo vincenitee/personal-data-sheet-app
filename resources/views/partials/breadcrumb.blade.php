@@ -5,7 +5,8 @@
     $pages = [
         'dashboard' => 'Dashboard',
         'profile' => 'Profile',
-        'pds/create' => 'Add New Entry'
+        'pds/create' => 'Add New Entry',
+        'notification' => 'Notifications',
     ];
 
     $currentPage = collect($pages)->first(function ($pageName, $uri) use ($currentUri){

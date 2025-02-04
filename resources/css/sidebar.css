@@ -41,6 +41,7 @@
 /* Responsive Sidebar Styles */
 @media (max-width: 576px) {
     #sidebar {
+        transform: translateX(-100);
         left: 0;
         position: fixed !important;
         top: 0;

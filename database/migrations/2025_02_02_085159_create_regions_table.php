@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questionnaires', function (Blueprint $table) {
-            $table->renameColumn('indegenous_details', 'indigenous_details');
+        Schema::create('regions', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary();
+            $table->string('name', 100);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('questionnaires', function (Blueprint $table) {
-            $table->renameColumn('indigenous_details', 'indegenous_details');
-        });
+        Schema::dropIfExists('regions');
     }
 };

@@ -32,6 +32,7 @@ class RegionSeeder extends Seeder
             while (($row = fgetcsv($handle, 1000, ',')) !== false) {
                 // Add the row data to the array
                 $data[] = [
+                    'id' => $row[0],
                     'name' => $row[1],
                     'created_at' => now(),
                     'updated_at' => now(),
