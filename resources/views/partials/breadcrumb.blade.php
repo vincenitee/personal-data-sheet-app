@@ -7,6 +7,7 @@
         'profile' => 'Profile',
         'pds/create' => 'Add New Entry',
         'notification' => 'Notifications',
+        'manage-signups' => 'Manage Signups',
     ];
 
     $currentPage = collect($pages)->first(function ($pageName, $uri) use ($currentUri){

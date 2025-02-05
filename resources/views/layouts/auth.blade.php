@@ -12,7 +12,7 @@
 
     @livewireStyles
 </head>
-<body class="vh-100" style="background: #f8f9fa;">
+<body class="vh-100" style="background: #e9e9e9;">
 
     @yield('content')
     @livewireScripts

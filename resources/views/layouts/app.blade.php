@@ -15,11 +15,20 @@
 
 <body style="background: #f8f9fa">
     {{-- Main Container --}}
-    <div x-data="{ open: false }" class="d-flex" style="min-height: 100vh">
+    <div
+        x-data="{ open: true }"
+        class="d-flex"
+        style="min-height: 100vh"
+    >
+
+    @role('employee')
         @include('partials.employee.sidebar')
+    @else
+        @include('partials.admin.sidebar')
+    @endrole
 
         <div class="flex-1 w-100" style="background: #E9E9E9">
-            @include('partials.employee.navbar')
+            @include('partials.navbar')
 
             <main class="container-fluid mt-3" style="z-index: 1;">
                 @include('partials.breadcrumb')

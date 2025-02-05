@@ -4,8 +4,6 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use App\Services\AuthService;
-use App\Services\UserService;
-use App\Livewire\Forms\LoginForm;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 
@@ -24,18 +22,14 @@ class LoginUser extends Component
         $this->authService = $authService;
     }
 
-    public function save()
+    public function submit()
     {
         // Validates the credentials
         $credentials = $this->validate();
 
-        // Authenticate the user
-        try {
-            return $this->authService
-                ->authenticate($credentials);
-        } catch (ValidationException $e) {
-            session()->flash('error', $e->errors()['email'][0]);
-        }
+    // Authenticate the user
+        return $this->authService
+            ->authenticate($credentials);
     }
 
     public function render()

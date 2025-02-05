@@ -28,7 +28,10 @@ class RegisterUser extends Component
         $this->userService->store($validated);
 
         // Redirect to login
-        redirect(route('login'))->with('success', 'Registration successfull! Please wait for account approval to login.');
+        redirect(route('login'))->with('flash', [
+            'status' => 'success',
+            'message' => "Registration successfull! Please wait for account approval to login."
+        ]);
     }
 
     public function render()

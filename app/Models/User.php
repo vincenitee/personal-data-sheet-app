@@ -35,6 +35,7 @@ class User extends Authenticatable implements CanResetPassword
     {
         parent::boot();
 
+        // TO BE CHANGED (UPON APPROVAL THE USER WILL BE ASSIGNED A ROLE)
         // Assign employee role by default whenever a new user is created
         static::created(function ($user){
             $user->assignRole('employee');

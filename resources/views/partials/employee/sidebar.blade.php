@@ -1,6 +1,9 @@
 {{-- Sidebar --}}
-<aside class="bg-dark text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
-    :class="{ 'w-0': !open, 'w-250': open }" {{-- @click.outside="open = false" --}} id="sidebar">
+<aside
+    class="bg-dark text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
+    :class="{ 'w-0': !open, 'w-250': open }"
+    @click.outside="if (! event.target.closest('#sidebar-toggler')) open = false"
+    id="sidebar">
     {{-- Logo and Brand --}}
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-secondary" style="height: 80px;">
         <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="" id="logo">
@@ -35,16 +38,6 @@
                     Notification</a>
                 <span class="badge bg-danger me-2" style="font-size: 0.8rem;">5</span>
             </div>
-        </li>
-        <li class="nav-item {{ request()->is('employee/profile') ? 'active' : '' }}">
-            <a wire:navigate href="{{ url(route('employee.profile')) }}" class="nav-link text-white">
-                <i class="bi bi-person me-1" style="font-size: 1.1rem;"></i>
-                Profile</a>
-        </li>
-        <li class="nav-item">
-            <a href="" class="nav-link text-white">
-                <i class="bi bi-box-arrow-right me-1" style="font-size: 1.1rem;"></i>
-                Logout</a>
         </li>
     </ul>
 </aside>

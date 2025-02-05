@@ -17,14 +17,6 @@ class AuthService
         // Retrieves the authenticated user
         $user = Auth::user();
 
-        // Checks if the account is approved
-        if (!$user->is_approved) {
-            Auth::logout();
-            throw ValidationException::withMessages([
-                'email' => 'Your account is not approved yet. Please wait for admin approval.',
-            ]);
-        }
-
         // Redirects the user to their respective dashboards
         return $this->redirectUser($user);
     }

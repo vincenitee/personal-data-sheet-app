@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_approved')->default(false)->after('password');
+            $table->enum('status', ['approved', 'rejected', 'pending'])
+                ->default('pending')
+                ->after('password');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_approved');
+            $table->dropColumn('status');
         });
     }
 };

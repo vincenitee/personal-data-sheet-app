@@ -2,13 +2,12 @@
     <div class="row h-100">
         <div class="col-lg-4 col-md-11 m-auto">
             <div class="card p-4 card-body shadow">
-                <x-forms.form wire:submit="save" method="POST">
+                <x-forms.form wire:submit="submit" method="POST">
                     {{-- Logo and Text --}}
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
+                    @if(session('flash'))
+                        <x-flash-message />
                     @endif
+
 
                     <div class="d-flex flex-column gap-1 align-items-center">
                         <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="logo"
@@ -23,12 +22,12 @@
                     <div class="row g-3 my-3">
                         {{-- Inputs --}}
                         <div class="col-12">
-                            <x-forms.input model="form.email" icon="bi bi-envelope" name="email" label=""
+                            <x-forms.input model="email" icon="bi bi-envelope" name="email" label=""
                                 :required="false" placeholder="Email Address" />
                         </div>
 
                         <div class="col-12">
-                            <x-forms.input model="form.password" icon="bi bi-key" name="password" label=""
+                            <x-forms.input model="password" icon="bi bi-key" name="password" label=""
                                 type="password" :required="false" placeholder="Password" />
                         </div>
                     </div>

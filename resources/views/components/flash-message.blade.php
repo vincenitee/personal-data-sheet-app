@@ -1,12 +1,11 @@
 @php
-    $status = session('type') ?? 'alert-success';
+    $flash = session('flash', []);
+    $type = ($flash['status'] ?? 'success') === 'error' ? 'alert-danger' : 'alert-success';
+    $message = $flash['message'] ?? null;
 @endphp
 
-<div class="alert {{ $status }} alert-dismissible fade show">
-    <div class="d-flex align-items-center justify-content-between">
-        <span style="font-size: 0.9rem">
-            {{ session('status') }}
-        </span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@if($message)
+    <div class="alert {{ $type }}">
+        <small>{{ $message }}</small>
     </div>
-</div>
+@endif

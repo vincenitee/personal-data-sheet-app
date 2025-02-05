@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Employee;
+namespace App\Livewire\Admin;
 
 use Livewire\Component;
 
-class Profile extends Component
+class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.employee.profile')
+        return view('livewire.admin.dashboard')
             ->extends('layouts.app')
             ->title('Dashboard')
             ->section('content');

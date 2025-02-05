@@ -3,7 +3,7 @@
     style="z-index: 1050;">
     <div class="container-fluid">
         {{-- Toggler Button --}}
-        <button @click="open = !open" class="btn btn-sm">
+        <button @click="open = !open" class="btn btn-sm" id="sidebar-toggler">
             <i class="bi bi-grid" style="font-size: 1.3rem;"></i>
         </button>
 
@@ -28,25 +28,22 @@
                 <ul class="dropdown-menu dropdown-menu-end" style="max-width: 150px;">
                     <li class="dropdown-item-text">
                         <div class="text-truncate" style="max-width: 100%;">
-                            <span class="d-block">Admin Test</span>
+                            <span class="d-block">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
                             <small
-                                class="d-block text-muted text-truncate">admintest123withaverylongemail@example.com</small>
+                                class="d-block text-muted text-truncate">{{ auth()->user()->email }}</small>
                         </div>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" wire:navigate href="{{ url(route('profile')) }}">
                             <i class="bi bi-user"></i>
                             Profile
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-arrow-box-left"></i>
-                            Log Out
-                        </a>
+                        <livewire:logout-button />
                     </li>
                 </ul>
             </div>
