@@ -6,7 +6,6 @@
     'required' => true
 ])
 
-
 <x-forms.input-field
     :model="$model"
     :icon="$icon"

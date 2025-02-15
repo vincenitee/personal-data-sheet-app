@@ -18,6 +18,10 @@ import "flatpickr/dist/flatpickr.min.css";
 // Import and initialize Alpine.js
 import Alpine from "alpinejs";
 
+// Import and initialize TomSelect.js
+import TomSelect from 'tom-select';
+import 'tom-select/dist/css/tom-select.css';
+
 if (!window.Alpine) {
     window.Alpine = Alpine;
     Alpine.start();
@@ -26,3 +30,4 @@ if (!window.Alpine) {
 // Expose libraries to the global window object
 window.Swal = Swal;
 window.flatpickr = flatpickr;
+window.TomSelect = TomSelect;

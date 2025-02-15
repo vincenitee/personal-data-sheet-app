@@ -6,11 +6,12 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements CanResetPassword
 {
-    use HasApiTokens, Notifiable, HasRoles;
+    use HasFactory, HasApiTokens, Notifiable, HasRoles;
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -31,14 +32,8 @@ class User extends Authenticatable implements CanResetPassword
         'password' => 'hashed',
     ];
 
-    protected static function boot()
+    public function entries()
     {
-        parent::boot();
-
-        // TO BE CHANGED (UPON APPROVAL THE USER WILL BE ASSIGNED A ROLE)
-        // Assign employee role by default whenever a new user is created
-        static::created(function ($user){
-            $user->assignRole('employee');
-        });
+        return $this->hasMany(PdsEntry::class);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use App\Services\AuthService;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 
 class LoginUser extends Component
@@ -27,7 +26,7 @@ class LoginUser extends Component
         // Validates the credentials
         $credentials = $this->validate();
 
-    // Authenticate the user
+        // Authenticate the user
         return $this->authService
             ->authenticate($credentials);
     }

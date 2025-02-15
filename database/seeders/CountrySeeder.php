@@ -13,7 +13,7 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
-        $filePath = storage_path('app/private/csv/refcountry.csv');
+        $filePath = storage_path('app/private/csv/countries.csv');
         $batchSize = 10;
         $data = [];
 
@@ -33,7 +33,7 @@ class CountrySeeder extends Seeder
                 // Add the row data to the array
                 $data[] = [
                     'id' => $row[0],
-                    'name' => $row[3],
+                    'name' => $row[1],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

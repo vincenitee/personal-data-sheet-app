@@ -43,8 +43,8 @@ class Profile extends Component
                 'updated_at'  => $this->user->updated_at,
             ]);
 
-            // Fetch the user's roles (assuming Spatie's Role system)
-            $this->role = $this->user->getRoleNames()->toArray();
+            // Fetch the user's roles (ensuring it's always an array)
+            $this->role = $this->user->getRoleNames()->toArray() ?? [];
         }
     }
 
@@ -57,7 +57,7 @@ class Profile extends Component
             'last_name'   => ['required', 'string', 'max:255'],
             'sex'         => ['required', 'string', 'in:male,female'],
             'birth_date'  => ['nullable', 'date'],
-            'email'       => ['required', 'email', 'max:255'],
+            'email'       => ['required', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
         ];
     }
 
@@ -67,23 +67,25 @@ class Profile extends Component
         // Validate based on the defined rules
         $validated = $this->validate();
 
-        // Update the user's personal information
-        $this->user->update([
-            'first_name' => $this->first_name,
+        // Refresh user data before updating
+        $user = Auth::user();
+        $user->update([
+            'first_name'  => $this->first_name,
             'middle_name' => $this->middle_name,
-            'last_name' => $this->last_name,
-            'sex' => $this->sex,
-            'birth_date' => $this->birth_date,
-            'email' => $this->email,
+            'last_name'   => $this->last_name,
+            'sex'         => $this->sex,
+            'birth_date'  => $this->birth_date,
+            'email'       => $this->email,
         ]);
+
+        $this->user = $user; // Refresh user property
 
         // Success message
         session()->flash('flash', [
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Personal information updated successfully',
         ]);
     }
-
 
     public function updateSecurityInformation() {}
 
@@ -91,8 +93,6 @@ class Profile extends Component
     {
         return view('livewire.profile')
             ->extends('layouts.app')
-            ->with('user', $this->user)
-            ->with('role', $this->role)
             ->title('Dashboard')
             ->section('content');
     }

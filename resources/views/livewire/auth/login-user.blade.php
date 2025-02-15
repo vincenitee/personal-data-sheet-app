@@ -34,7 +34,7 @@
 
                     <x-forms.button class="w-100">
                         <span>Sign in</span>
-                        <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
+                        <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading wire:target="submit">
                             <span class="sr-only"></span>
                         </div>
                     </x-forms.button>

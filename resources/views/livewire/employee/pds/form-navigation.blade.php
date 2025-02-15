@@ -21,6 +21,7 @@
         </button>
 
         <div class="d-flex gap-2">
+            {{-- Save Draft --}}
             <button
                 type="button"
                 wire:click="saveDraft"

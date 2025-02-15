@@ -16,7 +16,7 @@
 <body style="background: #f8f9fa">
     {{-- Main Container --}}
     <div
-        x-data="{ open: true }"
+        x-data="{ open: false }"
         class="d-flex"
         style="min-height: 100vh"
     >

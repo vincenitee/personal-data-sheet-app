@@ -6,42 +6,53 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_firstname" label="First Name">
+            <x-forms.input
+                model="spouse.first_name"
+                name="spouse.first_name"
+                label="First Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_middlename" label="Middle Name" :required="false">
+            <x-forms.input
+                model="spouse.middle_name"
+                name="spouse.middle_name"
+                label="Middle Name"
+                :required="false"
+            >
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_lastname" label="Last Name">
+            <x-forms.input
+                model="spouse.last_name"
+                name="spouse.last_name"
+                label="Last Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_suffix" label="Suffix">
+            <x-forms.input model="spouse.suffix" name="spouse.suffix" label="Suffix" :required="false">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_occupation" label="Occupation">
+            <x-forms.input model="spouse.occupation" name="spouse.occupation" label="Occupation">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_employer" label="Employer/Business Name">
+            <x-forms.input model="spouse.employer" name="spouse.employer" label="Employer/Business Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_bussiness_address" label="Business Address">
+            <x-forms.input model="spouse.business_address" name="spouse.bussiness_address" label="Business Address">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="spouse_telephone_no" label="Telephone Number">
+            <x-forms.input model="spouse.telephone_no" name="spouse.telephone_no" label="Telephone Number">
             </x-forms.input>
         </div>
     </div>
@@ -55,22 +66,22 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="father_firstname" label="First Name">
+            <x-forms.input model="father.first_name" name="father.first__name" label="First Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="father_middlename" label="Middle Name" :required="false">
+            <x-forms.input model="father.middle_name" name="father.middle__name" label="Middle Name" :required="false">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="father_lastname" label="Last Name">
+            <x-forms.input model="father.last_name" name="father.last__name" label="Last Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="father_suffix" label="Suffix">
+            <x-forms.input model="father.suffix" name="father.suffix" label="Suffix" :required="false">
             </x-forms.input>
         </div>
     </div>
@@ -81,19 +92,23 @@
     <div class="row g-3">
         <div class="col-12">
             <small class="fw-bold">Mother Information</small>
+            <p class="text-muted fst-italic" style="font-size: 0.875rem;">
+                <strong>Note: </strong>
+                Please enter your mother's maiden information (name before marriage).
+            </p>
         </div>
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="mother_firstname" label="First Name">
+            <x-forms.input model="mother.first_name" name="mother.firstname" label="First Name">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="mother_middlename" label="Middle Name" :required="false">
+            <x-forms.input model="mother.middle_name" name="mother.middlename" label="Middle Name" :required="false">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input name="mother_lastname" label="Last Name">
+            <x-forms.input model="mother.last_name" name="mother.lastname" label="Last Name">
             </x-forms.input>
         </div>
     </div>
@@ -104,50 +119,53 @@
     <div class="row g-3">
         <div class="col-12">
             <small class="fw-bold">Children Information</small>
+            <p class="text-muted fst-italic mb-0" style="font-size: 0.875rem;">
+                <strong>Note: </strong>
+                Please enter your child's fullname (e.g. Juan Dela Cruz Jr.).
+            </p>
         </div>
 
-        <div class="col-12">
-            <table class="table table-sm table-borderless align-middle" style="font-size: 14px;">
-                <thead>
-                    <tr>
-                        <th style="width: 45%">Full Name</th>
-                        <th style="width: 45%">Birthdate</th>
-                        <th style="width: 10%">Actions</th>
-                    </tr>
-                </thead>
+        @include('partials.loading', ['target' => 'addChild', 'message' => 'Adding child rows'])
 
-                <tbody>
-                    <tr>
-                        <td>
-                            <x-forms.input name=""></x-forms.inp>
-                        </td>
-                        <td>
-                            <x-forms.input name="" type="date"></x-forms.inp>
-                        </td>
-                        <td>
-                            <button type="button"
-                                class="btn btn-sm btn-danger w-100">
-                                <i wire:loading.remove class="bi bi-trash"></i>
-                                <span class="d-none d-md-block">Delete</span>
-                                <div class="spinner-border spinner-border-sm" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div wire:loading.remove wire:target="addChild" class="row g-3">
+            @foreach ($children as $index => $child)
+                <div class="col-lg-5 col-md-6">
+                    <x-forms.input
+                        model="children.{{ $index }}.full_name"
+                        label="Full name"
+                        name="children.{{ $index }}.full_name"
+                    ></x-forms.input>
+                </div>
+
+                <div class="col-lg-5 col-md-6">
+                    <x-forms.input
+                        icon="bi bi-calendar"
+                        model="children.{{ $index }}.birth_date"
+                        label="Birthdate"
+                        name="children{{ $index }}-birth_date"
+                        type="date"
+                    ></x-forms.input>
+                </div>
+
+                <div class="col-lg-2 col-md-12 d-flex align-items-end">
+                    <x-forms.button
+                        type="button"
+                        icon="bi bi-trash"
+                        class="btn-danger"
+                        wire:click="removeChild({{ $index }})"
+                        wire:loading.attr="disabled"
+                        :disabled="(count($children) == 1)"
+                    />
+                </div>
+            @endforeach
         </div>
+
         <div class="d-flex align-items-center justify-content-end">
             <button wire:ignore wire:click="addChild()" type="button"
-                class="float-end btn btn-sm btn-outline-primary d-flex align-items-center gap-2">
-                <i wire:loading.remove wire:target="addChild()" class="bi bi-plus-circle"></i>
+                class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle"></i>
 
-                <div wire:loading wire:target="addChild()" class="spinner-border spinner-border-sm" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
                 <span>Add Row</span>
-
             </button>
         </div>
     </div>

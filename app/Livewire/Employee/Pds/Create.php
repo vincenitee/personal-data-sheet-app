@@ -2,139 +2,396 @@
 
 namespace App\Livewire\Employee\Pds;
 
+use App\Enums\Sex;
 use Livewire\Component;
+use App\Models\PdsEntry;
+use App\Enums\CivilStatus;
+use Livewire\Attributes\On;
+use App\Traits\HasFormSteps;
+use App\Enums\SubmissionStatus;
+use App\Services\EmployeeParentService;
+use App\Services\AddressService;
+use App\Services\ChildrenService;
+use App\Traits\HasDynamicEntries;
+use App\Traits\LoadsEmployeeData;
+use Illuminate\Support\Facades\Auth;
+use App\Services\EmployeeIdentifierService;
+use App\Services\PersonalInformationService;
+use App\Services\SpouseService;
+use App\Traits\HandlesPdsData;
+use App\Traits\HasFlashMessage;
+use Exception;
 
 class Create extends Component
 {
-    public $currentStep = 10;
+    use HasFormSteps, LoadsEmployeeData, HasDynamicEntries, HasFlashMessage, HandlesPdsData;
+
+    public $user = null;
+
+    public $isLocked = false;
+
+    // Basic Information
+    public $first_name = null;
+    public $middle_name = null;
+    public $last_name = null;
+    public $suffix = null;
+    public $birth_date = null;
+    public $birth_place = null;
+    public $sex = null;
+    public $civil_status = null;
+    public $height = null;
+    public $weight = null;
+    public $blood_type = null;
+
+    // Identifiers
+    public $gsis_id = null;
+    public $pagibig_id = null;
+    public $philhealth_id = null;
+    public $sss_id = null;
+    public $tin_id = null;
+    public $agency_id = null;
+
+    public $identifiers =[
+        'gsis' => null,
+        'pag_ibig' => null,
+        'philhealth' => null,
+        'sss' => null,
+        'tin' => null,
+        'agency' => null,
+    ];
+
+    // Nationality
+    public $citizenship = 'filipino';
+    public $citizenship_by = 'birth';
+    public $country = null;
+
+    // Address
+    public $residential = [
+        'region' => null,
+        'province' => null,
+        'provinces' => [],
+        'municipality' => null,
+        'municipalities' => [],
+        'barangay' => null,
+        'barangays' => [],
+        'subdivision' => null,
+        'street' => null,
+        'house' => null,
+    ];
+
+    public $permanent = [
+        'region' => null,
+        'province' => null,
+        'provinces' => [],
+        'municipality' => null,
+        'municipalities' => [],
+        'barangay' => null,
+        'barangays' => [],
+        'subdivision' => null,
+        'street' => null,
+        'house' => null,
+    ];
+
+    // Contact Information
+    public $telephone_no = null;
+    public $mobile_no = null;
+    public $email = null;
+
+    // Spouse Information
+    public $spouse = [
+        'first_name' => null,
+        'middle_name' => null,
+        'last_name' => null,
+        'suffix' => null,
+        'occupation' => null,
+        'employer' => null,
+        'business_address' => null,
+        'telephone_no' => null,
+    ];
+
+    public $father = [
+        'first_name' => null,
+        'middle_name' => null,
+        'last_name' => null,
+        'suffix' => null,
+    ];
+
+    public $mother = [
+        'first_name' => null,
+        'middle_name' => null,
+        'last_name' => null,
+    ];
 
     public $children = [];
-    public $eligibilities = [];
 
-    protected $steps = [
-        1 => 'Personal Information',
-        2 => 'Family Background',
-        3 => 'Educational Background',
-        4 => 'Civil Service Eligibility',
-        5 => 'Work Experience',
-        6 => 'Voluntary Work',
-        7 => 'Learning and Development',
-        8 => 'Other Information',
-        9 => 'Additional Questions',
-        10 => 'Attachments',
+    public $educationalLevels = [
+        'elementary' => [],
+        'secondary' => [],
+        'vocational' => [],
+        'college' => [],
+        'graduate_studies' => [],
     ];
 
-    protected $stepsIcons = [
-        1 => 'bi-person',
-        2 => 'bi-people',
-        3 => 'bi-book',
-        4 => 'bi-award',
-        5 => 'bi-briefcase',
-        6 => 'bi-heart',
-        7 => 'bi-mortarboard',
-        8 => 'bi-info-circle',
-        9 => 'bi-question-circle',
-        10 => 'bi-paperclip'
-    ];
+    // Services
+    protected PersonalInformationService $personalInformationService;
+    protected AddressService $addressService;
+    protected EmployeeIdentifierService $employeeIdentifierService;
+    protected SpouseService $spouseService;
+    protected EmployeeParentService $employeeParentService;
+    protected ChildrenService $childrenService;
+
+    public function boot(
+        PersonalInformationService $personalInformationService,
+        AddressService $addressService,
+        EmployeeIdentifierService $employeeIdentifierService,
+        SpouseService $spouseService,
+        EmployeeParentService $employeeParentService,
+        ChildrenService $childrenService,
+    ) {
+        $this->personalInformationService = $personalInformationService;
+        $this->addressService = $addressService;
+        $this->employeeIdentifierService = $employeeIdentifierService;
+        $this->spouseService = $spouseService;
+        $this->employeeParentService = $employeeParentService;
+        $this->childrenService = $childrenService;
+    }
 
     public function mount()
     {
-        $this->children = [
-            [
-                'name' => '',
-                'birthdate' => ''
-            ]
-        ];
+        $this->user = Auth::user();
 
-        $this->eligibilities = [
-            [
-                'career_service' => '',
-                'ratings' => '',
-                'exam_date' => '',
-                'exam_place' => '',
-                'license_number' => '',
-                'license_validity' => '',
-            ],
+        if (!$this->user) {
+            return;
+        }
+
+        $entry = $this->user->entries()->firstOrCreate(
+            ['status' => SubmissionStatus::DRAFT],
+            ['is_current' => false]
+        );
+
+        $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
+
+        if (!$entry) {
+            return;
+        }
+
+        $this->loadPersonalInformation($entry?->personalInformation);
+        $this->loadUserAddresses($entry?->personalInformation?->addresses ?? collect());
+        $this->loadIdentifiers($entry?->personalInformation?->identifiers ?? collect());
+        $this->loadSpouseInformation($entry?->spouse()?->first());
+        $this->loadEmployeeParentsInformation($entry?->parents->get());
+        $this->loadChildrenData($entry?->children);
+
+
+        // dump(count($this->children));
+    }
+
+    protected function loadUserAddresses($addresses)
+    {
+        $this->loadAddresses(
+            residential: $addresses->get(1, null),
+            permanent: $addresses->get(0, null)
+        );
+    }
+
+    protected function loadEmployeeParentsInformation($parents)
+    {
+        $this->loadParentsInformation(
+            father: $parents->get(0, null),
+            mother: $parents->get(1, null),
+        );
+    }
+
+    protected function initializeChildren()
+    {
+        $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
+    }
+
+
+    public function saveDraft()
+    {
+        // dd($this->educationalLevels);
+        $entry = PdsEntry::firstOrCreate(
+            ['user_id' => $this->user->id, 'status' => SubmissionStatus::DRAFT],
+            ['is_current' => false]
+        );
+
+        try {
+            switch ($this->currentStep) {
+                case 1:
+                    $this->saveStepOne($entry);
+                    break;
+                case 2:
+                    $this->saveStepTwo($entry);
+                    break;
+                default:
+                    throw new Exception('Invalid step');
+                    break;
+            }
+
+            $this->flashMessage(
+                "Draft saved at $this->currentStep" . now()->format('H:i '),
+                'success'
+            );
+        } catch (Exception $e) {
+            $this->flashMessage('Failed to save draft: ' . $e->getMessage(), 'error');
+        }
+    }
+
+    protected function saveStepOne($entry)
+    {
+        $personal_info =  $this->personalInformationService
+            ->store($this->getPersonalInformationData($entry->id));
+
+        if (!$personal_info) throw new Exception('Failed to save personal information');
+
+        if (!$this->addressService->store($this->getAddressData($personal_info->id))) {
+            throw new Exception('Address saving failed');
+        }
+
+        if (!$this->employeeIdentifierService->store($this->getIdentifierData($personal_info->id))) {
+            throw new Exception('Identifier saving failed');
+        }
+    }
+
+    protected function saveStepTwo($entry)
+    {
+        if (!$this->spouseService->store($this->getSpouseData($entry->id))) {
+            throw new Exception('Spouse information saving failed');
+        }
+
+        if (!$this->employeeParentService->store($this->getParentsData($entry->id))) {
+            throw new Exception('Parents information saving failed');
+        }
+
+        if (!$this->childrenService->store($this->getChildrenData($entry->id))) {
+            throw new Exception('Children information saving failed');
+        }
+    }
+
+    // protected function getPersonalInformationData(int $entryId): array
+    // {
+    //     return ['pds_entry_id' => $entryId] + $this->only([
+    //         'first_name',
+    //         'middle_name',
+    //         'last_name',
+    //         'suffix',
+    //         'birth_date',
+    //         'birth_place',
+    //         'sex',
+    //         'civil_status',
+    //         'height',
+    //         'weight',
+    //         'blood_type',
+    //         'citizenship',
+    //         'citizenship_by',
+    //         'country',
+    //         'telephone_no',
+    //         'mobile_no',
+    //         'email'
+    //     ]);
+    // }
+
+    // // Prepares identifier data
+    // protected function getIdentifierData(int $personalInformationId)
+    // {
+    //     return [
+    //         'personal_information_id' => $personalInformationId,
+    //         'identifiers' => [
+    //             IdentifierType::GSIS->value => $this->gsis_id,
+    //             IdentifierType::PAGIBIG->value => $this->pagibig_id,
+    //             IdentifierType::PHILHEALTH->value => $this->philhealth_id,
+    //             IdentifierType::SSS->value => $this->sss_id,
+    //             IdentifierType::TIN->value => $this->tin_id,
+    //             IdentifierType::AGENCY->value => $this->agency_id,
+    //         ],
+    //     ];
+    // }
+
+    // // Prepares address data
+    // protected function getAddressData(int $personalInformationId)
+    // {
+    //     return [
+    //         'personal_information_id' => $personalInformationId,
+    //         'residential' => collect($this->residential)->except(
+    //             ['provinces', 'municipalities', 'barangays']
+    //         )->toArray(),
+    //         'permanent' => collect($this->permanent)->except(
+    //             ['provinces', 'municipalities', 'barangays']
+    //         )->toArray(),
+    //     ];
+    // }
+
+    // protected function getSpouseData(int $entryId)
+    // {
+    //     return array_merge(['pds_entry_id' => $entryId], $this->spouse);
+    // }
+
+    // protected function getParentsData(int $entryId)
+    // {
+    //     return [
+    //         'pds_entry_id' => $entryId,
+    //         'father' => $this->father,
+    //         'mother' => $this->mother,
+    //     ];
+    // }
+
+    // protected function getChildrenData(int $entryId)
+    // {
+    //     return [
+    //         'pds_entry_id' => $entryId,
+    //         'children' => $this->children,
+    //     ];
+    // }
+
+    // protected function getEducationalBackgroundData(int $entryId)
+    // {
+    //     return [
+    //         'pds_entry_id' => $entryId,
+    //     ];
+    // }
+
+    // Initializes enums options
+    protected function getOptions()
+    {
+        return [
+            'sexOptions' => Sex::options(),
+            'civilStatusOptions' => CivilStatus::options(),
         ];
     }
 
     public function addChild()
     {
-        $this->children[] = ['name' => '', 'birthdate' => ''];
+        $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
     }
 
     public function removeChild($index)
     {
-        if(count($this->children) > 1){
-            unset($this->children[$index]);
-            $this->children = array_values($this->children);
-        }
+        $this->removeEntry('children', $index);
     }
 
-    public function addEligibility(){
-        $this->eligibilities[] = [
-            [
-                'career_service' => '',
-                'ratings' => '',
-                'exam_date' => '',
-                'exam_place' => '',
-                'license_number' => '',
-                'license_validity' => '',
-            ]
-        ];
-    }
-
-    public function removeEligibility($index)
+    #[On('address-updated')]
+    public function updateAddresses($addresses)
     {
-        if(count($this->eligibilities) > 1){
-            unset($this->eligibilities[$index]);
-            $this->eligibilities = array_values($this->eligibilities);
-        }
+        $this->residential = array_merge($this->residential, $addresses['residential']);
+        $this->permanent = array_merge($this->permanent, $addresses['permanent']);
     }
 
-    public function incrementSteps()
+    #[On('nationality-updated')]
+    public function updateNationality($nationality)
     {
-        $this->currentStep = min($this->currentStep + 1, count($this->steps));
-    }
-
-    public function decrementSteps()
-    {
-        $this->currentStep = max($this->currentStep - 1, 1);
-    }
-
-    public function jumpToStep($step)
-    {
-        $this->currentStep = $step;
-    }
-
-    public function getStepTitleProperty()
-    {
-        return $this->steps[$this->currentStep];
-    }
-
-    public function getDescriptionProperty()
-    {
-        return match ($this->currentStep) {
-            1 => 'Provide your basic details, including full name, birthdate, address, and contact information.',
-            2 => 'Record essential details about your family members, including spouse, parents, and children.',
-            3 => 'Document your academic journey by providing details about your schools, degrees, and achievements across all education levels.',
-            4 => 'Record your civil service examinations and eligibility details, including ratings, examination dates, and relevant certifications.',
-            5 => 'Detail your professional work history, including roles, responsibilities, and employment dates.',
-            6 => 'List your voluntary service experiences, including the nature of work and the organizations you contributed to',
-            7 => 'Document training programs and development interventions you\'ve attended, including titles, dates, and sponsors.',
-            8 => 'Highlight your special skills, hobbies, non-academic achievements, and memberships in organizations.',
-            9 => 'Provide responses to important questions, including legal disclosures and family-related information.',
-            10 => 'I declare under oath that I have personally accomplished this Personal Data Sheet which is a true, correct and complete statement pursuant to the provisions of pertinent laws, rules and regulations of the Republic of the Philippines. I authorize the agency head/authorized representative to verify/validate the contents stated herein.          I  agree that any misrepresentation made in this document and its attachments shall cause the filing of administrative/criminal case/s against me.',
-            default => ''
-        };
+        $this->citizenship = $nationality['citizenship'];
+        $this->citizenship_by = $nationality['citizenship_by'];
+        $this->country = $nationality['country'];
     }
 
     public function render()
     {
-        return view('livewire.employee.pds.create', [
-            'steps' => $this->steps,
-            'stepsIcon' => $this->stepsIcons,
-        ])
+        return view(
+            'livewire.employee.pds.create',
+            ['steps' => $this->steps, 'stepIcons' => $this->stepIcons],
+            $this->getOptions(),
+        )
             ->extends('layouts.app')
             ->title('Dashboard')
             ->section('content');

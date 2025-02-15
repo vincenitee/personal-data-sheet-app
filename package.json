@@ -22,6 +22,7 @@
         "choices.js": "^11.0.3",
         "flatpickr": "^4.6.13",
         "simplebar": "^6.3.0",
-        "sweetalert2": "^11.6.13"
+        "sweetalert2": "^11.6.13",
+        "tom-select": "^2.4.2"
     }
 }

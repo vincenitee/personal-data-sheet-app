@@ -12,7 +12,6 @@ class Select extends Component
 
     public $label;
     public $name;
-    public $options = [];
 
     public function render()
     {

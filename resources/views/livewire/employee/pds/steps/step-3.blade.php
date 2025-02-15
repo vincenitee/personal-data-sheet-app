@@ -1,5 +1,15 @@
 {{-- Elementary Level --}}
 <div class="card card-body mb-2">
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="row g-3">
         <div class="col-12">
             <small class="fw-bold">Elementary Level</small>
@@ -16,7 +26,8 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_start" label="Attendance Start"
+                type="date">
             </x-forms.input>
         </div>
 
@@ -61,7 +72,8 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_start" label="Attendance Start"
+                type="date">
             </x-forms.input>
         </div>
 
@@ -106,7 +118,8 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_start" label="Attendance Start"
+                type="date">
             </x-forms.input>
         </div>
 
@@ -133,7 +146,7 @@
     </div>
 </div>
 
-{{-- College Level--}}
+{{-- College Level --}}
 <div class="card card-body mb-2">
     <div class="row g-3">
         <div class="col-12">
@@ -151,12 +164,14 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="college_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="college_attendance_start" label="Attendance Start"
+                type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="college_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="college_attendance_end" label="Attendance End"
+                type="date">
             </x-forms.input>
         </div>
 
@@ -196,12 +211,14 @@
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_start" label="Attendance Start" type="date">
+            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_start" label="Attendance Start"
+                type="date">
             </x-forms.input>
         </div>
 
         <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_end" label="Attendance End" type="date">
+            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_end" label="Attendance End"
+                type="date">
             </x-forms.input>
         </div>
 
