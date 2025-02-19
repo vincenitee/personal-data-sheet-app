@@ -8,6 +8,7 @@ use App\Models\Barangay;
 use App\Models\Province;
 use App\Models\Municipality;
 use App\Traits\LoadsEmployeeData;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
 
 class AddressPicker extends Component
@@ -29,6 +30,7 @@ class AddressPicker extends Component
         'subdivision' => null,
         'street' => null,
         'house' => null,
+        'zip' => null,
     ];
 
     public $permanent = [
@@ -42,14 +44,13 @@ class AddressPicker extends Component
         'subdivision' => null,
         'street' => null,
         'house' => null,
+        'zip' => null,
     ];
 
     public function mount()
     {
         $this->regions = Region::all();
 
-        // Retrieve the currently authenticated user
-        $user = Auth::user();
         $addresses = $this->addresses();
 
         $permanent = $addresses->get(0, []);
@@ -130,7 +131,6 @@ class AddressPicker extends Component
 
         if(!empty($storedPermanent)){
             $this->loadPermanentAddress($storedPermanent);
-            // dd($this->permanent);
             $this->updated('permanent.region', $this->permanent['region']);
             $this->updated('permanent.province', $this->permanent['province']);
             $this->updated('permanent.municipality', $this->permanent['municipality']);
@@ -148,6 +148,7 @@ class AddressPicker extends Component
             'subdivision' => null,
             'street' => null,
             'house' => null,
+            'zip' => null,
         ];
 
     }

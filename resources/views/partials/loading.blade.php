@@ -1,6 +1,6 @@
 @props(['target' => null, 'message' => ''])
 
-<div class="col-12 text-center"
+<div class="col-12 text-center my-2"
     wire:loading
     @if(!is_null($target)) wire:target="{{ $target }}" @endif
 >

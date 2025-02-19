@@ -12,6 +12,8 @@ use App\Enums\SubmissionStatus;
 use App\Services\EmployeeParentService;
 use App\Services\AddressService;
 use App\Services\ChildrenService;
+use App\Services\CivilServiceEligibilityService;
+use App\Services\EducationalBackgroundService;
 use App\Traits\HasDynamicEntries;
 use App\Traits\LoadsEmployeeData;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +23,13 @@ use App\Services\SpouseService;
 use App\Traits\HandlesPdsData;
 use App\Traits\HasFlashMessage;
 use Exception;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Create extends Component
 {
-    use HasFormSteps, LoadsEmployeeData, HasDynamicEntries, HasFlashMessage, HandlesPdsData;
+    use HasFormSteps, LoadsEmployeeData, HasDynamicEntries, HasFlashMessage, HandlesPdsData, WithFileUploads;
 
     public $user = null;
-
     public $isLocked = false;
 
     // Basic Information
@@ -44,16 +46,9 @@ class Create extends Component
     public $blood_type = null;
 
     // Identifiers
-    public $gsis_id = null;
-    public $pagibig_id = null;
-    public $philhealth_id = null;
-    public $sss_id = null;
-    public $tin_id = null;
-    public $agency_id = null;
-
-    public $identifiers =[
+    public $identifiers = [
         'gsis' => null,
-        'pag_ibig' => null,
+        'pagibig' => null,
         'philhealth' => null,
         'sss' => null,
         'tin' => null,
@@ -124,13 +119,25 @@ class Create extends Component
 
     public $children = [];
 
-    public $educationalLevels = [
+    public $defaultFields = [
+        'school_name' => null,
+        'degree_earned' => null,
+        'attendance_from' => null,
+        'attendance_to' => null,
+        'level_unit_earned' => null,
+        'year_graduated' => null,
+        'academic_honors' => null,
+    ];
+
+    public $education = [
         'elementary' => [],
         'secondary' => [],
         'vocational' => [],
         'college' => [],
         'graduate_studies' => [],
     ];
+
+    public $eligibilities = [];
 
     // Services
     protected PersonalInformationService $personalInformationService;
@@ -139,6 +146,8 @@ class Create extends Component
     protected SpouseService $spouseService;
     protected EmployeeParentService $employeeParentService;
     protected ChildrenService $childrenService;
+    protected EducationalBackgroundService $educationalBackgroundService;
+    protected CivilServiceEligibilityService $eligibilityService;
 
     public function boot(
         PersonalInformationService $personalInformationService,
@@ -147,6 +156,9 @@ class Create extends Component
         SpouseService $spouseService,
         EmployeeParentService $employeeParentService,
         ChildrenService $childrenService,
+        EducationalBackgroundService $educationalBackgroundService,
+        CivilServiceEligibilityService $eligibilityService,
+
     ) {
         $this->personalInformationService = $personalInformationService;
         $this->addressService = $addressService;
@@ -154,7 +166,10 @@ class Create extends Component
         $this->spouseService = $spouseService;
         $this->employeeParentService = $employeeParentService;
         $this->childrenService = $childrenService;
+        $this->educationalBackgroundService = $educationalBackgroundService;
+        $this->eligibilityService = $eligibilityService;
     }
+
 
     public function mount()
     {
@@ -164,26 +179,35 @@ class Create extends Component
             return;
         }
 
-        $entry = $this->user->entries()->firstOrCreate(
-            ['status' => SubmissionStatus::DRAFT],
-            ['is_current' => false]
-        );
+        // Initialize education field before fetching the entry
+        $this->education = [
+            'elementary' => [...$this->defaultFields],
+            'secondary' => [...$this->defaultFields],
+            'vocational' => [[...$this->defaultFields]],
+            'college' => [[...$this->defaultFields]],
+            'graduate_studies' => [[...$this->defaultFields]],
+        ];
 
-        $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
+        $entry = $this->user->entries()
+            ->with([
+                'personalInformation.addresses',
+                'personalInformation.identifiers',
+                'spouse',
+                'parents',
+                'children',
+                'educationalBackgrounds'
+            ])
+            ->firstOrCreate(
+                ['status' => SubmissionStatus::DRAFT],
+                ['is_current' => false]
+            );
 
-        if (!$entry) {
-            return;
+        if ($entry) {
+            $this->loadEntryData($entry);
         }
 
-        $this->loadPersonalInformation($entry?->personalInformation);
-        $this->loadUserAddresses($entry?->personalInformation?->addresses ?? collect());
-        $this->loadIdentifiers($entry?->personalInformation?->identifiers ?? collect());
-        $this->loadSpouseInformation($entry?->spouse()?->first());
-        $this->loadEmployeeParentsInformation($entry?->parents->get());
-        $this->loadChildrenData($entry?->children);
-
-
-        // dump(count($this->children));
+        $this->initializeChildren();
+        $this->initializeEligibilities();
     }
 
     protected function loadUserAddresses($addresses)
@@ -207,10 +231,37 @@ class Create extends Component
         $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
     }
 
+    protected function initializeEligibilities()
+    {
+        $this->addEntry('eligibilities', [
+            'career_service' => null,
+            'ratings' => null,
+            'exam_date' => null,
+            'exam_place' => null,
+            'license_number' => null,
+            'license_validity' => null,
+        ]);
+    }
+
+    protected function loadEntryData($entry)
+    {
+        $personalInformation = $entry->personalInformation;
+
+        $this->loadPersonalInformation($personalInformation);
+        $this->loadUserAddresses($personalInformation?->addresses ?? collect());
+        $this->loadIdentifiers($personalInformation?->identifiers ?? collect());
+        $this->loadSpouseInformation($entry?->spouse()?->first());
+        $this->loadEmployeeParentsInformation($entry?->parents->get());
+        $this->loadChildrenData($entry?->children);
+        $this->loadEducationalBackgroundData($entry?->educationalBackgrounds);
+
+        // dd($entry?->educationalBackgrounds);
+        // dd($this->education);
+    }
 
     public function saveDraft()
     {
-        // dd($this->educationalLevels);
+        // dd($this->education);
         $entry = PdsEntry::firstOrCreate(
             ['user_id' => $this->user->id, 'status' => SubmissionStatus::DRAFT],
             ['is_current' => false]
@@ -224,23 +275,35 @@ class Create extends Component
                 case 2:
                     $this->saveStepTwo($entry);
                     break;
+                case 3:
+                    $this->saveStepThree($entry);
+                    break;
+                case 4:
+                    $this->saveStepFour($entry);
+                    break;
                 default:
                     throw new Exception('Invalid step');
                     break;
             }
 
             $this->flashMessage(
-                "Draft saved at $this->currentStep" . now()->format('H:i '),
+                "Draft saved at " . now()->format('H:i A'),
                 'success'
             );
         } catch (Exception $e) {
+            \Log::error('Failed to save draft', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
             $this->flashMessage('Failed to save draft: ' . $e->getMessage(), 'error');
         }
     }
 
     protected function saveStepOne($entry)
     {
-        $personal_info =  $this->personalInformationService
+        $personal_info = $this->personalInformationService
             ->store($this->getPersonalInformationData($entry->id));
 
         if (!$personal_info) throw new Exception('Failed to save personal information');
@@ -269,87 +332,21 @@ class Create extends Component
         }
     }
 
-    // protected function getPersonalInformationData(int $entryId): array
-    // {
-    //     return ['pds_entry_id' => $entryId] + $this->only([
-    //         'first_name',
-    //         'middle_name',
-    //         'last_name',
-    //         'suffix',
-    //         'birth_date',
-    //         'birth_place',
-    //         'sex',
-    //         'civil_status',
-    //         'height',
-    //         'weight',
-    //         'blood_type',
-    //         'citizenship',
-    //         'citizenship_by',
-    //         'country',
-    //         'telephone_no',
-    //         'mobile_no',
-    //         'email'
-    //     ]);
-    // }
+    protected function saveStepThree($entry)
+    {
+        // dd($entry->id);
+        if (!$this->educationalBackgroundService->store($this->getEducationalBackgroundData($entry->id))) {
+            throw new Exception('Educational background saving failed');
+        }
+    }
 
-    // // Prepares identifier data
-    // protected function getIdentifierData(int $personalInformationId)
-    // {
-    //     return [
-    //         'personal_information_id' => $personalInformationId,
-    //         'identifiers' => [
-    //             IdentifierType::GSIS->value => $this->gsis_id,
-    //             IdentifierType::PAGIBIG->value => $this->pagibig_id,
-    //             IdentifierType::PHILHEALTH->value => $this->philhealth_id,
-    //             IdentifierType::SSS->value => $this->sss_id,
-    //             IdentifierType::TIN->value => $this->tin_id,
-    //             IdentifierType::AGENCY->value => $this->agency_id,
-    //         ],
-    //     ];
-    // }
-
-    // // Prepares address data
-    // protected function getAddressData(int $personalInformationId)
-    // {
-    //     return [
-    //         'personal_information_id' => $personalInformationId,
-    //         'residential' => collect($this->residential)->except(
-    //             ['provinces', 'municipalities', 'barangays']
-    //         )->toArray(),
-    //         'permanent' => collect($this->permanent)->except(
-    //             ['provinces', 'municipalities', 'barangays']
-    //         )->toArray(),
-    //     ];
-    // }
-
-    // protected function getSpouseData(int $entryId)
-    // {
-    //     return array_merge(['pds_entry_id' => $entryId], $this->spouse);
-    // }
-
-    // protected function getParentsData(int $entryId)
-    // {
-    //     return [
-    //         'pds_entry_id' => $entryId,
-    //         'father' => $this->father,
-    //         'mother' => $this->mother,
-    //     ];
-    // }
-
-    // protected function getChildrenData(int $entryId)
-    // {
-    //     return [
-    //         'pds_entry_id' => $entryId,
-    //         'children' => $this->children,
-    //     ];
-    // }
-
-    // protected function getEducationalBackgroundData(int $entryId)
-    // {
-    //     return [
-    //         'pds_entry_id' => $entryId,
-    //     ];
-    // }
+    // Work on this later
+    protected function saveStepFour($entry)
+    {
+        if(!$this->eligibilityService->store($this->getEligibilityData($entry->id))){
+            throw new Exception('Eligibility data saving failed');
+        }
+    }
 
     // Initializes enums options
     protected function getOptions()
@@ -360,6 +357,7 @@ class Create extends Component
         ];
     }
 
+    // Children Entry
     public function addChild()
     {
         $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
@@ -368,6 +366,65 @@ class Create extends Component
     public function removeChild($index)
     {
         $this->removeEntry('children', $index);
+    }
+
+    public function removeAllChild()
+    {
+        $this->removeAllEntry('children');
+
+        $this->saveDraft();
+
+        $this->addEntry('children', ['full_name' => null, 'birth_date' => null]);
+    }
+
+    // Educational Entry
+    public function addEducationEntry($level)
+    {
+        if (in_array($level, ['vocational', 'college', 'graduate_studies'])) {
+            $this->education[$level][] = [...$this->defaultFields];
+        }
+    }
+
+    public function removeEducationEntry($level, $index)
+    {
+        if (in_array($level, ['vocational', 'college', 'graduate_studies']) && count($this->education[$level]) > 1) {
+            unset($this->education[$level][$index]);
+            $this->education[$level] = array_values($this->education[$level]); // Reindex the array
+        }
+    }
+
+    public function removeAllEducationEntry($level)
+    {
+        if (in_array($level, ['vocational', 'college', 'graduate_studies'])) {
+            $this->removeAllEntry($level);
+            $this->education[$level] = [[...$this->defaultFields]];
+
+            $this->saveDraft();
+        }
+    }
+
+    // Eligibility Entry
+    public function addEligibility()
+    {
+        $this->addEntry('eligibilities', [
+            'career_service' => null,
+            'ratings' => null,
+            'exam_date' => null,
+            'exam_place' => null,
+            'license_number' => null,
+            'license_validity' => null,
+        ]);
+    }
+
+    public function removeEligibility($index)
+    {
+        $this->removeEntry('eligibilities', $index);
+    }
+
+    public function removeAllEligibilities()
+    {
+        $this->removeAllEntry('eligibilities');
+        $this->initializeEligibilities();
     }
 
     #[On('address-updated')]
@@ -393,7 +450,7 @@ class Create extends Component
             $this->getOptions(),
         )
             ->extends('layouts.app')
-            ->title('Dashboard')
+            ->title('Add New Entry')
             ->section('content');
     }
 }

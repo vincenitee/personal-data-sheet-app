@@ -31,14 +31,14 @@ trait HandlesPdsData
     {
         return [
             'personal_information_id' => $personalInformationId,
-            'identifiers' => [
-                'gsis' => $this->gsis_id,
-                'pag-ibig' => $this->pagibig_id,
-                'philhealth' => $this->philhealth_id,
-                'sss' => $this->sss_id,
-                'tin' => $this->tin_id,
-                'agency' => $this->agency_id,
-            ],
+            'identifiers' => array_intersect_key($this->identifiers, array_flip([
+                'gsis',
+                'pagibig',
+                'philhealth',
+                'sss',
+                'tin',
+                'agency',
+            ])),
         ];
     }
 
@@ -69,7 +69,49 @@ trait HandlesPdsData
     {
         return [
             'pds_entry_id' => $entryId,
-            'children' => $this->children,
+            'children' => $this->children ?? $this->initializeChildren(),
+        ];
+    }
+
+    protected function getEducationalBackgroundData(int $entryId)
+    {
+        $data = [
+            'pds_entry_id' => $entryId,
+        ];
+
+        foreach ($this->education as $level => $entries) {
+            if (in_array($level, ['elementary', 'secondary'])) {
+                $data[$level] = [
+                    'school_name' => $entries['school_name'],
+                    'degree_earned' => $entries['degree_earned'],
+                    'attendance_from' => $entries['attendance_from'],
+                    'attendance_to' => $entries['attendance_to'],
+                    'level_unit_earned' => $entries['level_unit_earned'],
+                    'year_graduated' => $entries['year_graduated'],
+                    'academic_honors' => $entries['academic_honors'],
+                ];
+            } else {
+                $data[$level] = array_map(fn($entry) => [
+                    'school_name' => $entry['school_name'],
+                    'degree_earned' => $entry['degree_earned'],
+                    'attendance_from' => $entry['attendance_from'],
+                    'attendance_to' => $entry['attendance_to'],
+                    'level_unit_earned' => $entry['level_unit_earned'],
+                    'year_graduated' => $entry['year_graduated'],
+                    'academic_honors' => $entry['academic_honors'],
+                ], $entries);
+            }
+        }
+
+        return $data;
+    }
+
+    protected function getEligibilityData(int $entryId)
+    {
+        // dd($this->eligibilities);
+        return [
+            'pds_entry_id' => $entryId,
+            'eligibilities' => $this->eligibilities ?? $this->initializeEligibilities(),
         ];
     }
 }

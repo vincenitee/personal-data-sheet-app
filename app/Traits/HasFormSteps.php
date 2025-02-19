@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait HasFormSteps
 {
-    public $currentStep = 1;
+    public $currentStep = 4;
 
     protected $steps = [
         1 => 'Personal Information',
@@ -67,6 +67,7 @@ trait HasFormSteps
     public function jumpToStep($step)
     {
         $this->currentStep = $step;
+        $this->saveDraft();
     }
 
     public function getStepDescription()
@@ -100,12 +101,7 @@ trait HasFormSteps
 
                 'blood_type' => 'sometimes|nullable|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
 
-                'gsis_id' => 'sometimes|nullable|string|max:20',
-                'pagibig_id' => 'sometimes|nullable|string|max:20',
-                'philhealth_id' => 'sometimes|nullable|string|max:20',
-                'sss_id' => 'sometimes|nullable|string|max:20',
-                'tin_id' => 'sometimes|nullable|string|max:20',
-                'agency_id' => 'sometimes|nullable|string|max:20',
+                'identifiers.*' => 'sometimes|nullable|string|max:20',
 
                 'citizenship' => 'required|in:filipino,dual',
                 'citizenship_by' => 'required_if:citizenship,dual|in:birth,naturalization',
@@ -161,8 +157,46 @@ trait HasFormSteps
 
             // Step 3: Educational Background
             3 => [
+                // Elementary & Secondary (Single Entry)
+                'education.elementary.school_name' => 'nullable|string|max:255',
+                'education.secondary.school_name' => 'nullable|string|max:255',
 
+                // Vocational, College, and Graduate Studies (Multiple Entries)
+                'education.vocational.*.school_name' => 'nullable|string|max:255',
+                'education.college.*.school_name' => 'nullable|string|max:255',
+                'education.graduate_studies.*.school_name' => 'nullable|string|max:255',
+
+                'education.vocational.*.degree_earned' => 'nullable|string|max:255',
+                'education.college.*.degree_earned' => 'nullable|string|max:255',
+                'education.graduate_studies.*.degree_earned' => 'nullable|string|max:255',
+
+                'education.vocational.*.attendance_from' => 'nullable|date',
+                'education.college.*.attendance_from' => 'nullable|date',
+                'education.graduate_studies.*.attendance_from' => 'nullable|date',
+
+                'education.vocational.*.attendance_to' => 'nullable|date|after_or_equal:education.vocational.*.attendance_from',
+                'education.college.*.attendance_to' => 'nullable|date|after_or_equal:education.college.*.attendance_from',
+                'education.graduate_studies.*.attendance_to' => 'nullable|date|after_or_equal:education.graduate_studies.*.attendance_from',
+
+                'education.vocational.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.college.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.graduate_studies.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+
+                // Certificate Upload Rules
+                'education.vocational.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+                'education.college.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+                'education.graduate_studies.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             ],
+            4 => [
+                'eligibilities.*.career_service' => 'nullable|string',
+                'eligibilities.*.ratings' => 'nullable|numeric|between:0,100',
+                'eligibilities.*.exam_date' => 'nullable|date',
+                'eligibilities.*.exam_place' => 'nullable|string',
+                'eligibilities.*.license_number' => 'nullable|string',
+                'eligibilities.*.license_validity' => 'nullable|date',
+            ],
+
+
         ];
     }
 
@@ -207,12 +241,12 @@ trait HasFormSteps
 
             'blood_type.in' => 'Invalid blood type.',
 
-            'gsis_id.max' => 'GSIS ID must not exceed 20 characters.',
-            'pagibig_id.max' => 'PAG-IBIG ID must not exceed 20 characters.',
-            'philhealth_id.max' => 'PhilHealth ID must not exceed 20 characters.',
-            'sss_id.max' => 'SSS ID must not exceed 20 characters.',
-            'tin_id.max' => 'TIN must not exceed 20 characters.',
-            'agency_id.max' => 'Agency ID must not exceed 20 characters.',
+            'identifiers.gsis.max' => 'GSIS ID must not exceed 20 characters.',
+            'identifiers.pagibig.max' => 'PAG-IBIG ID must not exceed 20 characters.',
+            'identifiers.philhealth.max' => 'PhilHealth ID must not exceed 20 characters.',
+            'identifiers.sss.max' => 'SSS ID must not exceed 20 characters.',
+            'identifiers.tin.max' => 'TIN must not exceed 20 characters.',
+            'identifiers.agency.max' => 'Agency ID must not exceed 20 characters.',
 
             'citizenship.required' => 'Citizenship is required.',
             'citizenship.in' => 'Invalid citizenship type.',
@@ -281,7 +315,45 @@ trait HasFormSteps
             'children.*.birth_date.date' => 'Child\'s birth date must be a valid date.',
             'children.*.birth_date.before' => 'Child\'s birth date must be before today.',
 
-            // Educational Background
+            // ------------------- Step 3: Educational Background -------------------
+            'education.elementary.school_name.required' => 'The school name is required for elementary.',
+            'education.secondary.school_name.required' => 'The school name is required for secondary.',
+
+            'education.vocational.*.school_name.required' => 'The school name is required.',
+            'education.college.*.school_name.required' => 'The school name is required.',
+            'education.graduate_studies.*.school_name.required' => 'The school name is required.',
+
+            'education.vocational.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
+            'education.college.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
+            'education.graduate_studies.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
+
+            'education.vocational.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
+            'education.college.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
+            'education.graduate_studies.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
+
+            // Certificates
+            'education.vocational.*.certificate.file' => 'The certificate must be a valid file.',
+            'education.vocational.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
+            'education.vocational.*.certificate.max' => 'The certificate size must not exceed 2MB.',
+
+            'education.college.*.certificate.file' => 'The certificate must be a valid file.',
+            'education.college.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
+            'education.college.*.certificate.max' => 'The certificate size must not exceed 2MB.',
+
+            'education.graduate_studies.*.certificate.file' => 'The certificate must be a valid file.',
+            'education.graduate_studies.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
+            'education.graduate_studies.*.certificate.max' => 'The certificate size must not exceed 2MB.',
+
+            // ------------------- Step 4: Civil Service Elibility-------------------
+            'eligibilities.*.career_service.required' => 'The career service field is required.',
+            'eligibilities.*.ratings.numeric' => 'The ratings must be a number.',
+            'eligibilities.*.ratings.between' => 'The ratings must be between 0.00 and 100.00.',
+            'eligibilities.*.exam_date.required' => 'The exam date is required.',
+            'eligibilities.*.exam_date.date' => 'The exam date must be a valid date.',
+            'eligibilities.*.exam_place.required' => 'The exam place is required.',
+            'eligibilities.*.exam_place.string' => 'The exam place must be a string.',
+            'eligibilities.*.license_number.string' => 'The license number must be a string.',
+            'eligibilities.*.license_validity.date' => 'The license validity must be a valid date.',
 
         ];
     }

@@ -1,241 +1,301 @@
-{{-- Elementary Level --}}
-<div class="card card-body mb-2">
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    <div class="row g-3">
-        <div class="col-12">
-            <small class="fw-bold">Elementary Level</small>
+{{-- Elementary --}}
+<x-card title="Elementary Education" icon="bi-book-fill">
+    @include('partials.form-fields', [
+        'modelPrefix' => 'education.elementary',
+        'fields' => [
+            [
+                'label' => 'School Name',
+                'placeholder' => 'Enter elementary school name',
+                'icon' => 'bi-building-fill',
+            ],
+            [
+                'label' => 'Degree Earned ',
+                'placeholder' => 'e.g., Basic Education',
+            ],
+            [
+                'label' => 'Attendance From',
+                'type' => 'date',
+            ],
+            [
+                'label' => 'Attendance To',
+                'type' => 'date',
+            ],
+            [
+                'label' => 'Level Unit Earned',
+                'type' => 'number',
+                'placeholder' => 'e.g., 6',
+            ],
+            [
+                'label' => 'Year Graduated',
+                'type' => 'number',
+                'placeholder' => 'e.g., 2016',
+            ],
+            [
+                'label' => 'Academic Honors',
+                'placeholder' => 'e.g., Valedictorian, With Honors',
+            ],
+        ],
+    ])
+</x-card>
+
+{{-- Secondary --}}
+<x-card title="Secondary Education" icon="bi-journal-text">
+    @include('partials.form-fields', [
+        'modelPrefix' => 'education.secondary',
+        'fields' => [
+            [
+                'label' => 'School Name',
+                'placeholder' => 'Enter high school name',
+                'icon' => 'bi-building-fill',
+            ],
+            [
+                'label' => 'Degree Earned ',
+                'placeholder' => 'e.g., Junior High School',
+            ],
+            [
+                'label' => 'Attendance From',
+                'type' => 'date',
+            ],
+            [
+                'label' => 'Attendance To',
+                'type' => 'date',
+            ],
+            [
+                'label' => 'Level Unit Earned',
+                'type' => 'number',
+                'placeholder' => 'e.g., 12 ',
+            ],
+            [
+                'label' => 'Year Graduated',
+                'type' => 'number',
+                'placeholder' => 'e.g., 2016',
+            ],
+            [
+                'label' => 'Academic Honors',
+                'placeholder' => 'e.g., Valedictorian, With Honors',
+            ],
+        ],
+    ])
+</x-card>
+
+{{-- Vocational --}}
+
+<!-- Vocational Level -->
+<x-card title="Vocational/Trade Course" icon="bi-tools" loadingTarget="addEducationEntry('vocational')">
+    @foreach ($education['vocational'] as $index => $entry)
+        <div class="col-12 d-flex align-items-center">
+            <!-- Badge -->
+            <div class="badge bg-primary text-white rounded-circle">
+                {{ $index + 1 }}
+            </div>
+
+            <!-- Separator -->
+            <div class="flex-grow-1 border"></div>
         </div>
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_school" label="School Name">
-            </x-forms.input>
+        @include('partials.form-fields', [
+            'modelPrefix' => "education.vocational.$index",
+            'fields' => [
+                [
+                    'label' => 'School Name',
+                    'placeholder' => 'Enter vocational school name',
+                ],
+                [
+                    'label' => 'Degree Earned',
+                    'placeholder' => 'e.g., Automotive Servicing NC II',
+                ],
+                [
+                    'label' => 'Attendance From',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Attendance To',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Level Unit Earned',
+                    'type' => 'number',
+                ],
+                [
+                    'label' => 'Year Graduated',
+                    'type' => 'number',
+                    'placeholder' => 'e.g., 2020',
+                ],
+                [
+                    'label' => 'Academic Honors',
+                    'placeholder' => 'e.g., TESDA Scholar, With Distinction',
+                ],
+            ],
+        ])
+
+
+        <div class="col-12 text-end">
+            <button type="button" wire:click="removeEducationEntry('vocational', {{ $index }})"
+                class="btn btn-outline-danger btn-sm" @if (count($education['vocational']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
+        </div>
+    @endforeach
+
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllEducationEntry('vocational')" class="btn btn-outline-danger btn-sm"
+                @if (count($education['vocational']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addEducationEntry('vocational')" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
+        </div>
+    @endslot
+</x-card>
+
+{{-- College --}}
+<x-card title="College" icon="bi-mortarboard-fill" loadingTarget="addEducationEntry('college')">
+    @foreach ($education['college'] as $index => $entry)
+        <div class="col-12 d-flex align-items-center">
+            <!-- Badge -->
+            <div class="badge bg-primary text-white rounded-circle">
+                {{ $index + 1 }}
+            </div>
+
+            <!-- Separator -->
+            <div class="flex-grow-1 border"></div>
         </div>
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_degree" label="Degree Earned">
-            </x-forms.input>
-        </div>
+        @include('partials.form-fields', [
+            'modelPrefix' => "education.college.$index",
+            'fields' => [
+                [
+                    'label' => 'School Name',
+                    'placeholder' => 'Enter college or university name',
+                ],
+                [
+                    'label' => 'Degree Earned',
+                    'placeholder' => 'e.g., Bachelor of Science in Computer Science',
+                ],
+                [
+                    'label' => 'Attendance From',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Attendance To',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Level Unit Earned',
+                    'type' => 'number',
+                    'placeholder' => 'e.g., 120 ',
+                ],
+                [
+                    'label' => 'Year Graduated',
+                    'type' => 'number',
+                    'placeholder' => 'e.g., 2023',
+                ],
+                [
+                    'label' => 'Academic Honors',
+                    'placeholder' => 'e.g., Cum Laude, Dean\'s Lister',
+                ],
+            ],
+        ])
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_start" label="Attendance Start"
-                type="date">
-            </x-forms.input>
-        </div>
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="elementary_attendance_end" label="Attendance End" type="date">
-            </x-forms.input>
+        <div class="col-12 text-end">
+            <button type="button" wire:click="removeEducationEntry('college', {{ $index }})"
+                class="btn btn-outline-danger btn-sm" @if (count($education['college']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
         </div>
+    @endforeach
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_highest_level" label="Highest Level/Unit Earned" value="N/A">
-            </x-forms.input>
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllEducationEntry('college')" class="btn btn-outline-danger btn-sm"
+                @if (count($education['college']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addEducationEntry('college')" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
         </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.select name="elementary_year_graduated" label="Year Graduated">
-                <option value="">Choose an option</option>
-            </x-forms.select>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="elementary_honors_received" label="Honors Received" value="N/A">
-            </x-forms.input>
-        </div>
-    </div>
-</div>
-
-{{-- Secondary Level --}}
-<div class="card card-body mb-2">
-    <div class="row g-3">
-        <div class="col-12">
-            <small class="fw-bold">Secondary Level</small>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_school" label="School Name">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_degree" label="Degree Earned">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_start" label="Attendance Start"
-                type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="secondary_attendance_end" label="Attendance End" type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_highest_level" label="Highest Level/Unit Earned" value="N/A">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.select name="secondary_year_graduated" label="Year Graduated">
-                <option value="">Choose an option</option>
-            </x-forms.select>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="secondary_honors_received" label="Honors Received" value="N/A">
-            </x-forms.input>
-        </div>
-    </div>
-</div>
-
-{{-- Vocational Level --}}
-<div class="card card-body mb-2">
-    <div class="row g-3">
-        <div class="col-12">
-            <small class="fw-bold">Vocational/Trade Course</small>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_school" label="School Name">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_degree" label="Degree Earned">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_start" label="Attendance Start"
-                type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="vocational_attendance_end" label="Attendance End" type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_highest_level" label="Highest Level/Unit Earned" value="N/A">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.select name="vocational_year_graduated" label="Year Graduated">
-                <option value="">Choose an option</option>
-            </x-forms.select>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="vocational_honors_received" label="Honors Received" value="N/A">
-            </x-forms.input>
-        </div>
-    </div>
-</div>
-
-{{-- College Level --}}
-<div class="card card-body mb-2">
-    <div class="row g-3">
-        <div class="col-12">
-            <small class="fw-bold">College Level</small>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_school" label="School Name">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_degree" label="Degree Earned">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="college_attendance_start" label="Attendance Start"
-                type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="college_attendance_end" label="Attendance End"
-                type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_highest_level" label="Highest Level/Unit Earned" value="N/A">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.select name="college_year_graduated" label="Year Graduated">
-                <option value="">Choose an option</option>
-            </x-forms.select>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="college_honors_received" label="Honors Received" value="N/A">
-            </x-forms.input>
-        </div>
-    </div>
-</div>
+    @endslot
+</x-card>
 
 {{-- Graduate Studies --}}
-<div class="card card-body mb-2">
-    <div class="row g-3">
-        <div class="col-12">
-            <small class="fw-bold">Graduate Studies</small>
+<x-card title="Graduate Studies" icon="bi-award" loadingTarget="addEducationEntry('graduate_studies')">
+    @foreach ($education['graduate_studies'] as $index => $entry)
+        <div class="col-12 d-flex align-items-center">
+            <!-- Badge -->
+            <div class="badge bg-primary text-white rounded-circle">
+                {{ $index + 1 }}
+            </div>
+
+            <!-- Separator -->
+            <div class="flex-grow-1 border"></div>
         </div>
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_school" label="School Name">
-            </x-forms.input>
-        </div>
+        @include('partials.form-fields', [
+            'modelPrefix' => "education.graduate_studies.$index",
+            'fields' => [
+                [
+                    'label' => 'School Name',
+                    'placeholder' => 'Enter graduate school or university name',
+                ],
+                [
+                    'label' => 'Degree Earned',
+                    'placeholder' => 'e.g., Master of Business Administration (MBA)',
+                ],
+                [
+                    'label' => 'Attendance From',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Attendance To',
+                    'type' => 'date',
+                ],
+                [
+                    'label' => 'Level Unit Earned',
+                    'type' => 'number',
+                    'placeholder' => 'e.g., 36 credit units',
+                ],
+                [
+                    'label' => 'Year Graduated',
+                    'type' => 'number',
+                    'placeholder' => 'e.g., 2025',
+                ],
+                [
+                    'label' => 'Academic Honors',
+                    'placeholder' => 'e.g., With Distinction, Best Thesis Award',
+                ],
+            ],
+        ])
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_degree" label="Degree Earned">
-            </x-forms.input>
+        <div class="col-12 text-end">
+            <button type="button" wire:click="removeEducationEntry('graduate_studies', {{ $index }})"
+                class="btn btn-outline-danger btn-sm" @if (count($education['graduate_studies']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
         </div>
+    @endforeach
 
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_start" label="Attendance Start"
-                type="date">
-            </x-forms.input>
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllEducationEntry('graduate_studies')"
+                class="btn btn-outline-danger btn-sm" @if (count($education['graduate_studies']) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addEducationEntry('graduate_studies')" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
         </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input icon="bi bi-calendar" name="graduate_attendance_end" label="Attendance End"
-                type="date">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_highest_level" label="Highest Level/Unit Earned" value="N/A">
-            </x-forms.input>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.select name="graduate_year_graduated" label="Year Graduated">
-                <option value="">Choose an option</option>
-            </x-forms.select>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-            <x-forms.input name="graduate_honors_received" label="Honors Received" value="N/A">
-            </x-forms.input>
-        </div>
-    </div>
-</div>
+    @endslot
+</x-card>

@@ -23,6 +23,12 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
+                    <th wire:click="sortBy('email')" style="cursor: pointer;">
+                        Email
+                        @if ($sortField === 'email')
+                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                    </th>
                     <th wire:click="sortBy('sex')" style="cursor: pointer;">
                         Gender
                         @if ($sortField === 'sex')
@@ -49,6 +55,7 @@
                             {{ optional($row->middle_name)[0] ? optional($row->middle_name)[0] . '.' : '' }}
                             {{ $row->last_name }}
                         </td>
+                        <td class="align-middle">{{ $row->email }}</td>
                         <td class="align-middle">{{ ucwords($row->sex) }}</td>
                         <td class="align-middle">
                             <span class="badge bg-warning">{{ ucwords($row->status) }}</span>

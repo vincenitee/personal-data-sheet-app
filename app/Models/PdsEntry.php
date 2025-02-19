@@ -35,4 +35,9 @@ class PdsEntry extends Model
     {
         return $this->hasMany(EducationalBackground::class);
     }
+
+    public function eligibilities()
+    {
+        return $this->hasMany(CivilServiceEligibility::class);
+    }
 }

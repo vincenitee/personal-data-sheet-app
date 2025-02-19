@@ -31,9 +31,9 @@ class EmployeeParentService
                 ],
                 [
                     'relationship' => FamilyRelationship::MOTHER,
-                    'firstname' => $mother['first_name'] ?? null,
-                    'middlename' => $mother['middle_name'] ?? null,
-                    'lastname' => $mother['last_name'] ?? null,
+                    'first_name' => $mother['first_name'] ?? null,
+                    'middle_name' => $mother['middle_name'] ?? null,
+                    'last_name' => $mother['last_name'] ?? null,
                     'suffix' => $mother['suffix'] ?? null,
                 ]
             );
@@ -46,9 +46,9 @@ class EmployeeParentService
                 ],
                 [
                     'relationship' => FamilyRelationship::FATHER,
-                    'firstname' => $father['first_name'] ?? null,
-                    'middlename' => $father['middle_name'] ?? null,
-                    'lastname' => $father['last_name'] ?? null,
+                    'first_name' => $father['first_name'] ?? null,
+                    'middle_name' => $father['middle_name'] ?? null,
+                    'last_name' => $father['last_name'] ?? null,
                     'suffix' => $father['suffix'] ?? null,
                 ]
             );
@@ -58,7 +58,11 @@ class EmployeeParentService
             return true;
         } catch (Exception $e) {
             DB::rollback();
+
+            \Log::error('Failed to save employee parent information: ' . $e->getMessage());
+
             $this->flashMessage('Failed to save employee parent information', $e->getMessage());
+
             return false;
         }
         // Mother Data

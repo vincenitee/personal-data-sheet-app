@@ -17,4 +17,10 @@ trait HasDynamicEntries
             $this->$field = array_values($this->$field);
         }
     }
+
+    public function removeAllEntry($field){
+        if(isset($this->$field)){
+            $this->$field = [];
+        }
+    }
 }

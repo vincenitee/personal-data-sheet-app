@@ -1,53 +1,77 @@
 {{-- Entry Container --}}
-<div class="card card-body mb-2">
-    {{-- Entries --}}
-    <div class="d-flex flex-column gap-2">
-        <div class="card card-body">
-            <div class="row g-2">
-                {{-- Career Service --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Career Service" name="career_service_1" :required="false"></x-forms.input>
-                </div>
+<x-card title="Civil Service Eligibilities" icon="bi-award" loadingTarget="addEligibility()">
 
-                {{-- Ratings --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Ratings" name="ratings_1" type="number" min="0" step="0.01"
-                        placeholder="00.00" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Examination Date --}}
-                <div class="col-lg-3">
-                    <x-forms.input icon="bi bi-calendar" label="Exam Date" name="exam_date_1" type="date"
-                        :required="false"></x-forms.input>
-                </div>
-
-                {{-- Examination Place --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Exam Place" name="exam_place_1" :required="false"></x-forms.input>
-                </div>
-
-                {{-- License Number --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="License Number" name="license_number_1" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Date of Validity --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Date of Validity" name="date_of_validity_1" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Delete Button --}}
-                <div class="col-lg-6 d-flex align-items-end justify-content-end">
-                    <button class="btn btn-sm btn-danger ">Delete</button>
-                </div>
+    @foreach ($eligibilities as $index => $eligibily)
+        <div class="col-12 d-flex align-items-center">
+            <!-- Badge -->
+            <div class="badge bg-primary text-white rounded-circle">
+                {{ $index + 1 }}
             </div>
-        </div>
-    </div>
 
-    <div class="d-flex align-items-center justify-content-end mt-2">
-        <button type="button" class="btn btn-sm btn-primary">
-            <i class="bi bi-plus-circle pt-1"></i>
-            <span>Add Row</span>
-        </button>
-    </div>
-</div>
+            <!-- Separator -->
+            <div class="flex-grow-1 border"></div>
+        </div>
+        @include('partials.form-fields', [
+            'modelPrefix' => "eligibilities.$index",
+            'fields' => [
+                [
+                    'label' => 'Career Service',
+                    'placeholder' => 'Enter career service eligibility',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Ratings',
+                    'type' => 'number',
+                    'placeholder' => 'Enter rating (0-100)',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Exam Date',
+                    'type' => 'date',
+                    'placeholder' => 'Select exam date',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Exam Place',
+                    'placeholder' => 'Enter location of examination',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'License Number',
+                    'type' => 'number',
+                    'required' => false,
+                    'placeholder' => 'Enter license number (if applicable)',
+                ],
+                [
+                    'label' => 'License Validity',
+                    'type' => 'date',
+                    'required' => false,
+                    'placeholder' => 'Select license validity date',
+                ],
+            ],
+        ])
+
+
+        <div class="col-12 text-end">
+            <button type="button" wire:click="removeEligibility({{ $index }})" class="btn btn-outline-danger btn-sm"
+                @if (count($eligibilities) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
+        </div>
+    @endforeach
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllEligibilities()" class="btn btn-outline-danger btn-sm"
+                @if (count($eligibilities) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addEligibility()" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
+        </div>
+    @endslot
+
+</x-card>

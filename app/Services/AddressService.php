@@ -37,6 +37,7 @@ class AddressService{
                     'subdivision' => $residential['sundivision'] ?? null,
                     'street' => $residential['street'] ?? null,
                     'house_no' => $residential['house'] ?? null,
+                    'zip' => $residential['zip'] ?? null
                 ]
             );
 
@@ -53,6 +54,7 @@ class AddressService{
                     'subdivision' => $permanent['subdivision'] ?? null,
                     'street' => $permanent['street'] ?? null,
                     'house_no' => $permanent['house'] ?? null,
+                    'zip' => $permanent['zip'] ?? null,
                 ]
             );
 
@@ -69,5 +71,5 @@ class AddressService{
         }
     }
 
-    
+
 }

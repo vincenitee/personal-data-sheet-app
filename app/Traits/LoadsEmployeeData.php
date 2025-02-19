@@ -8,14 +8,26 @@ trait LoadsEmployeeData
     protected function loadPersonalInformation($personal_information)
     {
         $fields = [
-            'first_name', 'middle_name', 'last_name', 'suffix',
-            'birth_date', 'birth_place', 'sex', 'civil_status',
-            'height', 'weight', 'blood_type', 'citizenship',
-            'citizenship_by', 'country', 'telephone_no',
-            'mobile_no', 'email'
+            'first_name',
+            'middle_name',
+            'last_name',
+            'suffix',
+            'birth_date',
+            'birth_place',
+            'sex',
+            'civil_status',
+            'height',
+            'weight',
+            'blood_type',
+            'citizenship',
+            'citizenship_by',
+            'country',
+            'telephone_no',
+            'mobile_no',
+            'email'
         ];
 
-        foreach($fields as $field){
+        foreach ($fields as $field) {
             $this->{$field} = $personal_information?->{$field} ?? null;
         }
     }
@@ -30,6 +42,7 @@ trait LoadsEmployeeData
             'subdivision' => $residential?->subdivision,
             'street' => $residential?->street,
             'house' => $residential?->house_no,
+            'zip' => $residential?->zip,
         ];
 
         $this->permanent = [
@@ -40,6 +53,7 @@ trait LoadsEmployeeData
             'subdivision' => $permanent?->subdivision,
             'street' => $permanent?->street,
             'house' => $permanent?->house_no,
+            'zip' => $permanent?->zip,
         ];
     }
 
@@ -54,6 +68,7 @@ trait LoadsEmployeeData
             'subdivision' => $permanent?->subdivision,
             'street' => $permanent?->street,
             'house' => $permanent?->house_no,
+            'zip' => $permanent?->zip,
         ];
     }
 
@@ -67,17 +82,15 @@ trait LoadsEmployeeData
             'subdivision' => $residential?->subdivision,
             'street' => $residential?->street,
             'house' => $residential?->house_no,
+            'zip' => $residential?->zip,
         ];
     }
 
     protected function loadIdentifiers($identifiers)
     {
-        $this->gsis_id = $identifiers[0]->number;
-        $this->pagibig_id = $identifiers[1]->number;
-        $this->philhealth_id = $identifiers[2]->number;
-        $this->sss_id = $identifiers[3]->number;
-        $this->tin_id = $identifiers[4]->number;
-        $this->agency_id = $identifiers[5]->number;
+        $this->identifiers = $identifiers
+            ->mapWithKeys(fn($item) => [strtolower($item->type) => $item->number])
+            ->toArray();
     }
 
     protected function loadSpouseInformation($spouse)
@@ -94,31 +107,72 @@ trait LoadsEmployeeData
         ];
     }
 
-    protected function loadParentsInformation($father, $mother){
+    protected function loadParentsInformation($father, $mother)
+    {
         $this->father = [
-            'first_name' => $father?->firstname,
-            'middle_name' => $father?->middlename,
-            'last_name' => $father?->lastname,
+            'first_name' => $father?->first_name,
+            'middle_name' => $father?->middle_name,
+            'last_name' => $father?->last_name,
             'suffix' => $father?->suffix,
         ];
 
         $this->mother = [
-            'first_name' => $mother?->firstname,
-            'middle_name' => $mother?->middlename,
-            'last_name' => $mother?->lastname,
+            'first_name' => $mother?->first_name,
+            'middle_name' => $mother?->middle_name,
+            'last_name' => $mother?->last_name,
             'suffix' => $mother?->suffix,
         ];
     }
 
-    protected function loadChildrenData($children){
+    protected function loadChildrenData($children)
+    {
         $children = $children->toArray();
 
-        foreach($children as $child)
-        {
-            $this->addEntry('children', [
-                'full_name' => $child['fullname'],
-                'birth_date' => $child['birth_date']]
+        foreach ($children as $child) {
+            $this->addEntry(
+                'children',
+                [
+                    'full_name' => $child['fullname'],
+                    'birth_date' => $child['birth_date']
+                ]
             );
         }
+    }
+
+    protected function loadEducationalBackgroundData($educationalBackground)
+    {
+        // dd($educationalBackground);
+        if (empty($educationalBackground)) return;
+
+        // Sort by attendance_from
+        $sortedEducation = collect($educationalBackground)->sortBy('attendance_from');
+
+        foreach ($sortedEducation as $education) {
+            if (in_array($education->level, ['elementary', 'secondary'])) {
+                $this->education[$education->level] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'created_at', 'updated_at']);
+                continue;
+            }
+
+            $this->education[$education->level][] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'created_at', 'updated_at']);
+        }
+
+        // dd($this->education);
+         // Sort $this->education array after populating it
+        foreach ($this->education as $level => &$entries) {
+            if (!in_array($level, ['vocational', 'college', 'graduate_studies'])) continue;
+
+            $entries = collect($entries)->sortBy(function ($entry) {
+                $hasEmptyFields = empty($entry['attendance_from']) || empty($entry['attendance_to']) || empty($entry['school_name']);
+                return [$hasEmptyFields, $entry['attendance_from'] ?? PHP_INT_MAX];
+            })->values()->toArray();
+        }
+    }
+
+
+    protected function filterData($array, $fields = [])
+    {
+        return collect($array)
+            ->except([...$fields])
+            ->toArray();
     }
 }

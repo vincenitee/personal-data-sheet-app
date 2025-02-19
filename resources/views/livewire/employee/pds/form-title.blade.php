@@ -1,14 +1,64 @@
-<div class="card card-body mb-3 shadow-sm">
-    <div class="d-flex justify-content-between align-items-center">
-        <p class="text-secondary mb-0 fs-4 fw-bold">{{ $this->getStepTitle() }}</p>
-        <span class="badge bg-primary rounded-pill px-3 py-2">{{ $currentStep }} of {{ count($steps) }}</span>
-    </div>
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div class="flex-grow-1">
+                <div class="d-flex align-items-center gap-2">
+                    <h2 class="h5 text-dark mb-0 fw-bold">{{ $this->getStepTitle() }}</h2>
+                    <div class="vr d-none d-sm-block"></div>
+                    <span class="badge bg-primary rounded-pill d-none d-sm-inline-block">
+                        Step {{ $currentStep }} of {{ count($steps) }}
+                    </span>
+                </div>
+                <p class="text-muted small mb-0 mt-2">{{ $this->getStepDescription() }}</p>
+            </div>
 
-    <small class="text-muted d-block mt-1 fw-medium">{{ $this->getStepDescription() }}</small>
+            <!-- Mobile-only step indicator -->
+            <span class="badge bg-primary rounded-pill d-sm-none">
+                {{ $currentStep }}/{{ count($steps) }}
+            </span>
+        </div>
 
-    <div class="mt-2 p-2 bg-light rounded border-start border-4 border-primary">
-        <small class="text-secondary fw-bold fst-italic">
-            (<span class="text-danger">*</span>) Required fields. Fields without this mark can be leaved as blank.
-        </small>
+        <!-- Required Fields Notice -->
+        <div class="mt-3">
+            <div class="alert alert-light d-flex align-items-center gap-2 mb-0 py-2">
+                <i class="bi bi-info-circle text-primary"></i>
+                <div class="small">
+                    <span class="fw-medium">Required fields are marked with </span>
+                    <span class="text-danger fw-bold">*</span>
+                    <span class="text-secondary">
+                        • Other fields are optional
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress bar (optional, uncomment if needed) -->
+        <div class="progress mt-3" style="height: 4px;">
+            <div
+                class="progress-bar bg-primary"
+                role="progressbar"
+                style="width: {{ ($currentStep / count($steps)) * 100 }}%"
+                aria-valuenow="{{ ($currentStep / count($steps)) * 100 }}"
+                aria-valuemin="0"
+                aria-valuemax="100">
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+/* Optional: Smooth transitions */
+.badge {
+    transition: all 0.2s ease-in-out;
+}
+
+.alert {
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* Optional: Custom shadow for better depth */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+</style>

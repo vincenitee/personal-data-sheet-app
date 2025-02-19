@@ -67,6 +67,11 @@
                     :disabled="empty($residential['barangays'])" />
             </div>
 
+            <div class="col-lg-3 col-md-4">
+                <x-forms.input name="residential.zip" wire:model.live="residential.zip" label="Zip Code"
+                    :disabled="empty($residential['barangays'])" />
+            </div>
+
         </div>
     </div>
     {{-- End of Residential Address --}}
@@ -87,7 +92,10 @@
 
             <!-- Loading State -->
             <div class="col-12 text-center" wire:loading wire:target="isSameAddress">
-                @include('partials.loading', ['target' => 'isSameAddress', 'message' => 'Syncing address...'])
+                @include('partials.loading', [
+                    'target' => 'isSameAddress',
+                    'message' => 'Syncing address...',
+                ])
             </div>
 
             <!-- Address Fields (Hidden During Sync) -->
@@ -155,6 +163,11 @@
 
                 <div class="col-lg-3 col-md-4">
                     <x-forms.input name="permanent.house" wire:model.live="permanent.house" label="House\Lot\Block No."
+                        :disabled="empty($permanent['barangays'])" />
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    <x-forms.input name="permanent.zip" wire:model.live="permanent.zip" label="Zip Code"
                         :disabled="empty($permanent['barangays'])" />
                 </div>
             </div>
