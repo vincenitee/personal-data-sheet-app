@@ -5,14 +5,7 @@
     <x-forms.question-group name="is_immigrant">
         {{-- Details --}}
         <div class="col-12 col-md-6">
-            <x-forms.select
-                label="Country"
-                name="immigrant_country"
-                :required="false"
-                disabled
-            >
-                <option value="">Choose an option</option>
-            </x-forms.select>
+            <x-forms.input label="Country" :required="false" model="immigrant_country" name="immigrant_country" placeholder="e.g., Europe"></x-forms.input>
         </div>
     </x-forms.question-group>
 </x-forms.question-card>

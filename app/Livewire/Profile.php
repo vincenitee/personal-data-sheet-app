@@ -2,13 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Enums\Sex;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class Profile extends Component
 {
     public $user;
-    public $role;
 
     // Personal information fields
     public $first_name;
@@ -22,9 +24,6 @@ class Profile extends Component
     public $current_password;
     public $password;
     public $password_confirmation;
-
-    // Additional information
-    public $updated_at;
 
     public function mount()
     {
@@ -40,11 +39,7 @@ class Profile extends Component
                 'sex'         => $this->user->sex,
                 'birth_date'  => $this->user->birth_date,
                 'email'       => $this->user->email,
-                'updated_at'  => $this->user->updated_at,
             ]);
-
-            // Fetch the user's roles (ensuring it's always an array)
-            $this->role = $this->user->getRoleNames()->toArray() ?? [];
         }
     }
 
@@ -52,46 +47,67 @@ class Profile extends Component
     protected function rules(): array
     {
         return [
-            'first_name'  => ['required', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'last_name'   => ['required', 'string', 'max:255'],
-            'sex'         => ['required', 'string', 'in:male,female'],
-            'birth_date'  => ['nullable', 'date'],
-            'email'       => ['required', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
+            0 => [
+                'first_name'  => ['required', 'string', 'max:255'],
+                'middle_name' => ['nullable', 'string', 'max:255'],
+                'last_name'   => ['required', 'string', 'max:255'],
+                'sex'         => ['required', 'string', 'in:male,female'],
+                'birth_date'  => ['nullable', 'date'],
+                'email'       => ['required', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
+            ],
+            1 => [
+                'current_password' => ['required', 'string'],
+                'password' => ['required', 'string', 'min:8', 'regex:/[!@#$%^&*(),.?":{}|<>]/', 'regex:/[0-9]/', 'regex:/[A-Z]/', 'regex:/[a-z]/' ],
+                'password_confirmation' => ['required', 'same:password'],
+            ]
         ];
     }
 
     // Handle Personal Information Update
-    public function updatePersonalInformation()
+    public function savePersonalInformation()
     {
         // Validate based on the defined rules
-        $validated = $this->validate();
+        $validated = $this->validate($this->rules()[0]);
 
         // Refresh user data before updating
         $user = Auth::user();
-        $user->update([
-            'first_name'  => $this->first_name,
-            'middle_name' => $this->middle_name,
-            'last_name'   => $this->last_name,
-            'sex'         => $this->sex,
-            'birth_date'  => $this->birth_date,
-            'email'       => $this->email,
-        ]);
+
+        $user->update($validated);
 
         $this->user = $user; // Refresh user property
 
-        // Success message
-        session()->flash('flash', [
-            'status'  => 'success',
-            'message' => 'Personal information updated successfully',
-        ]);
+        // Success Message
+        $this->dispatch('personal-info-updated');
     }
 
-    public function updateSecurityInformation() {}
+    public function saveSecurityInformation()
+    {
+        // Validate the entered password
+        $this->validate($this->rules()[1]);
+
+        // Check if the input password and the saved password match
+        $password = $this->user->password;
+
+        if(!Hash::check($this->password, $password)){
+            throw ValidationException::withMessages(['current_password' => "The password didn't match with the one in our records"]);
+        }
+
+        // Update the password
+        $this->user->update([
+            'password' => $this->password
+        ]);
+
+        $this->reset('current_password', 'password', 'password_confirmation');
+
+        // Success Message
+        $this->dispatch('security-info-updated');
+    }
 
     public function render()
     {
-        return view('livewire.profile')
+        return view('livewire.profile', [
+            'sexOptions' => Sex::options(),
+        ])
             ->extends('layouts.app')
             ->title('Dashboard')
             ->section('content');

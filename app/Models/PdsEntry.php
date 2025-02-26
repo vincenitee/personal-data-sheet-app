@@ -18,7 +18,7 @@ class PdsEntry extends Model
 
     public function parents()
     {
-        return $this->hasOne(EmployeeParent::class);
+        return $this->hasMany(EmployeeParent::class);
     }
 
     public function spouse()
@@ -39,5 +39,45 @@ class PdsEntry extends Model
     public function eligibilities()
     {
         return $this->hasMany(CivilServiceEligibility::class);
+    }
+
+    public function workExperiences()
+    {
+        return $this->hasMany(WorkExperience::class);
+    }
+
+    public function volWorkExperiences()
+    {
+        return $this->hasMany(VoluntaryWorkExperience::class);
+    }
+
+    public function trainings()
+    {
+        return $this->hasMany(Training::class);
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function recognitions()
+    {
+        return $this->hasMany(Recognition::class);
+    }
+
+    public function organizations()
+    {
+        return $this->hasMany(Organization::class);
+    }
+
+    public function question()
+    {
+        return $this->hasOne(AdditionalQuestion::class);
+    }
+
+    public function attachment()
+    {
+        return $this->hasOne(PdsAttachment::class);
     }
 }

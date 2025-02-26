@@ -8,6 +8,13 @@
             'Academic Distinctions & Certifications',
             'Certificate',
             'Diploma',
+            'Passport Photo',
+            'Right Thumbmark Photo',
+            'Government ID Photo',
+            'Signature Photo',
+            'OTR Photo',
+            'Diploma Photo',
+            'Employement Certificate',
         ];
 
         $shortFields = [
@@ -36,7 +43,14 @@
             'Telephone No',
             'Mobile No',
             'Email',
-
+            'Salary',
+            'Salary Step',
+            'Status',
+            'Government Service',
+            'Date From',
+            'Date To',
+            'Total Hours',
+            'Address',
         ];
 
         // Determine the column width based on the field label
@@ -65,12 +79,7 @@
     <div class="col-md-{{ $colClass }}">
         @if ($isSelect)
             <!-- Render select input -->
-            <x-forms.select
-                :model="$inputAttributes['model']"
-                :name="$inputAttributes['name']"
-                :label="$inputAttributes['label']"
-                :require="$inputAttributes['required']"
-            >
+            <x-forms.select :model="$inputAttributes['model']" :name="$inputAttributes['name']" :label="$inputAttributes['label']" :required="$inputAttributes['required']">
                 <option value="">Choose an option</option>
                 @foreach ($field['options'] as $key => $label)
                     <option value="{{ $key }}">{{ $label }} </option>

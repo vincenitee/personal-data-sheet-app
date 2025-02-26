@@ -23,7 +23,7 @@
             [
                 'label' => 'Level Unit Earned',
                 'type' => 'number',
-                'placeholder' => 'e.g., 6',
+                'placeholder' => 'e.g., 6 (enter the last completed level if not graduated)',
             ],
             [
                 'label' => 'Year Graduated',
@@ -63,7 +63,7 @@
             [
                 'label' => 'Level Unit Earned',
                 'type' => 'number',
-                'placeholder' => 'e.g., 12 ',
+                'placeholder' => 'e.g., 12 (enter the last completed level if not graduated)',
             ],
             [
                 'label' => 'Year Graduated',
@@ -83,15 +83,8 @@
 <!-- Vocational Level -->
 <x-card title="Vocational/Trade Course" icon="bi-tools" loadingTarget="addEducationEntry('vocational')">
     @foreach ($education['vocational'] as $index => $entry)
-        <div class="col-12 d-flex align-items-center">
-            <!-- Badge -->
-            <div class="badge bg-primary text-white rounded-circle">
-                {{ $index + 1 }}
-            </div>
 
-            <!-- Separator -->
-            <div class="flex-grow-1 border"></div>
-        </div>
+        @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
             'modelPrefix' => "education.vocational.$index",
@@ -156,15 +149,8 @@
 {{-- College --}}
 <x-card title="College" icon="bi-mortarboard-fill" loadingTarget="addEducationEntry('college')">
     @foreach ($education['college'] as $index => $entry)
-        <div class="col-12 d-flex align-items-center">
-            <!-- Badge -->
-            <div class="badge bg-primary text-white rounded-circle">
-                {{ $index + 1 }}
-            </div>
 
-            <!-- Separator -->
-            <div class="flex-grow-1 border"></div>
-        </div>
+        @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
             'modelPrefix' => "education.college.$index",
@@ -188,7 +174,7 @@
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
-                    'placeholder' => 'e.g., 120 ',
+                    'placeholder' => 'e.g., 120 (enter the total units completed if not graduated)',
                 ],
                 [
                     'label' => 'Year Graduated',
@@ -230,15 +216,8 @@
 {{-- Graduate Studies --}}
 <x-card title="Graduate Studies" icon="bi-award" loadingTarget="addEducationEntry('graduate_studies')">
     @foreach ($education['graduate_studies'] as $index => $entry)
-        <div class="col-12 d-flex align-items-center">
-            <!-- Badge -->
-            <div class="badge bg-primary text-white rounded-circle">
-                {{ $index + 1 }}
-            </div>
 
-            <!-- Separator -->
-            <div class="flex-grow-1 border"></div>
-        </div>
+        @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
             'modelPrefix' => "education.graduate_studies.$index",
@@ -262,7 +241,7 @@
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
-                    'placeholder' => 'e.g., 36 credit units',
+                    'placeholder' => 'e.g., 36 credit units (enter the total units completed if not graduated)',
                 ],
                 [
                     'label' => 'Year Graduated',

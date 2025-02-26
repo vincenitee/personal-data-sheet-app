@@ -64,7 +64,7 @@
 
                 <!-- Submit Button -->
                 <button
-                    wire:click="incrementSteps"
+                    @click="confirmSubmission()"
                     type="button"
                     class="btn btn-sm btn-success d-inline-flex align-items-center gap-2 {{ $currentStep !== count($steps) ? 'd-none' : '' }}"
                     wire:loading.attr="disabled"

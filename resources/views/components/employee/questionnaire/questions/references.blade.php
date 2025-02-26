@@ -4,6 +4,14 @@
     {{-- Entry Container --}}
     <div class="d-flex flex-column gap-2">
         {{-- Entries --}}
+        <x-card
+            title="References"
+            icon="bi-person-lines-fill"
+        >
+            @foreach ($references as $index => $entry)
+                
+            @endforeach
+        </x-card>
         <div class="card card-body">
             <div class="row g-3">
                 <div class="col-sm-6">

@@ -2,15 +2,8 @@
 <x-card title="Civil Service Eligibilities" icon="bi-award" loadingTarget="addEligibility()">
 
     @foreach ($eligibilities as $index => $eligibily)
-        <div class="col-12 d-flex align-items-center">
-            <!-- Badge -->
-            <div class="badge bg-primary text-white rounded-circle">
-                {{ $index + 1 }}
-            </div>
+        @include('partials.count-indicator', ['count' => $index])
 
-            <!-- Separator -->
-            <div class="flex-grow-1 border"></div>
-        </div>
         @include('partials.form-fields', [
             'modelPrefix' => "eligibilities.$index",
             'fields' => [
@@ -53,8 +46,10 @@
 
 
         <div class="col-12 text-end">
-            <button type="button" wire:click="removeEligibility({{ $index }})" class="btn btn-outline-danger btn-sm"
-                @if (count($eligibilities) === 1) disabled @endif>
+            <button
+                type="button"
+                @click="confirmDelete('eligibilities', {{ $index }})"
+                class="btn btn-outline-danger btn-sm" @if (count($eligibilities) === 1) disabled @endif>
                 <i class="bi bi-trash3-fill me-1"></i>
                 Remove Entry
             </button>
@@ -75,3 +70,32 @@
     @endslot
 
 </x-card>
+{{-- 
+
+@push('scripts')
+    <script>
+        function confirmDelete(type, index){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    Livewire.dispatch('removeEntry', {type: type, index: index})
+                }
+            });
+        }
+    </script>
+@endpush
+
+@script
+    <script>
+        $wire.on('show-alert', (data) => {
+            Swal.fire(data[0])
+        })
+    </script>
+@endscript --}}

@@ -6,7 +6,7 @@
     'name',
     'required' => false,
     'placeholder' => '',
-    'disabled' => true,
+    'disabled' => false,
 ])
 
 <x-forms.input-field

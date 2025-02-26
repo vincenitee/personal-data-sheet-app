@@ -16,20 +16,20 @@
     {{-- Menu Items --}}
     <ul class="nav flex-column gap-1 mt-3">
         <li class="nav-item {{ request()->is('employee/dashboard') ? 'active' : '' }}" >
-            <a wire:navigate href="{{ url(route('employee.dashboard')) }}" class="nav-link text-white">
+            <a wire:navigate.hover href="{{ url(route('employee.dashboard')) }}" class="nav-link text-white">
                 <i class="bi bi-grid me-1" style="font-size: 1.1rem;"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li class="nav-item {{ request()->is('employee/pds/create') ? 'active' : '' }}">
-            <a wire:navigate href="{{ url(route('employee.pds.create')) }}" class="nav-link text-white">
+            <a wire:navigate.hover href="{{ url(route('employee.pds.create')) }}" class="nav-link text-white">
                 <i class="bi bi-file-plus me-1" style="font-size: 1.1rem;"></i>
                 Add New Entry</a>
         </li>
         <li class="nav-item {{ request()->is('employee/history') ? 'active' : '' }}">
             <a href="" class="nav-link text-white">
                 <i class="bi bi-clock me-1" style="font-size: 1.1rem;"></i>
-                My Entries</a>
+                Submission Logs</a>
         </li>
         <li class="nav-item {{ request()->is('employee/notification') ? 'active' : '' }}">
             <div class="d-flex justify-content-between align-items-center">

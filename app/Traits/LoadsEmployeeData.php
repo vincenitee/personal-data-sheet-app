@@ -2,9 +2,11 @@
 
 namespace App\Traits;
 
+use PHPUnit\Event\TestSuite\Sorted;
+
 trait LoadsEmployeeData
 {
-    use HasDynamicEntries;
+    use HasDynamicEntries, FiltersData;
     protected function loadPersonalInformation($personal_information)
     {
         $fields = [
@@ -149,15 +151,15 @@ trait LoadsEmployeeData
 
         foreach ($sortedEducation as $education) {
             if (in_array($education->level, ['elementary', 'secondary'])) {
-                $this->education[$education->level] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'created_at', 'updated_at']);
+                $this->education[$education->level] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'timestamps']);
                 continue;
             }
 
-            $this->education[$education->level][] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'created_at', 'updated_at']);
+            $this->education[$education->level][] = $this->filterData($education, ['id', 'pds_entry_id', 'level', 'timestamps']);
         }
 
         // dd($this->education);
-         // Sort $this->education array after populating it
+        // Sort $this->education array after populating it
         foreach ($this->education as $level => &$entries) {
             if (!in_array($level, ['vocational', 'college', 'graduate_studies'])) continue;
 
@@ -168,11 +170,134 @@ trait LoadsEmployeeData
         }
     }
 
-
-    protected function filterData($array, $fields = [])
+    protected function loadEligibilities($eligibilities)
     {
-        return collect($array)
-            ->except([...$fields])
-            ->toArray();
+        foreach ($eligibilities as $eligibility) {
+            $this->eligibilities[] = $this->filterData($eligibility, ['id', 'pds_entry_id', 'timestamps']);
+        }
+    }
+
+    protected function loadWorkExperiences($workExperiences)
+    {
+        if (empty($workExperiences)) return;
+
+        $sortedWorkExperiences = collect($workExperiences)->sortByDesc('date_from');
+
+        foreach ($sortedWorkExperiences as $workExperience) {
+            $this->workExperiences[] = $this->filterData($workExperience, ['id', 'pds_entry_id', 'timestamps']);
+        }
+    }
+
+    protected function loadVolWorkEntries($voluntaryWorks)
+    {
+        if (empty($voluntaryWorks)) return;
+
+        $sortedVolWorkExperiences = collect($voluntaryWorks)->sortByDesc('date_from');
+
+        foreach ($sortedVolWorkExperiences as $volWorkExperience) {
+            $this->voluntaryWorks[] = $this->filterData($volWorkExperience, ['id', 'pds_entry_id', 'timestamps']);
+        }
+    }
+
+    protected function loadTrainingEntries($trainings)
+    {
+        if (empty($trainings)) return;
+
+        $sortedTrainings = collect($trainings)->sortByDesc('date_from');
+
+        foreach ($sortedTrainings as $training) {
+            $this->trainings[] = $this->filterData($training, ['id', 'pds_entry_id', 'timestamps']);
+        }
+    }
+
+    protected function loadOtherInformationEntries($skills, $recognitions, $organizations)
+    {
+        $sortedSkills = collect($skills)->sortByDesc('updated_at');
+
+        foreach ($sortedSkills as $skill) {
+            $this->skills[] = $this->filterData($skill, ['id', 'pds_entry_id', 'timestamps']);
+        }
+
+        $sortedRecognitions = collect($recognitions)->sortByDesc('updated_at');
+
+        foreach ($sortedRecognitions as $recognition) {
+            $this->recognitions[] = $this->filterData($recognition, ['id', 'pds_entry_id', 'timestamps']);
+        }
+
+        $sortedOrganizations = collect($organizations)->sortByDesc('updated_at');
+
+        foreach ($sortedOrganizations as $organization) {
+            $this->organizations[] = $this->filterData($organization, ['id', 'pds_entry_id', 'timestamps']);
+        }
+    }
+
+    protected function loadQuestionResponses($responses)
+    {
+        $questionnaireFields = [
+            'has_third_degree_relative',
+            'has_fourth_degree_relative',
+            'fourth_degree_details',
+            'has_admin_case',
+            'admin_case_details',
+            'has_criminal_charge',
+            'criminal_charge_date',
+            'criminal_charge_status',
+            'has_criminal_conviction',
+            'criminal_conviction_details',
+            'has_separation_from_service',
+            'separation_details',
+            'is_election_candidate',
+            'election_details',
+            'has_resigned_for_election',
+            'resignation_details',
+            'is_immigrant',
+            'immigrant_country',
+            'is_indigenous',
+            'indigenous_details',
+            'is_disabled',
+            'disabled_person_id',
+            'is_solo_parent',
+            'solo_parent_id',
+        ];
+
+        $filteredResponse = $this->filterData($responses, ['id', 'pds_entry_id', 'timestamps']);
+
+        foreach ($filteredResponse as $key => $value) {
+            if (in_array($key, $questionnaireFields)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    protected function loadReferencePerson($referencePeople)
+    {
+        $sortedReferencesPeople = collect($referencePeople)->sortBy('fullname');
+
+        foreach ($sortedReferencesPeople as $entry) {
+            $this->references[] = $this->filterData($entry, ['id', 'additional_question_id', 'timestamps']);
+        }
+    }
+
+    protected function loadAttachments($attachments)
+    {
+        // if(is_null($attachments)) return;
+        // dd();
+        if(is_null($attachments)) return;
+
+        $attachmentFields = [
+            'passport_photo',
+            'right_thumbmark_photo',
+            'government_id_photo',
+            'government_id_type',
+            'government_id_no',
+            'signature_photo',
+            'otr_photo',
+            'diploma_photo',
+            'employement_certificate',
+        ];
+
+        foreach($attachmentFields as $field){
+            $this->{$field} = $attachments->{$field};
+        }
     }
 }

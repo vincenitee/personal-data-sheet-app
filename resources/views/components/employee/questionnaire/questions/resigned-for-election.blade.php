@@ -5,7 +5,7 @@
     <x-forms.question-group name="has_resigned_for_election">
         {{-- Details --}}
         <div class="col-12 col-md-6">
-            <x-forms.textarea name="resignation_details" :required="false" />
+            <x-forms.textarea model="resignation_details" name="resignation_details" :required="false" />
         </div>
     </x-forms.question-group>
 </x-forms.question-card>

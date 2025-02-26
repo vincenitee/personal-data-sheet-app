@@ -20,7 +20,7 @@
         id="{{ $name }}"
         class="form-control"
         value="{{ old($name) }}"
-        @if($model) wire:model="{{ $model }}" @endif
+        @if($model) wire:model.blur="{{ $model }}" @endif
         @if($type === 'file') accept="application/pdf,image/*"  @endif
         autocomplete="off"
         style="font-size: 0.9rem"

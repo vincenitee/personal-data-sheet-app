@@ -9,7 +9,7 @@
     <x-forms.question-group name="has_separation_from_service">
         {{-- Details --}}
         <div class="col-12 col-md-6">
-            <x-forms.textarea name="separation_details" :required="false" />
+            <x-forms.textarea model="separation_details" name="separation_details" :required="false" />
         </div>
     </x-forms.question-group>
 </x-forms.question-card>

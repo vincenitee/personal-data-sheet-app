@@ -5,7 +5,7 @@
     <x-forms.question-group name="is_election_candidate">
         {{-- Details --}}
         <div class="col-12 col-sm-6">
-            <x-forms.textarea name="election_details" :required="false" />
+            <x-forms.textarea model="election_details" name="election_details" :required="false" />
         </div>
     </x-forms.question-group>
 </x-forms.question-card>

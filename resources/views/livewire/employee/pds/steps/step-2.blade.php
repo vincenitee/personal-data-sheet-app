@@ -110,7 +110,9 @@
         ])
 
         <div class="col-12 text-end">
-            <button type="button" wire:click="removeChild({{ $index }})"
+            <button
+                type="button"
+                @click="confirmDelete('children', {{ $index }})"
                 class="btn btn-outline-danger btn-sm" @if (count($children) === 1) disabled @endif>
                 <i class="bi bi-trash3-fill me-1"></i>
                 Remove Entry
@@ -131,3 +133,31 @@
         </div>
     @endslot
 </x-card>
+
+{{-- @push('scripts')
+    <script>
+        function confirmDelete(type, index){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    Livewire.dispatch('removeEntry', {type: type, index: index})
+                }
+            });
+        }
+    </script>
+@endpush
+
+@script
+    <script>
+        $wire.on('show-alert', (data) => {
+            Swal.fire(data[0])
+        })
+    </script>
+@endscript --}}

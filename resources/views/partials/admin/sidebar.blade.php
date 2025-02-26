@@ -32,7 +32,7 @@
                 class="nav-link text-white"
             >
                 <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
-                <span>Manage Signups</span>
+                <span>Signups</span>
             </a>
         </li>
         <li class="nav-item">

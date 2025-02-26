@@ -2,9 +2,14 @@
 
 namespace App\Traits;
 
+use App\Enums\TrainingTypes;
+use App\Enums\EmploymentStatus;
+use Illuminate\Validation\Rule;
+
 trait HasFormSteps
 {
-    public $currentStep = 4;
+    public $currentStep = 7;
+    public $highestStepReached = 0;
 
     protected $steps = [
         1 => 'Personal Information',
@@ -45,30 +50,46 @@ trait HasFormSteps
         10 => 'I declare under oath that I have personally accomplished this Personal Data Sheet which is a true, correct and complete statement...',
     ];
 
+
     public function incrementSteps()
     {
-        // Validates the data before proceeding to the next steps
-        $this->validate($this->rules()[$this->currentStep]);
-
-        $this->saveDraft();
+        if (!$this->saveDraft()) {
+            return; // Stop if validation fails
+        }
 
         $this->currentStep = min($this->currentStep + 1, count($this->steps));
+
+        $this->highestStepReached = max($this->highestStepReached, $this->currentStep);
+        // Save the step count to session
+        session(['current_step' => $this->currentStep]);
+
+        session(['highest_step_reached' => $this->highestStepReached]);
     }
 
     public function decrementSteps()
     {
-        $this->validate($this->rules()[$this->currentStep]);
-
-        $this->saveDraft();
+        if (!$this->saveDraft()) {
+            return; // Stop if validation fails
+        }
 
         $this->currentStep = max($this->currentStep - 1, 1);
+
+        // Save the step count to session
+        session(['current_step' => $this->currentStep]);
     }
 
     public function jumpToStep($step)
     {
+        if (!$this->saveDraft()) {
+            return; // Stop if validation fails
+        }
+
         $this->currentStep = $step;
-        $this->saveDraft();
+
+        // Save the step count to session
+        session(['current_step' => $this->currentStep]);
     }
+
 
     public function getStepDescription()
     {
@@ -78,6 +99,11 @@ trait HasFormSteps
     public function getStepTitle()
     {
         return $this->steps[$this->currentStep] ?? '';
+    }
+
+    protected function isFileUpload($field)
+    {
+        return is_object($field);
     }
 
     protected function rules()
@@ -181,11 +207,6 @@ trait HasFormSteps
                 'education.vocational.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
                 'education.college.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
                 'education.graduate_studies.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
-
-                // Certificate Upload Rules
-                'education.vocational.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-                'education.college.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-                'education.graduate_studies.*.certificate' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             ],
             4 => [
                 'eligibilities.*.career_service' => 'nullable|string',
@@ -195,7 +216,107 @@ trait HasFormSteps
                 'eligibilities.*.license_number' => 'nullable|string',
                 'eligibilities.*.license_validity' => 'nullable|date',
             ],
+            5 => [
+                'workExperiences.*.position' => 'nullable|string|max:100',
+                'workExperiences.*.agency' => 'nullable|string|max:100',
+                'workExperiences.*.salary' => 'nullable|numeric|min:0|max:9999999.99',
+                'workExperiences.*.salary_grade' => 'nullable|integer|min:1|max:33',
+                'workExperiences.*.salary_step' => 'nullable|integer|min:1|max:8',
+                'workExperiences.*.status' => ['nullable', Rule::in(EmploymentStatus::values())],
+                'workExperiences.*.government_service' => 'required|boolean',
+                'workExperiences.*.date_from' => 'nullable|date|before_or_equal:today',
+                'workExperiences.*.date_to' => 'nullable|date|after_or_equal:workExperiences.*.date_from|before_or_equal:today',
+            ],
+            6 => [
+                'voluntaryWorks.*.position' => 'nullable|string|max:100',
+                'voluntaryWorks.*.organization_name' => 'nullable|string|max:255',
+                'voluntaryWorks.*.organization_address' => 'nullable|string|max:255',
+                'voluntaryWorks.*.date_from' => 'nullable|date',
+                'voluntaryWorks.*.date_to' => 'nullable|date|after_or_equal:voluntaryWorks.*.date_from',
+                'voluntaryWorks.*.total_hours' => 'nullable|integer|min:1',
+            ],
+            7 => [
+                'trainings.*.title' => ['nullable', 'string', 'max:100'],
+                'trainings.*.type' => ['nullable', Rule::in(TrainingTypes::values())], // Ensures type is one of the enum values
+                'trainings.*.sponsored_by' => ['nullable', 'string', 'max:100'],
+                'trainings.*.date_from' => ['nullable', 'date', 'sometimes', 'before_or_equal:trainings.*.date_to'],
+                'trainings.*.date_to' => ['nullable', 'date', 'sometimes', 'after_or_equal:trainings.*.date_from'],
+                // Ensures date_to is after or equal to date_from
+                'trainings.*.total_hours' => ['nullable', 'integer', 'min:1'], // Must be a positive integer
+                'trainings.*.certificate' => ['nullable', 'string', 'max:255'], // Can be a filename or path
+            ],
+            8 => [
+                'skills.*.skill' => ['nullable', 'string', 'max:100'],
+                'recognitions.*.recognition' => ['nullable', 'string', 'max:255'],
+                'organizations.*.organization' => ['nullable', 'string', 'max:100'],
+            ],
+            9 => [
+                'has_third_degree_relative' => ['boolean'],
+                'has_fourth_degree_relative' => ['boolean'],
+                'fourth_degree_details' => ['nullable', 'required_if:has_fourth_degree_relative,true', 'string', 'max:255'],
 
+                'has_admin_case' => ['boolean'],
+                'admin_case_details' => ['nullable', 'required_if:has_admin_case,true', 'string', 'max:500'],
+                'has_criminal_charge' => ['boolean'],
+                'criminal_charge_date' => ['nullable', 'required_if:has_criminal_charge,true', 'date', 'before_or_equal:today'],
+                'criminal_charge_status' => ['nullable', 'required_if:has_criminal_charge,true', 'string', 'max:255'],
+
+                'has_criminal_conviction' => ['boolean'],
+                'criminal_conviction_details' => ['nullable', 'required_if:has_criminal_conviction,true', 'string', 'max:500'],
+
+                'has_separation_from_service' => ['boolean'],
+                'separation_details' => ['nullable', 'required_if:has_separation_from_service,true', 'string', 'max:500'],
+
+                'is_election_candidate' => ['boolean'],
+                'election_details' => ['nullable', 'required_if:is_election_candidate,true', 'string', 'max:255'],
+
+                'has_resigned_for_election' => ['boolean'],
+                'resignation_details' => ['nullable', 'required_if:has_resigned_for_election,true', 'string', 'max:255'],
+
+                'is_immigrant' => ['boolean'],
+                'immigrant_country' => ['nullable', 'required_if:is_immigrant,true', 'string', 'max:100'],
+
+                'is_indigenous' => ['boolean'],
+                'indigenous_details' => ['nullable', 'required_if:is_indigeneous,true', 'string', 'max:100'],
+
+                'is_disabled' => ['boolean'],
+                'disabled_person_id' => ['nullable', 'required_if:is_disabled,true', 'string', 'max:50'],
+
+                'is_solo_parent' => ['boolean'],
+                'solo_parent_id' => ['nullable', 'required_if:is_solo_parent,true', 'string', 'max:50'],
+            ],
+            10 => [
+                'passport_photo' => $this->isFileUpload($this->passport_photo)
+                    ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'required|string',
+
+                'right_thumbmark_photo' => $this->isFileUpload($this->right_thumbmark_photo)
+                    ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'required|string',
+
+                'government_id_photo' => $this->isFileUpload($this->government_id_photo)
+                    ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'required|string',
+
+                'government_id_type' => 'required|required_with:government_id_photo|string|max:255',
+                'government_id_no' => 'required|required_with:government_id_photo|string|max:255',
+
+                'signature_photo' => $this->isFileUpload($this->signature_photo)
+                    ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'required|string',
+
+                'otr_photo' => $this->isFileUpload($this->otr_photo)
+                    ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'required|string',
+
+                'diploma_photo' => $this->isFileUpload($this->diploma_photo)
+                    ? 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'nullable|string',
+
+                'employement_certificate' => $this->isFileUpload($this->employement_certificate)
+                    ? 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+                    : 'nullable|string',
+            ],
 
         ];
     }
@@ -331,19 +452,6 @@ trait HasFormSteps
             'education.college.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
             'education.graduate_studies.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
 
-            // Certificates
-            'education.vocational.*.certificate.file' => 'The certificate must be a valid file.',
-            'education.vocational.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
-            'education.vocational.*.certificate.max' => 'The certificate size must not exceed 2MB.',
-
-            'education.college.*.certificate.file' => 'The certificate must be a valid file.',
-            'education.college.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
-            'education.college.*.certificate.max' => 'The certificate size must not exceed 2MB.',
-
-            'education.graduate_studies.*.certificate.file' => 'The certificate must be a valid file.',
-            'education.graduate_studies.*.certificate.mimes' => 'The certificate must be a file of type: PDF, JPG, or PNG.',
-            'education.graduate_studies.*.certificate.max' => 'The certificate size must not exceed 2MB.',
-
             // ------------------- Step 4: Civil Service Elibility-------------------
             'eligibilities.*.career_service.required' => 'The career service field is required.',
             'eligibilities.*.ratings.numeric' => 'The ratings must be a number.',
@@ -355,6 +463,156 @@ trait HasFormSteps
             'eligibilities.*.license_number.string' => 'The license number must be a string.',
             'eligibilities.*.license_validity.date' => 'The license validity must be a valid date.',
 
+            // ------------------- Step 5: Work Experiences -------------------
+            'workExperiences.*.position.required' => 'The position field is required.',
+            'workExperiences.*.position.max' => 'The position must not exceed 100 characters.',
+
+            'workExperiences.*.agency.required' => 'The agency field is required.',
+            'workExperiences.*.agency.max' => 'The agency name must not exceed 100 characters.',
+
+            'workExperiences.*.salary.numeric' => 'The salary must be a valid number.',
+            'workExperiences.*.salary.min' => 'The salary cannot be negative.',
+            'workExperiences.*.salary.max' => 'The salary must not exceed 9,999,999.99.',
+
+            'workExperiences.*.salary_grade.required' => 'The salary grade is required.',
+            'workExperiences.*.salary_grade.integer' => 'The salary grade must be a number.',
+            'workExperiences.*.salary_grade.min' => 'The salary grade must be at least 1.',
+            'workExperiences.*.salary_grade.max' => 'The salary grade must not exceed 33.',
+
+            'workExperiences.*.salary_step.required' => 'The salary step is required.',
+            'workExperiences.*.salary_step.integer' => 'The salary step must be a number.',
+            'workExperiences.*.salary_step.min' => 'The salary step must be at least 1.',
+            'workExperiences.*.salary_step.max' => 'The salary step must not exceed 8.',
+
+            'workExperiences.*.status.required' => 'The employment status is required.',
+            'workExperiences.*.status.in' => 'Invalid employment status selected.',
+
+            'workExperiences.*.government_service.required' => 'Please indicate if this is a government service.',
+            'workExperiences.*.government_service.boolean' => 'Invalid selection for government service.',
+
+            'workExperiences.*.date_from.required' => 'The start date is required.',
+            'workExperiences.*.date_from.date' => 'The start date must be a valid date.',
+            'workExperiences.*.date_from.before_or_equal' => 'The start date cannot be in the future.',
+
+            'workExperiences.*.date_to.date' => 'The end date must be a valid date.',
+            'workExperiences.*.date_to.after_or_equal' => 'The end date cannot be before the start date.',
+            'workExperiences.*.date_to.before_or_equal' => 'The end date cannot be in the future.',
+
+            // ------------------- Step 6: Voluntary Work Experiences -------------------
+            'voluntaryWorks.*.position.required' => 'The position field is required.',
+            'voluntaryWorks.*.position.string' => 'The position must be a valid string.',
+            'voluntaryWorks.*.position.max' => 'The position must not exceed 100 characters.',
+
+            'voluntaryWorks.*.organization_name.required' => 'The organization name is required.',
+            'voluntaryWorks.*.organization_name.string' => 'The organization name must be a valid string.',
+            'voluntaryWorks.*.organization_name.max' => 'The organization name must not exceed 255 characters.',
+
+            'voluntaryWorks.*.organization_address.required' => 'The organization address is required.',
+            'voluntaryWorks.*.organization_address.string' => 'The organization address must be a valid string.',
+            'voluntaryWorks.*.organization_address.max' => 'The organization address must not exceed 255 characters.',
+
+            'voluntaryWorks.*.date_from.required' => 'The start date is required.',
+            'voluntaryWorks.*.date_from.date' => 'The start date must be a valid date.',
+
+            'voluntaryWorks.*.date_to.date' => 'The end date must be a valid date.',
+            'voluntaryWorks.*.date_to.after_or_equal' => 'The end date must be on or after the start date.',
+
+            'voluntaryWorks.*.total_hours.integer' => 'Total hours must be a valid number.',
+            'voluntaryWorks.*.total_hours.min' => 'Total hours must be at least 1.',
+
+            // ------------------- Step 7: Learning and Development -------------------
+            'trainings.*.title.required' => 'The training title is required.',
+            'trainings.*.title.string' => 'The training title must be a valid string.',
+            'trainings.*.title.max' => 'The training title cannot exceed 100 characters.',
+
+            'trainings.*.type.required' => 'The training type is required.',
+            'trainings.*.type.in' => 'Invalid training type selected.',
+
+            'trainings.*.sponsored_by.string' => 'The sponsor name must be a valid string.',
+            'trainings.*.sponsored_by.max' => 'The sponsor name cannot exceed 100 characters.',
+
+            'trainings.*.date_from.required' => 'The start date is required.',
+            'trainings.*.date_from.date' => 'The start date must be a valid date.',
+            'trainings.*.date_from.before_or_equal' => 'The start date must be before or on the end date.',
+
+            'trainings.*.date_to.required' => 'The end date is required.',
+            'trainings.*.date_to.date' => 'The end date must be a valid date.',
+            'trainings.*.date_to.after_or_equal' => 'The end date must be after or on the start date.',
+
+            'trainings.*.total_hours.integer' => 'Total hours must be a whole number.',
+            'trainings.*.total_hours.min' => 'Total hours must be at least 1.',
+
+            'trainings.*.certificate.string' => 'The certificate information must be a valid string.',
+            'trainings.*.certificate.max' => 'The certificate information cannot exceed 255 characters.',
+
+            // ------------------- Step 8: Learning and Development -------------------
+            'skills.*.skill.required' => 'The skill field is required.',
+            'skills.*.skill.string' => 'The skill must be a valid text.',
+            'skills.*.skill.max' => 'The skill must not exceed 100 characters.',
+
+            'recognitions.*.recognition.required' => 'The recognition field is required.',
+            'recognitions.*.recognition.string' => 'The recognition must be a valid text.',
+            'recognitions.*.recognition.max' => 'The recognition must not exceed 255 characters.',
+
+            'organizations.*.organization.required' => 'The organization field is required.',
+            'organizations.*.organization.string' => 'The organization must be a valid text.',
+            'organizations.*.organization.max' => 'The organization must not exceed 100 characters.',
+
+            // ------------------- Step 9: Additional Questions -------------------
+            'fourth_degree_details.required_if' => 'Fourth degree relative details are required when selected.',
+            'admin_case_details.required_if' => 'Administrative case details are required when selected.',
+            'criminal_charge_date.required_if' => 'Please provide the date of the criminal charge if you have one.',
+            'criminal_charge_date.date' => 'The criminal charge date must be a valid date.',
+            'criminal_charge_date.before_or_equal' => 'The criminal charge date cannot be in the future.',
+
+            'criminal_charge_status.required_if' => 'Please provide the status of the criminal charge if you have one.',
+            'criminal_charge_status.string' => 'The criminal charge status must be a valid text description.',
+            'criminal_charge_status.max' => 'The criminal charge status must not exceed 255 characters.',
+            'criminal_conviction_details.required_if' => 'Criminal conviction details are required when selected.',
+            'separation_details.required_if' => 'Separation details are required when selected.',
+            'election_details.required_if' => 'Election details are required when selected.',
+            'resignation_details.required_if' => 'Resignation details are required when selected.',
+            'immigrant_country.required_if' => 'Please specify the country if you are an immigrant.',
+            'indigenous_details.required_if' => 'Please specify your indigenous group if applicable.',
+            'disabled_person_id.required_if' => 'PWD ID is required if you are a person with a disability.',
+            'solo_parent_id.required_if' => 'Solo Parent ID is required if you are a solo parent.',
+
+            // ------------------- Step 9: Additional Questions -------------------
+            'passport_photo.image' => 'The passport photo must be an image file.',
+            'passport_photo.mimes' => 'The passport photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'passport_photo.max' => 'The passport photo must not exceed 2MB.',
+
+            'right_thumbmark_photo.image' => 'The right thumbmark photo must be an image file.',
+            'right_thumbmark_photo.mimes' => 'The right thumbmark photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'right_thumbmark_photo.max' => 'The right thumbmark photo must not exceed 2MB.',
+
+            'government_id_photo.image' => 'The government ID photo must be an image file.',
+            'government_id_photo.mimes' => 'The government ID photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'government_id_photo.max' => 'The government ID photo must not exceed 2MB.',
+
+            'government_id_type.required_with' => 'The government ID type is required when uploading an ID photo.',
+            'government_id_type.string' => 'The government ID type must be a valid string.',
+            'government_id_type.max' => 'The government ID type must not exceed 255 characters.',
+
+            'government_id_no.required_with' => 'The government ID number is required when uploading an ID photo.',
+            'government_id_no.string' => 'The government ID number must be a valid string.',
+            'government_id_no.max' => 'The government ID number must not exceed 255 characters.',
+
+            'signature_photo.image' => 'The signature photo must be an image file.',
+            'signature_photo.mimes' => 'The signature photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'signature_photo.max' => 'The signature photo must not exceed 2MB.',
+
+            'otr_photo.image' => 'The OTR photo must be an image file.',
+            'otr_photo.mimes' => 'The OTR photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'otr_photo.max' => 'The OTR photo must not exceed 2MB.',
+
+            'diploma_photo.image' => 'The diploma photo must be an image file.',
+            'diploma_photo.mimes' => 'The diploma photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'diploma_photo.max' => 'The diploma photo must not exceed 2MB.',
+
+            'employement_certificate.image' => 'The certificate photo must be an image file.',
+            'employement_certificate.mimes' => 'The certificate photo must be a file of type: jpg, jpeg, png, gif, webp.',
+            'employement_certificate.max' => 'The certificate photo must not exceed 2MB.',
         ];
     }
 }

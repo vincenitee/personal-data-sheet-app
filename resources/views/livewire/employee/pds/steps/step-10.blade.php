@@ -1,111 +1,142 @@
-<div class="card card-body mb-2">
-    <div class="d-flex flex-column gap-3">
+{{-- Passport --}}
+<x-card title="Passport" icon="bi-airplane">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Passport Photo',
+                'type' => 'file',
+            ],
+        ],
+    ])
 
-        {{-- Passport Photo --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Passport Photo</span>
-                    <ul class="mb-0" style="font-size: 0.8rem;">
-                        <li>ID picture taken within the last 6 months</li>
-                        <li>Dimensions: 4.5 cm x 3.5 cm (passport size)</li>
-                        <li>Computer-generated or photocopied pictures are not acceptable</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload Passport Photo" name="passport_pic" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+    @include('partials.file-preview', [
+        'file' => $passport_photo ?? null,
+        'wireTarget' => 'passport_photo',
+    ])
+</x-card>
 
-        {{-- Right Thumbmark --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Right Thumbmark Photo</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload Right Thumbmark Photo" name="right_thumb_pic" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
 
-        {{-- Government Identification --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Government Issued ID <small>(i.e. Passport, GSIS, SSS, PRC, Driver's License, etc.)</small></span>
-                </div>
-            </div>
-            <div class="card-body d-flex flex-column gap-2">
-                <x-forms.select label="Type" name="government_id_type">
-                    <option value="">Select an ID Type</option>
-                    <option value="ssS">SSS (Social Security System)</option>
-                    <option value="gsis">GSIS (Government Service Insurance System)</option>
-                    <option value="philhealth">PhilHealth</option>
-                    <option value="postal">Postal ID</option>
-                    <option value="driver_license">Driver's License</option>
-                    <option value="passport">Passport</option>
-                    <option value="voters">Voter's ID</option>
-                    <option value="prc">PRC (Professional Regulation Commission)</option>
-                    <option value="taxpayer">Taxpayer's ID (TIN)</option>
-                </x-forms.select>
+{{-- Right Thumbmark --}}
+<x-card title="Right Thumbmark" icon="bi-fingerprint">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Right Thumbmark Photo',
+                'type' => 'file',
+            ],
+        ],
+    ])
 
-                <x-forms.input label="ID/License/Passport No:" name="government_id_number"></x-forms.input>
+    @include('partials.file-preview', [
+        'file' => $right_thumbmark_photo ?? null,
+        'wireTarget' => 'right_thumbmark_photo',
+    ])
+</x-card>
 
-                <x-forms.input label="Upload ID (Front)" name="government_id_pic_front" type="file" class="form-control-file"></x-forms.input>
+{{-- Government Issued ID --}}
+<x-card title="Government Issued ID" icon="bi-building">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Government ID Type',
+                'type' => 'select',
+                'options' => $governmentIdOptions
+            ],
+            [
+                'label' => 'Government ID No',
+                'type' => 'number',
+            ],
+            [
+                'label' => 'Government ID Photo',
+                'type' => 'file'
+            ]
+        ]
+    ])
 
-                <x-forms.input label="Upload ID (Back)" name="government_id_pic_back" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+    @include('partials.file-preview', [
+        'file' => $government_id_photo ?? null,
+        'title' => 'Uploaded Government ID Photo',
+        'wireTarget' => 'government_id_photo',
+    ])
+</x-card>
 
-        {{-- Signature --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Signature</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload Signature" name="signature" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+{{-- Signature --}}
+<x-card title="Signature" icon="bi-pen">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Signature Photo',
+                'type' => 'file'
+            ],
+        ]
+    ])
 
-        {{-- OTR --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Occupational Tax Receipt (TOR)</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload OTR" name="otr" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+    @include('partials.file-preview', [
+        'file' => $signature_photo ?? null,
+        'title' => 'Uploaded Signature Photo',
+        'wireTarget' => 'signature_photo',
+    ])
+</x-card>
 
-        {{-- Diploma --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Diploma</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload Diploma" name="diploma" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+{{-- OTR --}}
+<x-card title="OTR" icon="bi-file-earmark">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'OTR Photo',
+                'type' => 'file'
+            ],
+        ]
+    ])
 
-        {{-- Employment Certificate --}}
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <div class="card-title mb-0">
-                    <span class="small text-muted">Employment Certificate</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <x-forms.input label="Upload Employement Certificate" name="employment_certificate" type="file" class="form-control-file"></x-forms.input>
-            </div>
-        </div>
+    @include('partials.file-preview', [
+        'file' => $otr_photo ?? null,
+        'title' => 'Uploaded OTR Photo',
+        'wireTarget' => 'otr_photo',
+    ])
+</x-card>
 
-    </div>
-</div>
+{{-- Diploma --}}
+<x-card title="Diploma" icon="bi-mortarboard">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Diploma Photo',
+                'type' => 'file',
+                'required' => false,
+            ],
+        ]
+    ])
+
+    @include('partials.file-preview', [
+        'file' => $diploma_photo ?? null,
+        'title' => 'Uploaded Diploma Photo',
+        'wireTarget' => 'diploma_photo',
+    ])
+</x-card>
+
+{{-- Employement Certificate --}}
+<x-card title="Employement Certificate" icon="bi-file-earmark-text">
+    @include('partials.form-fields', [
+        'modelPrefix' => '',
+        'fields' => [
+            [
+                'label' => 'Employement Certificate',
+                'type' => 'file',
+                'required' => false,
+            ],
+        ]
+    ])
+
+    @include('partials.file-preview', [
+        'file' => $employement_certificate ?? null,
+        'title' => 'Uploaded Employement Certificate',
+        'wireTarget' => 'employement_certificate',
+    ])
+</x-card>

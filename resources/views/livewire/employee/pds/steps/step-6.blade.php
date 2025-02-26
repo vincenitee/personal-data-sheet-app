@@ -1,46 +1,98 @@
-{{-- Entry Container --}}
-<div class="card card-body mb-2">
-    {{-- Entries --}}
-    <div class="d-flex flex-column gap-2">
-        <div class="card card-body">
-            <div class="row g-2">
-                {{-- Name and Address of the Organization --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Organization Work and Address" name="vol_organization_1" :required="false"></x-forms.input>
-                </div>
+<x-card title="Voluntary Works" icon="bi-heart" loadingTarget="addVolWorkEntry()">
 
-                {{-- Position / Nature of Work --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Position" name="vol_position_1" :required="false"></x-forms.input>
-                </div>
+    @foreach ($voluntaryWorks as $index => $entry)
+        @include('partials.count-indicator', ['count' => $index])
 
-                {{-- Inclusive Dates --}}
-                <div class="col-lg-2">
-                    <x-forms.input icon="bi bi-calendar" label="From" name="vol_start_1" type="date" :required="false"></x-forms.input>
-                </div>
+        @include('partials.form-fields', [
+            'modelPrefix' => "voluntaryWorks.$index",
+            'fields' => [
+                [
+                    'label' => 'Position',
+                    'required' => false,
+                    'placeholder' => 'e.g., Volunteer Teacher',
+                ],
+                [
+                    'label' => 'Organization Name',
+                    'required' => false,
+                    'placeholder' => 'e.g., Red Cross Foundation',
+                ],
+                [
+                    'label' => 'Organization Address',
+                    'required' => false,
+                    'placeholder' => 'e.g., 123 Main Street, City, Country',
+                ],
+                [
+                    'label' => 'Date From',
+                    'type' => 'date',
+                    'required' => false,
+                    'placeholder' => 'Select start date',
+                ],
+                [
+                    'label' => 'Date To',
+                    'type' => 'date',
+                    'required' => false,
+                    'placeholder' => 'Select end date',
+                ],
+                [
+                    'label' => 'Total Hours',
+                    'required' => false,
+                    'placeholder' => 'e.g., 40 hours',
+                ],
+            ],
+        ])
 
-                <div class="col-lg-2">
-                    <x-forms.input icon="bi bi-calendar" label="To" name="vol_end_1" type="date" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Number of Hours --}}
-                <div class="col-lg-2">
-                    <x-forms.input label="Total Hours" name="vol_hours_1" type="number" min="0" step="0.01" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Delete Button --}}
-                <div class="col-12 d-flex justify-content-end align-items-end">
-                    <button type="button" class="btn btn-sm btn-danger">Delete</button>
-                </div>
-
-            </div>
+        <div class="col-12 text-end">
+            <button
+                type="button"
+                @click="confirmDelete('voluntaryWorks', {{ $index }})"
+                class="btn btn-outline-danger btn-sm"
+                @if (count($voluntaryWorks) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
         </div>
-    </div>
+    @endforeach
 
-    <div class="d-flex align-items-center justify-content-end mt-2">
-        <button type="button" class="btn btn-sm btn-primary">
-            <i class="bi bi-plus-circle pt-1"></i>
-            <span>Add Row</span>
-        </button>
-    </div>
-</div>
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllWorkEntry()" class="btn btn-outline-danger btn-sm"
+                @if (count($voluntaryWorks) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addVolWorkEntry()" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
+        </div>
+    @endslot
+
+</x-card>
+
+{{-- @push('scripts')
+    <script>
+        function confirmDelete(type, index){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    Livewire.dispatch('removeEntry', {type: type, index: index})
+                }
+            });
+        }
+    </script>
+@endpush
+
+@script
+    <script>
+        $wire.on('show-alert', (data) => {
+            Swal.fire(data[0])
+        })
+    </script>
+@endscript --}}

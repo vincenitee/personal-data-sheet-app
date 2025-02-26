@@ -1,4 +1,4 @@
-@props(['name', 'question' => null,])
+@props(['name', 'question' => null])
 
 <div class="row g-2">
 

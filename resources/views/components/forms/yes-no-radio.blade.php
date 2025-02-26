@@ -1,4 +1,4 @@
-@props(['name', 'value' => 'no', 'model' => null])
+@props(['name', 'value' => false, 'model' => null])
 
 <div class="form-check form-check-inline">
     <input
@@ -6,9 +6,9 @@
         type="radio"
         name="{{ $name }}"
         id="{{ $name }}_yes"
-        value="yes"
-        {{ $value === 'yes' ? 'checked' : '' }}
-        @if($model) wire:model="{{ $model }}" @endif
+        value="1"
+        {{ $value === true ? 'checked' : '' }}
+        @if($model) wire:model.live="{{ $model }}" @endif
     >
     <label class="form-check-label" for="{{ $name }}_yes">Yes</label>
 </div>
@@ -18,9 +18,9 @@
         type="radio"
         name="{{ $name }}"
         id="{{ $name }}_no"
-        value="no"
-        {{ $value === 'no' ? 'checked' : '' }}
-        @if($model) wire:model="{{ $model }}" @endif
+        value="0"
+        {{ $value === false ? 'checked' : '' }}
+        @if($model) wire:model.live="{{ $model }}" @endif
     >
     <label class="form-check-label" for="{{ $name }}_no">No</label>
 </div>

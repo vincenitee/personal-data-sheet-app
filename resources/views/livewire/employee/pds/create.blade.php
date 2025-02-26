@@ -1,6 +1,5 @@
 <div class="row g-2">
     {{-- Form Sections --}}
-
     <div class="col-lg-3">
         @include('livewire.employee.pds.form-sections')
     </div>

@@ -1,67 +1,125 @@
 {{-- Entry Container --}}
-<div class="card card-body mb-2">
-    {{-- Entries --}}
-    <div class="d-flex flex-column gap-3">
-        <div class="card card-body shadow-sm">
-            <div class="row g-3">
-                {{-- Position and Department --}}
-                <div class="col-lg-6">
-                    <x-forms.input label="Position" name="work_position_1" :required="false"></x-forms.input>
-                </div>
-                <div class="col-lg-6">
-                    <x-forms.input label="Department" name="work_department_1" :required="false"></x-forms.input>
-                </div>
+<x-card title="Work Experiences" icon="bi-briefcase" loadingTarget="addWorkEntry()">
+    @foreach ($workExperiences as $index => $workEntry)
+        @include('partials.count-indicator', ['count' => $index])
 
-                {{-- Salary and Salary Grade --}}
-                <div class="col-lg-3">
-                    <x-forms.input label="Salary" name="work_salary_1" type="number" :required="false"></x-forms.input>
-                </div>
-                <div class="col-lg-3">
-                    <x-forms.input label="SG & Step" name="work_sg_1" :required="false"
-                        placeholder="00-0"></x-forms.input>
-                </div>
+        @include('partials.form-fields', [
+            'modelPrefix' => "workExperiences.$index",
+            'fields' => [
+                [
+                    'label' => 'Position',
+                    'placeholder' => 'Enter job title (e.g., Software Engineer)',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Agency',
+                    'placeholder' => 'Enter agency name (e.g., Department of Science and Technology)',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Salary',
+                    'type' => 'number',
+                    'required' => false,
+                    'placeholder' => 'e.g., 50,000',
+                ],
+                [
+                    'label' => 'Salary Grade',
+                    'type' => 'select',
+                    'options' => array_combine(range(1, 33), range(1, 33)), // Grades 1-33
+                    'placeholder' => 'Select salary grade',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Salary Step',
+                    'type' => 'select',
+                    'options' => array_combine(range(0, 8), range(0, 8)), // Steps 1-8
+                    'placeholder' => 'Select salary step',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Status',
+                    'type' => 'select',
+                    'options' => $employementStatusOptions,
+                    'placeholder' => 'Select employment status',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Government Service',
+                    'type' => 'select',
+                    'options' => [
+                        true => 'Yes',
+                        false => 'No',
+                    ],
+                    'placeholder' => 'Select if government service',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Date From',
+                    'type' => 'date',
+                    'placeholder' => 'Select start date',
+                    'required' => false,
+                ],
+                [
+                    'label' => 'Date To',
+                    'type' => 'date',
+                    'placeholder' => 'Select end date or leave blank if current',
+                    'required' => false,
+                ],
+            ],
+        ])
 
-                {{-- Status and Government Service --}}
-                <div class="col-lg-3">
-                    <x-forms.select label="Status" name="work_status_1" :required="false">
-                        <option value="">Select Status</option>
-                        <option>Permanent</option>
-                        <option>Temporary</option>
-                        <option>Contractual</option>
-                        <option>Casual</option>
-                        <option>Coterminous</option>
-                    </x-forms.select>
-                </div>
-                <div class="col-lg-3">
-                    <x-forms.select label="Gov't Service" name="work_govt_service_1" :required="false">
-                        <option value="">Y/N</option>
-                        <option value="y">Yes</option>
-                        <option value="n">No</option>
-                    </x-forms.select>
-                </div>
-
-                {{-- Inclusive Dates --}}
-                <div class="col-lg-3">
-                    <x-forms.input icon="bi bi-calendar" icon="bi bi-calendar" label="From" name="work_start_1" type="date" :required="false"></x-forms.input>
-                </div>
-                <div class="col-lg-3">
-                    <x-forms.input icon="bi bi-calendar" icon="bi bi-calendar" label="To" name="work_end_1" type="date" :required="false"></x-forms.input>
-                </div>
-
-                {{-- Delete Button --}}
-                <div class="col-lg-6 d-flex justify-content-end align-items-end">
-                    <button type="button" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash me-1"></i> Delete
-                    </button>
-                </div>
-            </div>
+        <div class="col-12 text-end">
+            <button
+                type="button"
+                @click="confirmDelete('workExperiences', {{ $index }})"
+                class="btn btn-outline-danger btn-sm"
+                @if (count($workExperiences) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Remove Entry
+            </button>
         </div>
-    </div>
+    @endforeach
 
-    <div class="d-flex align-items-center justify-content-end mt-2">
-        <button type="button" class="btn btn-sm btn-primary">
-            <i class="bi bi-plus-circle pt-1"></i>
-            <span>Add Row</span>
-        </button>
-    </div>
-</div>
+    @slot('footer')
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="button" wire:click="removeAllWorkEntry()" class="btn btn-outline-danger btn-sm"
+                @if (count($workExperiences) === 1) disabled @endif>
+                <i class="bi bi-trash3-fill me-1"></i>
+                Clear All Entries
+            </button>
+            <button type="button" wire:click="addWorkEntry()" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Another Entry
+            </button>
+        </div>
+    @endslot
+
+</x-card>
+
+{{-- @push('scripts')
+    <script>
+        function confirmDelete(type, index){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    Livewire.dispatch('removeEntry', {type: type, index: index})
+                }
+            });
+        }
+    </script>
+@endpush
+
+@script
+    <script>
+        $wire.on('show-alert', (data) => {
+            Swal.fire(data[0])
+        })
+    </script>
+@endscript --}}

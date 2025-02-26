@@ -12,6 +12,10 @@ body {
     display: none !important;
 }
 
+.chevron-icon {
+    transition: transform 0.2s ease-in-out;
+}
 
-
-
+.chevron-icon.rotated {
+    transform: rotate(180deg);
+}
