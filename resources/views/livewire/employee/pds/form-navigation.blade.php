@@ -45,7 +45,7 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <i wire:loading.remove wire:target="saveDraft" class="bi bi-save"></i>
-                    <span class="d-none d-sm-inline">Save Draft</span>
+                    <span>Save Draft</span>
                 </button>
 
                 <!-- Next Button -->

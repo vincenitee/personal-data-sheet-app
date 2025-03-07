@@ -4,6 +4,7 @@
     :class="{ 'w-0': !open, 'w-250': open }"
     @click.outside="if (! event.target.closest('#sidebar-toggler')) open = false"
     id="sidebar">
+
     {{-- Logo and Brand --}}
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-secondary" style="height: 80px;">
         <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="" id="logo">
@@ -21,8 +22,28 @@
                 href="{{ url(route('admin.dashboard')) }}"
                 class="nav-link text-white"
             >
-                <i class="bi bi-grid me-1" style="font-size: 1.1rem;"></i>
+                <i class="bi bi-speedometer2 me-1" style="font-size: 1.1rem;"></i>
                 <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('admin/add-user') ? 'active' : '' }}">
+            <a
+                wire:navigate
+                href="{{ url(route('admin.add-user')) }}"
+                class="nav-link text-white"
+            >
+                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
+                <span>Add User</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('admin/users') ? 'active' : '' }}">
+            <a
+                wire:navigate
+                href="{{ url(route('admin.users')) }}"
+                class="nav-link text-white"
+            >
+                <i class="bi bi-people me-1" style="font-size: 1.1rem;"></i>
+                <span>Manage Users</span>
             </a>
         </li>
         <li class="nav-item {{ request()->is('admin/manage-signups') ? 'active' : '' }}">
@@ -31,47 +52,37 @@
                 href="{{ url(route('admin.manage-signup')) }}"
                 class="nav-link text-white"
             >
-                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
+                <i class="bi bi-person-check me-1" style="font-size: 1.1rem;"></i>
                 <span>Signups</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {{ request()->is('admin/submissions') ? 'active' : '' }}" >
             <a
                 wire:navigate
-                href="{{ url(route('admin.manage-signup')) }}"
+                href="{{ url(route('admin.submissions')) }}"
                 class="nav-link text-white"
             >
-                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
-                <span>Manage Users</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a
-                wire:navigate
-                href="{{ url(route('admin.manage-signup')) }}"
-                class="nav-link text-white"
-            >
-                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
+                <i class="bi bi-file-earmark-text me-1" style="font-size: 1.1rem;"></i>
                 <span>Submission Entries</span>
             </a>
         </li>
         <li class="nav-item">
             <a
                 wire:navigate
-                href="{{ url(route('admin.manage-signup')) }}"
+                {{-- href="{{ url(route('admin.reports')) }}" --}}
                 class="nav-link text-white"
             >
-                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
+                <i class="bi bi-clipboard-data me-1" style="font-size: 1.1rem;"></i>
                 <span>Generate Reports</span>
             </a>
         </li>
         <li class="nav-item">
             <a
                 wire:navigate
-                href="{{ url(route('admin.manage-signup')) }}"
+                {{-- href="{{ url(route('admin.settings')) }}" --}}
                 class="nav-link text-white"
             >
-                <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
+                <i class="bi bi-gear me-1" style="font-size: 1.1rem;"></i>
                 <span>Settings</span>
             </a>
         </li>

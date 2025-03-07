@@ -1,0 +1,55 @@
+.timeline-minimal {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-indicator {
+    position: relative;
+    padding-right: 12px;
+}
+
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+}
+
+.timeline-indicator::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 5px;
+    bottom: -12px;
+    width: 1px;
+    background-color: #e9ecef;
+}
+
+.timeline-item:last-child .timeline-indicator::after {
+    display: none;
+}
+
+.timeline-content {
+    flex: 1;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 14px;
+}
+
+.timeline-item:last-child .timeline-content {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.status-text {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}

@@ -2,29 +2,42 @@
 
 namespace App\Livewire\Admin;
 
-use App\Enums\UserStatus;
 use App\Models\User;
+use App\Enums\UserRole;
 use Livewire\Component;
+use App\Enums\UserStatus;
+use App\Mail\SignupStatus;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Services\UserService;
 use App\Traits\HasFlashMessage;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Mail;
 
 class ManageSignup extends Component
 {
     use HasFlashMessage, WithPagination;
 
-    public string $search = ''; // Store the search input
-    public string $sortField = 'created_at'; // Default sorting field
-    public string $sortDirection = 'desc'; // Default sorting direction
-    protected $paginationTheme = 'bootstrap'; // Use Bootstrap pagination
+    protected UserService $userService;
+
+    public string $search = '';
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'desc';
+    protected $paginationTheme = 'bootstrap';
+
+    public function boot(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     #[Computed]
     public function users()
     {
-        return User::where('status', 'pending')
+        return User::where('status', UserStatus::PENDING)
             ->where(function ($query) {
                 $query->where('first_name', 'like', "%{$this->search}%")
                     ->orWhere('last_name', 'like', "%{$this->search}%")
+                    ->orWhere('sex', 'like', "%{$this->search}%")
                     ->orWhere('email', 'like', "%{$this->search}%");
             })
             ->orderBy($this->sortField, $this->sortDirection) // Apply sorting
@@ -33,34 +46,37 @@ class ManageSignup extends Component
 
     public function updatingSearch()
     {
-        $this->resetPage(); // Reset pagination when searching
+        $this->resetPage();
     }
 
+    #[On('signup-accepted')]
     public function approveUser($userId)
     {
-        $this->updateStatus($userId, UserStatus::APPROVED->value);
+        $approvedUser = $this->userService->updateStatus($userId, UserStatus::APPROVED);
+
+        $this->userService->assignRole($approvedUser, UserRole::EMPLOYEE);
+
+        Mail::to($approvedUser->email)->queue(new SignupStatus($approvedUser, UserStatus::APPROVED->value));
+
+        $this->dispatch('show-toast', ['type' => 'success', 'title' => 'Signup request accepted']);
     }
 
+    #[On('signup-rejected')]
     public function rejectUser($userId)
     {
-        $this->updateStatus($userId, UserStatus::REJECTED->value);
-    }
+        $this->userService->updateStatus($userId, UserStatus::REJECTED);
 
-    public function updateStatus(int $userId, string $status)
-    {
-        $user = User::findOrFail($userId);
-        $user->update(['status' => $status]);
+        $user = User::find($userId);
 
-        $user->assignRole('employee');
+        Mail::to($user->email)->queue(new SignupStatus($user, UserStatus::REJECTED->value));
 
-        $this->dispatch('signup-processed', $status);
-
-        if ($status === 'approved') {
-            $this->flashMessage('Signup request has been approved!');
-            return;
-        }
-
-        $this->flashMessage('Signup request has been rejected!');
+        $this->dispatch(
+            'show-toast',
+            [
+                'type' => 'error',
+                'title' => 'Signup request rejected'
+            ]
+        );
     }
 
     public function sortBy($field)

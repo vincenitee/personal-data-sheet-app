@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Middleware\EnsureIsActive;
 use App\Http\Middleware\EnsureIsApproved;
+use App\Http\Middleware\EnsurePdsCreationAllowed;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -20,7 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
-            'approved' => EnsureIsApproved::class
+            'approved' => EnsureIsApproved::class,
+            'check-pds-creation' => EnsurePdsCreationAllowed::class,
+            'active' => EnsureIsActive::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Training extends Model
 {
-    public function entry(){
+    protected $casts = [
+        'date_from' => 'date',
+        'date_to' => 'date',
+    ];
+
+    public function entry()
+    {
         return $this->belongsTo(PdsEntry::class);
     }
 }

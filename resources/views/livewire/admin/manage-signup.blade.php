@@ -35,7 +35,12 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
-                    <th>Status</th>
+                    <th wire:click="sortBy('status')" style="cursor: pointer;">
+                        Status
+                        @if ($sortField === 'status')
+                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                    </th>
                     <th wire:click="sortBy('created_at')" style="cursor: pointer;">
                         Date Registered
                         @if ($sortField === 'created_at')
@@ -47,30 +52,57 @@
             </thead>
 
             <tbody>
-                @forelse ($this->users as $row)
+                @forelse ($this->users as $user)
                     <tr>
-                        <td class="align-middle">{{ $row->id }}</td>
+                        <td class="align-middle">{{ $user->id }}</td>
                         <td class="align-middle">
-                            {{ $row->first_name }}
-                            {{ optional($row->middle_name)[0] ? optional($row->middle_name)[0] . '.' : '' }}
-                            {{ $row->last_name }}
+                            {{ $user->first_name }}
+                            {{ optional($user->middle_name)[0] ? optional($user->middle_name)[0] . '.' : '' }}
+                            {{ $user->last_name }}
                         </td>
-                        <td class="align-middle">{{ $row->email }}</td>
-                        <td class="align-middle">{{ ucwords($row->sex) }}</td>
+                        <td class="align-middle">{{ $user->email }}</td>
+                        <td class="align-middle">{{ ucwords($user->sex) }}</td>
                         <td class="align-middle">
-                            <span class="badge bg-warning">{{ ucwords($row->status) }}</span>
+                            <span
+                                class="badge
+                                {{ $user->status === 'approved' ? 'bg-success' : ($user->status === 'rejected' ? 'bg-danger' : 'bg-warning') }}">
+                                {{ ucwords($user->status) }}
+                            </span>
+
                         </td>
-                        <td class="align-middle">{{ $row->created_at->format('M d, Y') }}</td>
+                        <td class="align-middle">{{ $user->created_at->format('M d, Y') }}</td>
+                        {{-- <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots text-secondary"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-start">
+                                    <li>
+                                        <button @click="acceptSignup({{ $user->id }})" wire:loading.attr="disabled"
+                                            class="dropdown-item" @if ($user->status === 'approved') disabled @endif>
+                                            <span>Accept</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @click="rejectSignup({{ $user->id }})" wire:loading.attr="disabled"
+                                            class="dropdown-item"
+                                            @if ($user->status === 'rejected') disabled @endif>
+                                            <span>Reject</span>
+                                        </button>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </td> --}}
                         <td class="align-middle text-center">
                             <div class="d-flex justify-content-center gap-2">
-                                <button
-                                    @click="showAlert()"
-                                    wire:loading.attr="disabled" class="btn btn-sm btn-success">
+                                <button @click="acceptSignup({{ $user->id }})" wire:loading.attr="disabled"
+                                    class="btn btn-sm btn-success" @if ($user->status === 'approved') disabled @endif>
                                     <i class="bi bi-check"></i>
                                     <span class="d-none d-md-inline-block">Accept</span>
                                 </button>
-                                <button
-                                    wire:loading.attr="disabled" class="btn btn-sm btn-danger">
+                                <button @click="rejectSignup({{ $user->id }})" wire:loading.attr="disabled"
+                                    class="btn btn-sm btn-outline-danger" @if ($user->status === 'rejected') disabled @endif>
                                     <i class="bi bi-x"></i>
                                     <span class="d-none d-md-inline-block">Reject</span>
                                 </button>
@@ -80,7 +112,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">No new signups</td>
+                        <td colspan="7" class="text-center"><i class="bi bi-person-x"></i> No new signups</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -93,31 +125,3 @@
     </div>
 
 </div>
-
-@script
-    <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-
-        $wire.on('signup-processed', (status) => {
-            if(status === 'approved'){
-                alert('approved');
-                return;
-            }
-
-            Toast.fire({
-                icon: status === 'approved' ? "success" : "error",
-                title: `The signup request has been ${status}.`
-            });
-        })
-    </script>
-@endscript

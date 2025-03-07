@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationalBackground extends Model
 {
+    protected $cast = [
+        'attendance_from' => 'date:m/d/Y',
+        'attendance_to' => 'date:m/d/Y',
+    ];
+
     public function entry()
     {
-        return $this->belongsTo(PdsEntry::class);
+        return $this->belongsTo(PdsEntry::class, 'pds_entry_id');
     }
 }

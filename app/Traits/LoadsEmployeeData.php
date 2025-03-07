@@ -36,26 +36,33 @@ trait LoadsEmployeeData
 
     protected function loadAddresses($residential, $permanent)
     {
-        $this->residential = [
-            'region' => $residential?->region_id,
-            'province' => $residential?->province_id,
-            'municipality' => $residential?->municipality_id,
-            'barangay' => $residential?->barangay_id,
-            'subdivision' => $residential?->subdivision,
-            'street' => $residential?->street,
-            'house' => $residential?->house_no,
-            'zip' => $residential?->zip,
-        ];
+        // Validate input types
+        $residential = $residential ?? collect();
+        $permanent = $permanent ?? collect();
 
-        $this->permanent = [
-            'region' => $permanent?->region_id,
-            'province' => $permanent?->province_id,
-            'municipality' => $permanent?->municipality_id,
-            'barangay' => $permanent?->barangay_id,
-            'subdivision' => $permanent?->subdivision,
-            'street' => $permanent?->street,
-            'house' => $permanent?->house_no,
-            'zip' => $permanent?->zip,
+        // dd($residential);
+        // Map address fields with default values
+        $this->residential = $this->mapAddressFields($residential);
+        $this->permanent = $this->mapAddressFields($permanent);
+    }
+
+    protected function mapAddressFields($address)
+    {
+        // Ensure $address is a collection
+        if (!$address instanceof \Illuminate\Support\Collection) {
+            $address = collect($address);
+        }
+
+        // Map address fields with default values
+        return [
+            'region' => $address->get('region_id'),
+            'province' => $address->get('province_id'),
+            'municipality' => $address->get('municipality_id'),
+            'barangay' => $address->get('barangay_id'),
+            'subdivision' => $address->get('subdivision', ''),
+            'street' => $address->get('street', ''),
+            'house' => $address->get('house_no', ''),
+            'zip' => $address->get('zip', ''),
         ];
     }
 
@@ -233,10 +240,11 @@ trait LoadsEmployeeData
 
     protected function loadQuestionResponses($responses)
     {
+        // dd($responses);
         $questionnaireFields = [
             'has_third_degree_relative',
             'has_fourth_degree_relative',
-            'fourth_degree_details',
+            'fourth_degree_relative',
             'has_admin_case',
             'admin_case_details',
             'has_criminal_charge',
@@ -282,7 +290,7 @@ trait LoadsEmployeeData
     {
         // if(is_null($attachments)) return;
         // dd();
-        if(is_null($attachments)) return;
+        if (is_null($attachments)) return;
 
         $attachmentFields = [
             'passport_photo',
@@ -296,7 +304,7 @@ trait LoadsEmployeeData
             'employement_certificate',
         ];
 
-        foreach($attachmentFields as $field){
+        foreach ($attachmentFields as $field) {
             $this->{$field} = $attachments->{$field};
         }
     }

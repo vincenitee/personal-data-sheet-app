@@ -38,10 +38,13 @@ class WorkExperienceService
                 $processedKeys[] = $key;
 
                 if($existingRecords->has($key)){
+                    // dump($existingRecords);
                     $existingRecords[$key]->update($entry);
                 } else{
                     WorkExperience::create($entry);
                 }
+
+                // dump($entry);
             }
 
             if(!empty($pdsEntryId)){

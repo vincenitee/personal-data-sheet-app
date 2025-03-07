@@ -31,8 +31,8 @@ window.confirmDelete = function (type, index) {
 window.confirmSubmission = function () {
     confirmAction({
         title: "Submit Entry?",
-        text: "Are you sure you want to submit this entry for review? You won't be able to edit it after submission.",
-        icon: "question",
+        text: "Please review your information carefully before submitting. Once submitted, you won't be able to make further changes.",
+        icon: "warning",
         confirmButtonText: "Yes, submit it!",
         cancelButtonText: "Cancel",
         onConfirm: () => {
@@ -40,6 +40,47 @@ window.confirmSubmission = function () {
         }
     });
 };
+
+window.acceptSignup = function (userId) {
+    confirmAction({
+        title: 'Confirm Signup Approval',
+        text: `Are you sure you want to approve the signup request for User #${userId}?`,
+        icon: 'question',
+        confirmButtonText: 'Yes, approve request',
+        cancelButton: 'Cancel',
+        onConfirm: () => {
+            Livewire.dispatch('signup-accepted', { userId });
+        }
+    });
+}
+
+window.rejectSignup = function (userId) {
+    confirmAction({
+        title: "Reject Signup Request?",
+        text: `Are you sure you want to reject the signup request for User #${userId}? This action cannot be undone.`,
+        icon: "question",
+        confirmButtonText: "Yes, reject it",
+        cancelButtonText: "Cancel",
+        onConfirm: () => {
+            Livewire.dispatch('signup-rejected', { userId });
+        }
+    });
+};
+
+
+window.toggleUserStatus = function (userId, currentStatus) {
+    confirmAction({
+        title: `${currentStatus ? 'Activate' : 'Deactivate'} this user?`,
+        text: `Are you sure you want to ${currentStatus ? 'activate' : 'deactivate'} User #${userId}? You can change this status later if needed.`,
+        icon: "question",
+        confirmButtonText: `Yes, ${currentStatus ? 'activate' : 'deactivate'} it`,
+        cancelButtonText: "Cancel",
+        onConfirm: () => {
+            Livewire.dispatch('toggle-user-status', { userId, currentStatus });
+        }
+    });
+
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const Toast = Swal.mixin({
@@ -56,10 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         didOpen: (toast) => {
             toast.style.fontSize = "0.875rem";
             toast.style.minHeight = "auto";
+            toast.style.marginTop = "50px"; // Adjust this value to move it lower
             toast.onmouseenter = Swal.stopTimer;
             toast.onmouseleave = Swal.resumeTimer;
         }
     });
+
 
     Livewire.on('show-alert', (data) => {
         Swal.fire(data[0]);
@@ -69,6 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         Toast.fire({
             icon: "success",
             title: "Draft Saved"
+        });
+    });
+
+    Livewire.on('show-toast', (data) => {
+        Toast.fire({
+            icon: data[0].type,
+            title: data[0].title
         });
     });
 

@@ -46,19 +46,3 @@
         </div>
     </div>
 </div>
-
-<style>
-/* Optional: Smooth transitions */
-.badge {
-    transition: all 0.2s ease-in-out;
-}
-
-.alert {
-    border-left: 4px solid var(--bs-primary);
-}
-
-/* Optional: Custom shadow for better depth */
-.card {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-}
-</style>

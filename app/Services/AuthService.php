@@ -23,9 +23,12 @@ class AuthService
 
     protected function redirectUser($user)
     {
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin'))
+        {
             return redirect()->route('admin.dashboard')->with('message', 'Welcome Admin!');
-        } else if ($user->hasRole('employee')) {
+        }
+        else if ($user->hasRole('employee'))
+        {
             return redirect()->route('employee.dashboard')->with('message', 'Welcome Employee!');
         }
 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Region;
+use App\Models\Address;
 use Livewire\Component;
 use App\Models\Barangay;
 use App\Models\Province;
@@ -46,8 +47,8 @@ class AddressPicker extends Component
         'house' => null,
         'zip' => null,
     ];
-
-    public function mount()
+    
+    public function mount(Address $address)
     {
         $this->regions = Region::all();
 
@@ -152,7 +153,6 @@ class AddressPicker extends Component
         ];
 
     }
-
 
     public function render()
     {

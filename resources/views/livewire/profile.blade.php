@@ -22,7 +22,6 @@
 
                 <div class="col-md-6 col-lg-5">
                     <x-forms.select label="Sex" name="sex">
-                        <option value="">Choose an option</option>
                         @foreach ($sexOptions as $key => $value)
                             <option
                                 value="{{ $key }}"
@@ -55,8 +54,8 @@
 
     <div class="col-12">
         <div class="card card-body">
-            <h6 style="margin-bottom: 0;">Personal Information</h6>
-            <p class="small text-muted">Update your personal information</p>
+            <h6 style="margin-bottom: 0;">Security Information</h6>
+            <p class="small text-muted">Update your security information</p>
 
             <x-forms.form method="POST" class="row g-3" wire:submit="saveSecurityInformation">
                 <div class="col-md-6 col-lg-5">

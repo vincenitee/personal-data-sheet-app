@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PersonalInformation extends Model
 {
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+
     public function entry(): BelongsTo
     {
-        return $this->belongsTo(PdsEntry::class);
+        return $this->belongsTo(PdsEntry::class, 'pds_entry_id');
     }
 
     public function addresses(): HasMany

@@ -41,7 +41,6 @@
 
                         <div class="col-md-6 col-lg-4">
                             <x-forms.select label="Sex" name="sex" model="form.sex">
-                                <option value="">Choose an option</option>
                                 @foreach (['male' => 'Male', 'female' => 'Female'] as $index => $value)
                                     <option value="{{ $index }}"> {{ $value }} </option>
                                 @endforeach
@@ -103,11 +102,11 @@
                             <div class="mt-3">
                                 <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 0;">
                                     <span>Already have an account?</span>
-                                    <a href="{{ route('login') }}">Signin here</a>
+                                    <a href="{{ route('login') }}" wire:navigate.hover>Signin here</a>
                                 </p>
                                 <p class="text-muted" style="font-size: 0.9rem">
                                     <span>Forgot your password?</span>
-                                    <a href="{{ route('password.request') }}">Reset here</a>
+                                    <a href="{{ route('password.request') }}" wire:navigate.hover>Reset here</a>
                                 </p>
                             </div>
                         </div>

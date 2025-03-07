@@ -6,33 +6,40 @@
             [
                 'label' => 'School Name',
                 'placeholder' => 'Enter elementary school name',
-                'icon' => 'bi-building-fill',
+                'required' => false,
             ],
             [
                 'label' => 'Degree Earned ',
                 'placeholder' => 'e.g., Basic Education',
+                'required' => false,
             ],
             [
                 'label' => 'Attendance From',
                 'type' => 'date',
+                'required' => false,
+                'required' => false,
             ],
             [
                 'label' => 'Attendance To',
                 'type' => 'date',
+                'required' => false,
             ],
             [
                 'label' => 'Level Unit Earned',
                 'type' => 'number',
                 'placeholder' => 'e.g., 6 (enter the last completed level if not graduated)',
+                'required' => false,
             ],
             [
                 'label' => 'Year Graduated',
                 'type' => 'number',
                 'placeholder' => 'e.g., 2016',
+                'required' => false,
             ],
             [
                 'label' => 'Academic Honors',
                 'placeholder' => 'e.g., Valedictorian, With Honors',
+                'required' => false,
             ],
         ],
     ])
@@ -47,32 +54,39 @@
                 'label' => 'School Name',
                 'placeholder' => 'Enter high school name',
                 'icon' => 'bi-building-fill',
+                'required' => false,
             ],
             [
                 'label' => 'Degree Earned ',
                 'placeholder' => 'e.g., Junior High School',
+                'required' => false,
             ],
             [
                 'label' => 'Attendance From',
                 'type' => 'date',
+                'required' => false,
             ],
             [
                 'label' => 'Attendance To',
                 'type' => 'date',
+                'required' => false,
             ],
             [
                 'label' => 'Level Unit Earned',
                 'type' => 'number',
                 'placeholder' => 'e.g., 12 (enter the last completed level if not graduated)',
+                'required' => false,
             ],
             [
                 'label' => 'Year Graduated',
                 'type' => 'number',
                 'placeholder' => 'e.g., 2016',
+                'required' => false,
             ],
             [
                 'label' => 'Academic Honors',
                 'placeholder' => 'e.g., Valedictorian, With Honors',
+                'required' => false,
             ],
         ],
     ])
@@ -92,31 +106,38 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter vocational school name',
+                'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Automotive Servicing NC II',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance To',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
+                'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
                     'placeholder' => 'e.g., 2020',
+                'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., TESDA Scholar, With Distinction',
+                'required' => false,
                 ],
             ],
         ])
@@ -158,32 +179,39 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter college or university name',
+                'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Bachelor of Science in Computer Science',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance To',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
                     'placeholder' => 'e.g., 120 (enter the total units completed if not graduated)',
+                'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
                     'placeholder' => 'e.g., 2023',
+                'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., Cum Laude, Dean\'s Lister',
+                'required' => false,
                 ],
             ],
         ])
@@ -225,32 +253,39 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter graduate school or university name',
+                'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Master of Business Administration (MBA)',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Attendance To',
                     'type' => 'date',
+                'required' => false,
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
                     'placeholder' => 'e.g., 36 credit units (enter the total units completed if not graduated)',
+                'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
                     'placeholder' => 'e.g., 2025',
+                'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., With Distinction, Best Thesis Award',
+                'required' => false,
                 ],
             ],
         ])
@@ -278,3 +313,4 @@
         </div>
     @endslot
 </x-card>
+

@@ -2,6 +2,7 @@
 @import './tables.css';
 @import './sidebar.css';
 @import './buttons.css';
+@import './timeline.css';
 
 /* General Styles */
 body {
@@ -13,9 +14,15 @@ body {
 }
 
 .chevron-icon {
-    transition: transform 0.2s ease-in-out;
+transition: transform 0.2s ease-in-out;
 }
 
 .chevron-icon.rotated {
     transform: rotate(180deg);
 }
+
+.custom-toast {
+    top: 20px !important; /* Adjust this value as needed */
+    right: 10px !important;
+}
+

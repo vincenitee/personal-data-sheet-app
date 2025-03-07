@@ -2,7 +2,7 @@
 <aside
     class="bg-dark text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
     :class="{ 'w-0': !open, 'w-250': open }"
-    @click.outside="if (! event.target.closest('#sidebar-toggler')) open = false"
+    @click.outside="if (!event.target.closest('#sidebar-toggler')) open = false"
     id="sidebar">
     {{-- Logo and Brand --}}
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-secondary" style="height: 80px;">
@@ -26,8 +26,8 @@
                 <i class="bi bi-file-plus me-1" style="font-size: 1.1rem;"></i>
                 Add New Entry</a>
         </li>
-        <li class="nav-item {{ request()->is('employee/history') ? 'active' : '' }}">
-            <a href="" class="nav-link text-white">
+        <li class="nav-item {{ request()->is('employee/submission-logs') ? 'active' : '' }}">
+            <a wire:navigate.hover href="{{ url(route('employee.submission.logs')) }}"  class="nav-link text-white">
                 <i class="bi bi-clock me-1" style="font-size: 1.1rem;"></i>
                 Submission Logs</a>
         </li>

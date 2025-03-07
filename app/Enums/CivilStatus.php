@@ -9,13 +9,27 @@ enum CivilStatus: string
     case WIDOWED = 'widowed';
     case SEPARATED = 'separated';
 
-    public static function options(): array
+
+    /**
+     * Get an array of enum values.
+     *
+     * @return array
+     */
+    public static function values(): array
     {
-        return [
-            self::SINGLE->value => 'Single',
-            self::MARRIED->value => 'Married',
-            self::WIDOWED->value => 'Widowed',
-            self::SEPARATED->value => 'Separated',
-        ];
+        return array_column(self::cases(), 'value');
+    }
+
+    /**
+     * Get an associative array of enum values with labels.
+     *
+     * @return array
+     */
+    public static function labels(): array
+    {
+        return array_combine(
+            array_map(fn(self $case) => $case->value, self::cases()), // Extract values
+            array_map(fn(self $case) => ucfirst($case->value), self::cases()) // Format labels
+        );
     }
 }

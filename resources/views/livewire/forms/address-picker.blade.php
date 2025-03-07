@@ -8,7 +8,6 @@
 
             <div class="col-lg-3 col-md-4">
                 <x-forms.select name="residential.region" wire:model.live="residential.region" label="Region">
-                    <option value="">Choose an option</option>
                     @foreach ($regions as $region)
                         <option value="{{ $region['id'] }}">{{ $region['name'] }}</option>
                     @endforeach
@@ -19,7 +18,6 @@
             <div class="col-lg-3 col-md-4">
                 <x-forms.select name="residential.province" wire:model.live="residential.province" label="Province"
                     :disabled="empty($residential['provinces'])">
-                    <option value="">Choose a province</option>
                     @foreach ($residential['provinces'] as $province)
                         <option value="{{ $province['id'] }}">
                             {{ $province['name'] }}
@@ -31,7 +29,6 @@
             <div class="col-lg-3 col-md-4">
                 <x-forms.select name="residential.municipality" wire:model.live="residential.municipality"
                     label="Municipality" :disabled="empty($residential['municipalities'])">
-                    <option value="">Choose a municipality</option>
                     @foreach ($residential['municipalities'] as $municipality)
                         <option value="{{ $municipality['id'] }}">
                             {{ $municipality['name'] }}
@@ -43,7 +40,6 @@
             <div class="col-lg-3 col-md-4">
                 <x-forms.select name="residential.barangay" wire:model.live="residential.barangay" label="Barangay"
                     :disabled="empty($residential['barangays'])">
-                    <option value="">Choose a barangay</option>
                     @foreach ($residential['barangays'] as $barangay)
                         <option value="{{ $barangay['id'] }}">
                             {{ strtoupper($barangay['name']) }}
@@ -102,7 +98,6 @@
             <div wire:loading.remove wire:target="isSameAddress" class="row g-3">
                 <div class="col-lg-3 col-md-4">
                     <x-forms.select name="permanent.region" wire:model.live="permanent.region" label="Region">
-                        <option value="">Choose an option</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region['id'] }}"
                                 {{ $permanent['region'] == $region['id'] ? 'selected' : '' }}>
@@ -115,7 +110,6 @@
                 <div class="col-lg-3 col-md-4">
                     <x-forms.select name="permanent.province" wire:model.live="permanent.province" label="Province"
                         :disabled="empty($permanent['provinces'])">
-                        <option value="">Choose a province</option>
                         @foreach ($permanent['provinces'] as $province)
                             <option value="{{ $province['id'] }}"
                                 {{ $permanent['province'] == $province['id'] ? 'selected' : '' }}>
@@ -128,7 +122,6 @@
                 <div class="col-lg-3 col-md-4">
                     <x-forms.select name="permanent.municipality" wire:model.live="permanent.municipality"
                         label="Municipality" :disabled="empty($permanent['municipalities'])">
-                        <option value="">Choose a municipality</option>
                         @foreach ($permanent['municipalities'] as $municipality)
                             <option value="{{ $municipality['id'] }}"
                                 {{ $permanent['municipality'] == $municipality['id'] ? 'selected' : '' }}>
@@ -141,7 +134,6 @@
                 <div class="col-lg-3 col-md-4">
                     <x-forms.select name="permanent.barangay" wire:model.live="permanent.barangay" label="Barangay"
                         :disabled="empty($permanent['barangays'])">
-                        <option value="">Choose a barangay</option>
                         @foreach ($permanent['barangays'] as $barangay)
                             <option value="{{ $barangay['id'] }}"
                                 {{ $permanent['barangay'] == $barangay['id'] ? 'selected' : '' }}>

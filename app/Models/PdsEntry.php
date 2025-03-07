@@ -33,7 +33,7 @@ class PdsEntry extends Model
 
     public function educationalBackgrounds()
     {
-        return $this->hasMany(EducationalBackground::class);
+        return $this->hasMany(EducationalBackground::class, 'pds_entry_id');
     }
 
     public function eligibilities()
@@ -79,5 +79,10 @@ class PdsEntry extends Model
     public function attachment()
     {
         return $this->hasOne(PdsAttachment::class);
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
     }
 }

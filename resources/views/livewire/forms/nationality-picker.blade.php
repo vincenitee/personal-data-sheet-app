@@ -5,30 +5,27 @@
 
 >
     <div class="col-lg-3 col-md-4">
-            <x-forms.select
-                wire:model.live="citizenship"
-                name="citizenship"
-                label="Citizenship"
-                wire:ignore
-            >
-                <option value="">Choose an option</option>
-
-                @foreach ($citizenships as $key => $label)
-                    <option value="{{ $key }}" >
-                        {{ $label }}
-                    </option>
-                @endforeach
-            </x-forms.select>
-        </div>
+        <x-forms.select
+            wire:model.live="citizenship"
+            name="citizenship"
+            label="Citizenship"
+            wire:ignore
+        >
+            @foreach ($citizenships as $key => $label)
+                <option value="{{ $key }}" >
+                    {{ $label }}
+                </option>
+            @endforeach
+        </x-forms.select>
+    </div>
 
         <div class="col-lg-3 col-md-4">
             <x-forms.select
-            wire:model.live="method"
+                wire:model.live="method"
                 name="method"
                 label="Citizenship By"
                 wire:ignore
             >
-                <option value="">Choose an option</option>
                 @foreach ($citizenshipMethods as $key => $label)
                     <option value="{{ $key }}">
                         {{ $label }}

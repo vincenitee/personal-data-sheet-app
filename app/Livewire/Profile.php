@@ -106,7 +106,7 @@ class Profile extends Component
     public function render()
     {
         return view('livewire.profile', [
-            'sexOptions' => Sex::options(),
+            'sexOptions' => Sex::labels(),
         ])
             ->extends('layouts.app')
             ->title('Dashboard')

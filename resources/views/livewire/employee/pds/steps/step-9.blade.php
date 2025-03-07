@@ -21,7 +21,7 @@
 
             {{-- Details --}}
             <div class="col-md-6 col-12">
-                <x-forms.textarea model="fourth_degree_details" name="fourth_degree_details" />
+                <x-forms.textarea model="fourth_degree_relative" name="fourth_degree_relative" />
             </div>
         </x-forms.question-group>
 
@@ -47,7 +47,6 @@
                 {{-- Status --}}
                 <x-forms.select label="Status of Case/s" model="criminal_charge_status" name="criminal_charge_status"
                     :required="false">
-                    <option value="">Choose an option</option>
                     <option value="under_investigation">Under Investigation</option>
                     <option value="filed_in_court">Filed in Court</option>
                     <option value="pending_arrest">Pending Arrest</option>

@@ -45,7 +45,7 @@ trait HasFormSteps
         5 => 'Detail your professional work history, including roles, responsibilities, and employment dates.',
         6 => 'List your voluntary service experiences, including the nature of work and the organizations you contributed to',
         7 => 'Document training programs and development interventions you\'ve attended, including titles, dates, and sponsors.',
-        8 => 'Highlight your special skills, hobbies, non-academic achievements, and memberships in organizations.',
+        8 => 'Highlight your special skills, non-academic achievements, and memberships in organizations.',
         9 => 'Provide responses to important questions, including legal disclosures and family-related information.',
         10 => 'I declare under oath that I have personally accomplished this Personal Data Sheet which is a true, correct and complete statement...',
     ];
@@ -89,7 +89,6 @@ trait HasFormSteps
         // Save the step count to session
         session(['current_step' => $this->currentStep]);
     }
-
 
     public function getStepDescription()
     {
@@ -253,38 +252,40 @@ trait HasFormSteps
             9 => [
                 'has_third_degree_relative' => ['boolean'],
                 'has_fourth_degree_relative' => ['boolean'],
-                'fourth_degree_details' => ['nullable', 'required_if:has_fourth_degree_relative,true', 'string', 'max:255'],
+                'fourth_degree_relative' => ['nullable', 'required_if:has_fourth_degree_relative,true', 'string', 'max:255'], // ✅ Fix
 
                 'has_admin_case' => ['boolean'],
-                'admin_case_details' => ['nullable', 'required_if:has_admin_case,true', 'string', 'max:500'],
+                'admin_case_details' => ['nullable', 'required_if:has_admin_case,true', 'string', 'max:500'], // ✅ Fix
+
                 'has_criminal_charge' => ['boolean'],
-                'criminal_charge_date' => ['nullable', 'required_if:has_criminal_charge,true', 'date', 'before_or_equal:today'],
-                'criminal_charge_status' => ['nullable', 'required_if:has_criminal_charge,true', 'string', 'max:255'],
+                'criminal_charge_date' => ['nullable', 'required_if:has_criminal_charge,true', 'date', 'before_or_equal:today'], // ✅ Fix
+                'criminal_charge_status' => ['nullable', 'required_if:has_criminal_charge,true', 'string', 'max:255'], // ✅ Fix
 
                 'has_criminal_conviction' => ['boolean'],
-                'criminal_conviction_details' => ['nullable', 'required_if:has_criminal_conviction,true', 'string', 'max:500'],
+                'criminal_conviction_details' => ['nullable', 'required_if:has_criminal_conviction,true', 'string', 'max:500'], // ✅ Fix
 
                 'has_separation_from_service' => ['boolean'],
-                'separation_details' => ['nullable', 'required_if:has_separation_from_service,true', 'string', 'max:500'],
+                'separation_details' => ['nullable', 'required_if:has_separation_from_service,true', 'string', 'max:500'], // ✅ Fix
 
                 'is_election_candidate' => ['boolean'],
-                'election_details' => ['nullable', 'required_if:is_election_candidate,true', 'string', 'max:255'],
+                'election_details' => ['nullable', 'required_if:is_election_candidate,true', 'string', 'max:255'], // ✅ Fix
 
                 'has_resigned_for_election' => ['boolean'],
-                'resignation_details' => ['nullable', 'required_if:has_resigned_for_election,true', 'string', 'max:255'],
+                'resignation_details' => ['nullable', 'required_if:has_resigned_for_election,true', 'string', 'max:255'], // ✅ Fix
 
                 'is_immigrant' => ['boolean'],
-                'immigrant_country' => ['nullable', 'required_if:is_immigrant,true', 'string', 'max:100'],
+                'immigrant_country' => ['nullable', 'required_if:is_immigrant,true', 'string', 'max:100'], // ✅ Fix
 
                 'is_indigenous' => ['boolean'],
-                'indigenous_details' => ['nullable', 'required_if:is_indigeneous,true', 'string', 'max:100'],
+                'indigenous_details' => ['nullable', 'required_if:is_indigenous,true', 'string', 'max:100'], // ✅ Fix (Corrected key name)
 
                 'is_disabled' => ['boolean'],
-                'disabled_person_id' => ['nullable', 'required_if:is_disabled,true', 'string', 'max:50'],
+                'disabled_person_id' => ['nullable', 'required_if:is_disabled,true', 'string', 'max:50'], // ✅ Fix
 
                 'is_solo_parent' => ['boolean'],
-                'solo_parent_id' => ['nullable', 'required_if:is_solo_parent,true', 'string', 'max:50'],
+                'solo_parent_id' => ['nullable', 'required_if:is_solo_parent,true', 'string', 'max:50'], // ✅ Fix
             ],
+
             10 => [
                 'passport_photo' => $this->isFileUpload($this->passport_photo)
                     ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
@@ -559,7 +560,7 @@ trait HasFormSteps
             'organizations.*.organization.max' => 'The organization must not exceed 100 characters.',
 
             // ------------------- Step 9: Additional Questions -------------------
-            'fourth_degree_details.required_if' => 'Fourth degree relative details are required when selected.',
+            'fourth_degree_relative.required_if' => 'Fourth degree relative details are required when selected.',
             'admin_case_details.required_if' => 'Administrative case details are required when selected.',
             'criminal_charge_date.required_if' => 'Please provide the date of the criminal charge if you have one.',
             'criminal_charge_date.date' => 'The criminal charge date must be a valid date.',

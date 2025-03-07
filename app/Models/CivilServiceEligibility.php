@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CivilServiceEligibility extends Model
 {
-    public function entry(){
+    protected $casts = [
+        'exam_date' => 'date',
+        'license_validity' => 'date',
+    ];
+    
+    public function entry()
+    {
         return $this->belongsTo(PdsEntry::class);
     }
 }

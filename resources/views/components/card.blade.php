@@ -1,7 +1,7 @@
 @props([
     'title' => '',
     'badgeLabel' => 'Required',
-    'badgeColor' => 'light',
+    'badgeColor' => 'primary',
     'isRequired' => true,
     'collapsed' => false,
 ])
@@ -16,7 +16,7 @@
 
 <div x-data="{ isOpen: {{ $collapsed ? 'false' : 'true' }} }" class="card border-0 shadow-sm mb-2">
     {{-- Card Header --}}
-    <div class="card-header bg-{{ $badgeColor }} text-secondary py-3 cursor-pointer" @click="isOpen = !isOpen"
+    <div class="card-header bg-{{ $badgeColor }} text-light py-3 cursor-pointer" @click="isOpen = !isOpen"
         role="button">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-0">

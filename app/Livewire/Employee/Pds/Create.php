@@ -2,16 +2,18 @@
 
 namespace App\Livewire\Employee\Pds;
 
+use App\Enums\BloodType;
 use Exception;
 use App\Enums\Sex;
 use Livewire\Component;
 use App\Models\PdsEntry;
 use App\Enums\CivilStatus;
+use App\Models\Submission;
 use App\Enums\GovernmentId;
 use Livewire\Attributes\On;
 use App\Enums\TrainingTypes;
-use App\Traits\HasFormSteps;
 use App\Services\PdsService;
+use App\Traits\HasFormSteps;
 use App\Services\SkillService;
 use App\Traits\HandlesPdsData;
 use App\Enums\EmploymentStatus;
@@ -26,6 +28,8 @@ use App\Services\ChildrenService;
 use App\Services\TrainingService;
 use App\Traits\HasDynamicEntries;
 use App\Traits\LoadsEmployeeData;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Services\RecognitionService;
 use Illuminate\Support\Facades\Auth;
 use App\Services\OrganizationService;
@@ -178,7 +182,7 @@ class Create extends Component
     // Questionnaires
     public bool $has_third_degree_relative = false;
     public bool $has_fourth_degree_relative = false;
-    public $fourth_degree_details = null;
+    public $fourth_degree_relative = null;
 
     public bool $has_admin_case = false;
     public $admin_case_details = null;
@@ -326,14 +330,17 @@ class Create extends Component
                 'organizations',
                 'question',
                 'attachment'
-
             ])
-            ->firstOrCreate(
+            ->firstOrNew(
                 ['status' => SubmissionStatus::DRAFT],
                 ['is_current' => false]
             );
 
-        if ($entry) {
+        // dd($entry->personalInformation->addresses);
+
+        if (!$entry->exists) {
+            $entry->save();
+        } else {
             $this->loadEntryData($entry);
         }
 
@@ -342,10 +349,20 @@ class Create extends Component
 
     protected function loadUserAddresses($addresses)
     {
+        // Work out on this later
+        // dd($addresses->get(1, collect()));
+        // Ensure $addresses is a collection and has the expected structure
+        if (!$addresses instanceof Collection) {
+            $addresses = collect($addresses);
+        }
+
+        // Load residential and permanent addresses
         $this->loadAddresses(
-            residential: $addresses?->get(1, null),
-            permanent: $addresses?->get(0, null)
+            residential: $addresses->get(1, collect()), // Default to empty collection if index 1 is missing
+            permanent: $addresses->get(0, collect())   // Default to empty collection if index 0 is missing
         );
+
+
     }
 
     protected function loadEmployeeParentsInformation($parents)
@@ -561,12 +578,14 @@ class Create extends Component
 
             return true; // Indicate success
         } catch (Exception $e) {
+
             \Log::error('Failed to save draft', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
+
             $this->flashMessage('Failed to save draft: ' . $e->getMessage(), 'error');
 
             return false; // Indicate failure
@@ -576,20 +595,77 @@ class Create extends Component
     #[On('entry-submitted')]
     public function save()
     {
+        $this->validate($this->rules()[$this->currentStep]);
+        // Fetch the current draft entry for the authenticated user
         $entry = $this->user->entries()
             ->where('status', SubmissionStatus::DRAFT)
             ->first();
 
-        $status = $this->pdsService->updateStatus($entry->id, SubmissionStatus::UNDER_REVIEW);
+        // Check if a draft entry exists
+        if (!$entry) {
+            $this->dispatchAlertMessage(
+                "Error",
+                "No draft entry found to submit.",
+                "error"
+            );
+            return;
+        }
 
-        if ($status) {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Update the status of the entry to UNDER_REVIEW
+            $status = $this->pdsService->updateStatus($entry->id, SubmissionStatus::UNDER_REVIEW);
+
+            if (!$status) {
+                throw new \Exception("Failed to update entry status.");
+            }
+
+            // Fetch the latest submission version
+            $latestSubmission = Submission::where('pds_entry_id', $entry->id)
+                ->orderBy('version', 'desc')
+                ->first();
+
+            $version = $latestSubmission ? $latestSubmission->version + 1 : 1;
+
+            // Create a new submission record
+            Submission::create([
+                'user_id' => Auth::user()->id,
+                'pds_entry_id' => $entry->id,
+                'version' => $version,
+                'status' => SubmissionStatus::UNDER_REVIEW,
+                'remarks' => 'Initial Submission', // You can make this dynamic if needed
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            // Reset session variables on success
+            session(['current_step' => 1]);
+            session(['highest_step_reached' => 0]);
+
+            // Display success message and redirect
             $this->dispatchAlertMessage(
                 "Success",
-                "Your entry has been submitted for review",
+                "Your entry has been submitted for review.",
                 "success"
             );
 
-            // Redirect to the submission logs
+            return redirect()->route('employee.submission.logs');
+        } catch (\Exception $e) {
+            // Roll back the transaction on error
+            DB::rollBack();
+
+            // Display error message
+            $this->dispatchAlertMessage(
+                "Error",
+                "Failed to submit your entry. Please try again.",
+                "error"
+            );
+
+            // Log the error for debugging
+            logger()->error('Entry submission failed: ' . $e->getMessage());
         }
     }
 
@@ -723,8 +799,9 @@ class Create extends Component
     protected function getOptions()
     {
         return [
-            'sexOptions' => Sex::options(),
-            'civilStatusOptions' => CivilStatus::options(),
+            'sexOptions' => Sex::labels(),
+            'civilStatusOptions' => CivilStatus::labels(),
+            'bloodTypeOptions' => BloodType::labels(),
             'employementStatusOptions' => EmploymentStatus::options(),
             'trainingOptions' => TrainingTypes::options(),
             'criminalCaseOptions' => CriminalCaseStatus::options(),

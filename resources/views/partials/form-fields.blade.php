@@ -80,7 +80,6 @@
         @if ($isSelect)
             <!-- Render select input -->
             <x-forms.select :model="$inputAttributes['model']" :name="$inputAttributes['name']" :label="$inputAttributes['label']" :required="$inputAttributes['required']">
-                <option value="">Choose an option</option>
                 @foreach ($field['options'] as $key => $label)
                     <option value="{{ $key }}">{{ $label }} </option>
                 @endforeach

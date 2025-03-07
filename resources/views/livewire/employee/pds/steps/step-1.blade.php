@@ -1,14 +1,6 @@
-    {{-- Basic Information --}}
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="list-group">
-            @foreach ($errors->all() as $error)
-                <li class="list-group-item text-danger">{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+{{-- Basic Information --}}
 
+{{-- @dump($bloodTypeOptions) --}}
 <x-card
     title="Basic Information"
     icon="bi-person"
@@ -22,6 +14,7 @@
             ],
             [
                 'label' => 'Middle Name',
+                'required' => false,
             ],
             [
                 'label' => 'Last Name',
@@ -50,15 +43,17 @@
             [
                 'label' => 'Height',
                 'type' => 'number',
+                'placeholder' => 'Enter your height in meters'
             ],
             [
                 'label' => 'Weight',
                 'type' => 'number',
+                'placeholder' => 'Enter your weight in kilograms'
             ],
             [
                 'label' => 'Blood Type',
                 'type' => 'select',
-                'options' => ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+                'options' => $bloodTypeOptions,
                 'required' => false,
             ],
         ]

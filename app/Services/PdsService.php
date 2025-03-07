@@ -9,6 +9,7 @@ use App\Repositories\Eloquent\PdsRepository;
 class PdsService
 {
     protected $pdsRepository;
+
     public function __construct(
         PdsRepository $pdsRepository
     ) {

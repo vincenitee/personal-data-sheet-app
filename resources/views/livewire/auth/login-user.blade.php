@@ -2,6 +2,7 @@
     <div class="row h-100">
         <div class="col-lg-4 col-md-11 m-auto">
             <div class="card p-4 card-body shadow">
+
                 <x-forms.form wire:submit="submit" method="POST">
                     {{-- Logo and Text --}}
                     @if(session('flash'))
@@ -32,7 +33,7 @@
                         </div>
                     </div>
 
-                    <x-forms.button class="w-100">
+                    <x-forms.button @click="$wire.submit()" class="w-100">
                         <span>Sign in</span>
                         <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading wire:target="submit">
                             <span class="sr-only"></span>
@@ -42,11 +43,11 @@
                     <div class="mt-3">
                         <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 0;">
                             <span>Don't have an account?</span>
-                            <a href="{{ route('register') }}">Register here</a>
+                            <a href="{{ route('register') }}" wire:navigate.hover>Register here</a>
                         </p>
                         <p class="text-muted" style="font-size: 0.9rem">
                             <span>Forgot your password?</span>
-                            <a href="{{ route('password.request') }}">Reset here</a>
+                            <a href="{{ route('password.request') }}" wire:navigate.hover>Reset here</a>
                         </p>
                     </div>
                 </x-forms.form>

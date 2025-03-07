@@ -8,27 +8,35 @@
         'fields' => [
             [
                 'label' => 'First Name',
+                'required' => false,
             ],
             [
                 'label' => 'Middle Name',
+                'required' => false,
             ],
             [
                 'label' => 'Last Name',
+                'required' => false,
             ],
             [
                 'label' => 'Suffix',
+                'required' => false,
             ],
             [
                 'label' => 'Occupation',
+                'required' => false,
             ],
             [
                 'label' => 'Employer',
+                'required' => false,
             ],
             [
                 'label' => 'Business Address',
+                'required' => false,
             ],
             [
                 'label' => 'Telephone No',
+                'required' => false,
             ],
         ]
     ])
@@ -47,12 +55,14 @@
             ],
             [
                 'label' => 'Middle Name',
+                'required' => false,
             ],
             [
                 'label' => 'Last Name',
             ],
             [
                 'label' => 'Suffix',
+                'required' => false,
             ],
         ]
     ])
@@ -71,6 +81,7 @@
             ],
             [
                 'label' => 'Middle Name',
+                'required' => false,
             ],
             [
                 'label' => 'Last Name',
@@ -101,10 +112,12 @@
                 [
                     'label' => 'Full Name',
                     'placeholder' => 'Juan Dela Cruz Jr.',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Birth Date',
                     'type' => 'date',
+                    'required' => false,
                 ]
             ],
         ])

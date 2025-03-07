@@ -163,7 +163,7 @@ trait HandlesPdsData
 
             'has_third_degree_relative' => $this->has_third_degree_relative,
             'has_fourth_degree_relative' => $this->has_fourth_degree_relative,
-            'fourth_degree_relative' => $this->fourth_degree_details,
+            'fourth_degree_relative' => $this->fourth_degree_relative,
 
             'has_admin_case' => $this->has_admin_case,
             'admin_case_details' => $this->admin_case_details,

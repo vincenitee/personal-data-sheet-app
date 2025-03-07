@@ -22,6 +22,7 @@
         style="font-size: 0.9rem"
         {{ $attributes }}
     >
+        <option value="">Choose an option</option>
         {{ $slot }}
     </select>
 </x-forms.input-field>

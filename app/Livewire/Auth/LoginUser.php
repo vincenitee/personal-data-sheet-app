@@ -23,6 +23,7 @@ class LoginUser extends Component
 
     public function submit()
     {
+        // dd($this->all());
         // Validates the credentials
         $credentials = $this->validate();
 
