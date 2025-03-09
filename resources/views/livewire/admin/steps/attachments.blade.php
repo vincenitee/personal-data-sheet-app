@@ -13,7 +13,7 @@
                             class="form-control-lg"></x-forms.input>
                     </div>
                     <div class="mb-3">
-                        <x-forms.input label="Date/Place of Issuance" model="government_id_issuance"
+                        <x-forms.input label="Date/Place of Issuance" model="date_of_issuance"
                             name="government_id" placeholder="Enter date and place of issuance" :required="false"
                             readonly class="form-control-lg"></x-forms.input>
                     </div>

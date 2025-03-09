@@ -22,9 +22,8 @@ class FamilyBackground extends Component
         Collection $parents,
         ?Collection $children,
     ){
-
-        $this->father = $parents->get(0);
-        $this->mother = $parents->get(1);
+        $this->mother = $parents->get(0);
+        $this->father = $parents->get(1);
 
         $this->submissionId = $submissionId;
         $this->spouse = $spouse;

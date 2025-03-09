@@ -40,14 +40,14 @@
                     <div class="mb-3">
                         <?php if (isset($component)) { $__componentOriginal4fb6044c7ed6b655352043ff774efcd0 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['label' => 'Date/Place of Issuance','model' => 'government_id_issuance','name' => 'government_id','placeholder' => 'Enter date and place of issuance','required' => false,'readonly' => true,'class' => 'form-control-lg']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['label' => 'Date/Place of Issuance','model' => 'date_of_issuance','name' => 'government_id','placeholder' => 'Enter date and place of issuance','required' => false,'readonly' => true,'class' => 'form-control-lg']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['label' => 'Date/Place of Issuance','model' => 'government_id_issuance','name' => 'government_id','placeholder' => 'Enter date and place of issuance','required' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(false),'readonly' => true,'class' => 'form-control-lg']); ?> <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['label' => 'Date/Place of Issuance','model' => 'date_of_issuance','name' => 'government_id','placeholder' => 'Enter date and place of issuance','required' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(false),'readonly' => true,'class' => 'form-control-lg']); ?> <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $attributes = $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0; ?>

@@ -7,7 +7,7 @@
     {{-- @dump($this->entries()) --}}
 
     <div class="table-responsive">
-        <table class="table table-hover" style="font-size: 14px">
+        <table class="table table-hover" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th wire:click="sortBy('id')" style="cursor: pointer">
@@ -28,12 +28,7 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
-                    <th wire:click="sortBy('version')" style="cursor: pointer">
-                        Version
-                        @if ($sortField === 'version')
-                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                        @endif
-                </th>
+
                     <th wire:click="sortBy('created_at')" style="cursor: pointer">
                         Date Submitted
                         @if ($sortField === 'created_at')
@@ -45,28 +40,28 @@
 
             </thead>
 
-            {{--
-                Work on this tomorrow
-                - determine where should the source of the data will be, at the pds_entries or submissions_table
-
-            --}}
             <tbody>
-                @forelse ($this->submissionEntries as $entry)
-                    <tr>
-                        {{-- @dump($entry) --}}
-                        <td class="align-middle">{{ $entry->id }}</td>
+
+                @forelse ($this->submissionEntries as $index => $submissionEntry)
+                    {{-- @dump($submissionEntry) --}}
+                    <tr class="p-4">
+                        {{-- @dump($submissionEntry) --}}
+                        <td class="align-middle">{{ $index + 1 }}</td>
                         <td class="align-middle">
                             <div class="d-flex align-items-center gap-3">
                                 <div>
-                                    {{-- @dump($entry->attachment?->passport_photo) --}}
-                                    <img src="{{ asset('storage/' . ($entry->entry->attachment?->passport_photo ?? 'passport_photos/default.png') )}}"
+                                    {{-- @dump($submissionEntry->attachment?->passport_photo) --}}
+                                    <img src="{{ asset('storage/' . ($submissionEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}"
                                         alt="Employee Photo" class="rounded border shadow-sm" width="45"
                                         height="45" style="object-fit: cover">
                                 </div>
                                 <div class="employee-details">
-                                    <h6 class="fw-semibold mb-1"><a href="{{ url(route('submissions.review', $entry->id)) }}" class="nav-link text-primary" wire:navigate>{{ $this->getUserFullName($entry->user) }}</a></h6>
+                                    <h6 class="fw-semibold mb-1"><a
+                                            href="{{ url(route('submissions.review', $submissionEntry->id)) }}"
+                                            class="nav-link text-primary"
+                                            wire:navigate>{{ $this->getUserFullName($submissionEntry->user) }}</a></h6>
                                     <span class="text-muted fs-7">
-                                        Employee ID: <span class="fw-medium">{{ $entry->user->id }}</span>
+                                        Employee ID: <span class="fw-medium">{{ $submissionEntry->user->id }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -74,13 +69,9 @@
                         <td class="align-middle">
                             <span class="badge bg-warning">Under Review</span>
                         </td>
-                        <td class="align-middle">
-                            {{ $entry->version }}
 
-                            {{-- @dump($entry) --}}
-                        </td>
                         <td class="align-middle">
-                            {{ $entry->created_at->format('M d, Y') }}
+                            {{ $submissionEntry->created_at->format('M d, Y') }}
                         </td>
                         <td class="align-middle">
                             {{-- <div class="d-flex align-items-center justify-content-center gap-2">
@@ -96,7 +87,8 @@
 
                                 <ul class="dropdown-menu dropdown-menu-start">
                                     <li>
-                                        <a href="{{ url(route('submissions.review', $entry->id)) }}" class="dropdown-item">View</a>
+                                        <a href="{{ url(route('submissions.review', $submissionEntry->id)) }}"
+                                            class="dropdown-item">View</a>
                                         <a href="" class="dropdown-item">Download</a>
                                         <a href="" class="dropdown-item">Print</a>
                                     </li>

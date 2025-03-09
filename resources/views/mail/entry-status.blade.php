@@ -96,8 +96,8 @@
 
         <p>Please make the necessary corrections and resubmit your entry as soon as possible.</p>
 
-        <a class="button">Edit Your Entry</a>
-
+        <a href="{{ url(route('employee.submission.logs')) }}" class="button">Edit Your Entry</a>
+        
         <div class="help-text">
             <p>If you have any questions about the requested revisions or need assistance, please contact your department supervisor or the support team at <a href="mailto:support@company.com">support@company.com</a>.</p>
         </div>

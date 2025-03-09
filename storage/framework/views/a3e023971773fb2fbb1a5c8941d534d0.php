@@ -9,13 +9,24 @@
 
         <div class="d-flex gap-2 align-items-start">
             
-            <a wire:navigate href="<?php echo e(url(route('employee.notification'))); ?>" type="button" class="my-auto btn btn-sm position-relative">
-                <i class="bi bi-bell" style="font-size: 1.1rem;"></i>
-                <span
-                    class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                    <span class="visually-hidden">New alerts</span>
-                </span>
-            </a>
+            <?php
+                $isEmployee = Auth::user()->hasRole('employee');
+                $notificationCount = count(Auth::user()->unreadNotifications);
+            ?>
+
+            <?php if($isEmployee): ?>
+                <a wire:navigate href="<?php echo e(url(route('employee.notification'))); ?>" type="button"
+                    class="my-auto btn btn-sm position-relative">
+                    <i class="bi bi-bell" style="font-size: 1.1rem;"></i>
+
+                    <?php if($notificationCount > 0): ?>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    <?php endif; ?>
+                </a>
+            <?php endif; ?>
 
             
             <div class="dropdown">
@@ -28,9 +39,10 @@
                 <ul class="dropdown-menu dropdown-menu-end" style="max-width: 150px;">
                     <li class="dropdown-item-text">
                         <div class="text-truncate" style="max-width: 100%;">
-                            <span class="d-block"><?php echo e(auth()->user()->first_name); ?> <?php echo e(auth()->user()->last_name); ?></span>
-                            <small
-                                class="d-block text-muted text-truncate"><?php echo e(auth()->user()->email); ?></small>
+                            <span class="d-block"><?php echo e(auth()->user()->first_name); ?>
+
+                                <?php echo e(auth()->user()->last_name); ?></span>
+                            <small class="d-block text-muted text-truncate"><?php echo e(auth()->user()->email); ?></small>
                         </div>
                     </li>
                     <li>

@@ -112,7 +112,7 @@
                             <div>
                                 <!--[if BLOCK]><![endif]--><?php if(!empty($criminal_charge_status)): ?>
                                     <span class="badge bg-secondary">
-                                        <?php echo e(ucwords($criminal_charge_status)); ?>
+                                        <?php echo e(ucwords(str_replace('_', ' ', $criminal_charge_status))); ?>
 
                                     </span>
                                 <?php else: ?>
@@ -331,9 +331,36 @@
             <tbody>
                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $questionResponses->referencePersons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $person): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr>
-                        <td class="align-middle"><?php echo e($person->fullname); ?></td>
-                        <td class="align-middle"><?php echo e($person->address); ?></td>
-                        <td class="align-middle"><?php echo e($person->telephone_no); ?></td>
+                        <td class="align-middle">
+                            <!--[if BLOCK]><![endif]--><?php if(!empty($person->fullname)): ?>
+                                <?php echo e($person->fullname); ?>
+
+                            <?php else: ?>
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </td>
+                        <td class="align-middle">
+                            <!--[if BLOCK]><![endif]--><?php if(!empty($person->address)): ?>
+                                <?php echo e($person->address); ?>
+
+                            <?php else: ?>
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </td>
+                        <td class="align-middle">
+                            <!--[if BLOCK]><![endif]--><?php if(!empty($person->telephone_no)): ?>
+                                <?php echo e($person->telephone_no); ?>
+
+                            <?php else: ?>
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>

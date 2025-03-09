@@ -18,22 +18,6 @@
                 </small>
             </p>
         </div>
-
-        <div>
-            <?php
-                $status = $entry->status;
-                $statusColor = match ($status) {
-                    'under_review' => 'warning',
-                    'rejected' => 'danger',
-                    'approved' => 'success',
-                    default => 'secondary',
-                };
-            ?>
-            <span class="badge bg-<?php echo e($statusColor); ?>">
-                <?php echo e(ucwords(str_replace('_', ' ', $status))); ?>
-
-            </span>
-        </div>
     </div>
 
     
@@ -269,16 +253,17 @@ if (isset($__slots)) unset($__slots);
 <?php $component = $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
 <?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
 <?php endif; ?>
+
         <?php if (isset($component)) { $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['class' => 'btn-sm btn-success']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['@click' => 'confirmEntryApproval('.e($entry->id).')','class' => 'btn-sm btn-success']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'btn-sm btn-success']); ?>
+<?php $component->withAttributes(['@click' => 'confirmEntryApproval('.e($entry->id).')','class' => 'btn-sm btn-success']); ?>
             <i class="bi bi-check-circle"></i>
             Approve Entry
          <?php echo $__env->renderComponent(); ?>
@@ -292,6 +277,7 @@ if (isset($__slots)) unset($__slots);
 <?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
 <?php endif; ?>
     </div>
+
 
     
     <div class="modal fade" id="remarksModal">
@@ -360,14 +346,18 @@ if (isset($__slots)) unset($__slots);
 <?php endif; ?>
                     <?php if (isset($component)) { $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['type' => 'button','class' => 'btn-sm btn-danger','wire:click' => 'submitForRevisions()']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['type' => 'button','class' => 'btn-sm btn-danger','wire:click' => 'submitForRevisions()','wire:loading.attr' => 'disabled','wire:target' => 'submitForRevisions']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['type' => 'button','class' => 'btn-sm btn-danger','wire:click' => 'submitForRevisions()']); ?>
+<?php $component->withAttributes(['type' => 'button','class' => 'btn-sm btn-danger','wire:click' => 'submitForRevisions()','wire:loading.attr' => 'disabled','wire:target' => 'submitForRevisions']); ?>
+                        <span wire:loading wire:target="submitForRevisions">
+                            <span class="spinner-border spinner-border-sm me-1" role="status"
+                                aria-hidden="true"></span>
+                        </span>
                         Submit Revision Request
                      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -379,6 +369,7 @@ if (isset($__slots)) unset($__slots);
 <?php $component = $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
 <?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
 <?php endif; ?>
+
                 </div>
             </div>
         </div>

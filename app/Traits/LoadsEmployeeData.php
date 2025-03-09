@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Carbon\Carbon;
 use PHPUnit\Event\TestSuite\Sorted;
 
 trait LoadsEmployeeData
@@ -288,8 +289,6 @@ trait LoadsEmployeeData
 
     protected function loadAttachments($attachments)
     {
-        // if(is_null($attachments)) return;
-        // dd();
         if (is_null($attachments)) return;
 
         $attachmentFields = [
@@ -297,6 +296,7 @@ trait LoadsEmployeeData
             'right_thumbmark_photo',
             'government_id_photo',
             'government_id_type',
+            'date_of_issuance',
             'government_id_no',
             'signature_photo',
             'otr_photo',
@@ -305,7 +305,14 @@ trait LoadsEmployeeData
         ];
 
         foreach ($attachmentFields as $field) {
-            $this->{$field} = $attachments->{$field};
+            if (!empty($attachments->{$field})) {
+                // ✅ Properly check if the field is "date_of_issuance" and format it
+                if ($field === 'date_of_issuance') {
+                    $this->{$field} = Carbon::parse($attachments->{$field})->format('m/d/Y');
+                } else {
+                    $this->{$field} = $attachments->{$field};
+                }
+            }
         }
     }
 }

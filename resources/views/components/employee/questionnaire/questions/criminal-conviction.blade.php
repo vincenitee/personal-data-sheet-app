@@ -6,7 +6,7 @@
     <x-forms.question-group name="has_criminal_conviction">
         {{-- Details --}}
         <div class="col-12 col-md-6">
-            <x-forms.textarea model="criminal_conviction_details" name="criminal_conviction_details" />
+            <x-forms.textarea model="criminal_conviction_details" name="criminal_conviction_details"  />
         </div>
     </x-forms.question-group>
 </x-forms.question-card>

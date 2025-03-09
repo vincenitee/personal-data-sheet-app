@@ -50,9 +50,13 @@
                 'type' => 'number',
             ],
             [
+                'label' => 'Date of Issuance',
+                'type' => 'date'
+            ],
+            [
                 'label' => 'Government ID Photo',
                 'type' => 'file'
-            ]
+            ],
         ]
     ])
 

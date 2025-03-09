@@ -10,11 +10,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    // server: {
-    //     host: '0.0.0.0',
-    //     port: 8000, // Or any other free port
-    //     hmr: {
-    //         host: '192.168.10.132', // Replace with your actual IP
-    //     },
-    // },
+    server: {
+        host: '0.0.0.0',
+        port: 8000, // Or any other free port
+        hmr: {
+            host: '192.168.254.159', // Replace with your actual IP
+        },
+    },
 });

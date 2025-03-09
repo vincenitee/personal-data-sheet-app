@@ -17,17 +17,22 @@ class PdsEntryStatusMail extends Mailable
 
     public User $user;
     public string $status;
-    public string $revision_comments;
-    public PdsEntry $entry;
+    public ?string $revision_comments; // ✅ Made optional
+    public ?PdsEntry $entry; // ✅ Made optional (null for returned entries)
+    public array $revision_items; // ✅ Default to empty array if no comments exist
+
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, string $status, string $revision_comments, PdsEntry $entry)
+    public function __construct(User $user, string $status, ?string $revision_comments = null, ?PdsEntry $entry = null, array $revision_items = [])
     {
         $this->user = $user;
         $this->status = $status;
         $this->revision_comments = $revision_comments;
         $this->entry = $entry;
+
+        // ✅ Ensure revision items exist, or return an empty array
+        $this->revision_items = $revision_items;
     }
 
     /**
@@ -36,7 +41,7 @@ class PdsEntryStatusMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pds Entry Status Update',
+            subject: 'PDS Entry Status Update',
         );
     }
 
@@ -50,9 +55,9 @@ class PdsEntryStatusMail extends Mailable
             with: [
                 'user' => $this->user,
                 'status' => $this->status,
-                'revision_comments' => $this->revision_comments,
+                'revision_comments' => $this->revision_comments ?? 'No specific comments provided.', // ✅ Default message
                 'entry' => $this->entry,
-                'revision_items' => ['Missing Documents', 'Incomplete PDS Information']
+                'revision_items' => $this->revision_items,
             ]
         );
     }

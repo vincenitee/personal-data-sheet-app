@@ -100,7 +100,7 @@
                             <div>
                                 @if (!empty($criminal_charge_status))
                                     <span class="badge bg-secondary">
-                                        {{ ucwords($criminal_charge_status) }}
+                                        {{ ucwords(str_replace('_', ' ', $criminal_charge_status)) }}
                                     </span>
                                 @else
                                     <span class="badge bg-warning">
@@ -310,9 +310,33 @@
             <tbody>
                 @forelse ($questionResponses->referencePersons as $person)
                     <tr>
-                        <td class="align-middle">{{ $person->fullname }}</td>
-                        <td class="align-middle">{{ $person->address }}</td>
-                        <td class="align-middle">{{ $person->telephone_no }}</td>
+                        <td class="align-middle">
+                            @if (!empty($person->fullname))
+                                {{ $person->fullname }}
+                            @else
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            @endif
+                        </td>
+                        <td class="align-middle">
+                            @if (!empty($person->address))
+                                {{ $person->address }}
+                            @else
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            @endif
+                        </td>
+                        <td class="align-middle">
+                            @if (!empty($person->telephone_no))
+                                {{ $person->telephone_no }}
+                            @else
+                                <span class="badge bg-warning">
+                                    No additional details provided
+                                </span>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>

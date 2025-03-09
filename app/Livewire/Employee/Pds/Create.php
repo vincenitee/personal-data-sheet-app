@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Employee\Pds;
 
-use App\Enums\BloodType;
 use Exception;
 use App\Enums\Sex;
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Enums\BloodType;
 use App\Models\PdsEntry;
 use App\Enums\CivilStatus;
 use App\Models\Submission;
@@ -58,7 +59,7 @@ class Create extends Component
         WithFileUploads;
 
     public $user = null;
-    public $isLocked = false;
+    public $nextUpdateAllowedAt = null;
 
     // Basic Information
     public $first_name = null;
@@ -221,6 +222,7 @@ class Create extends Component
     public $passport_photo = null;
     public $right_thumbmark_photo = null;
     public $government_id_photo = null;
+    public $date_of_issuance = null;
     public $government_id_type = null;
     public $government_id_no = null;
     public $signature_photo = null;
@@ -291,20 +293,17 @@ class Create extends Component
         $this->pdsService = $pdsService;
     }
 
-
     public function mount()
     {
         $this->currentStep = session('current_step', 1);
-
         $this->highestStepReached = session('highest_step_reached', 0);
-
         $this->user = Auth::user();
 
         if (!$this->user) {
             return;
         }
 
-        // Initialize education field before fetching the entry
+        // Initialize education fields before fetching the entry
         $this->education = [
             'elementary' => [...$this->defaultFields],
             'secondary' => [...$this->defaultFields],
@@ -313,6 +312,7 @@ class Create extends Component
             'graduate_studies' => [[...$this->defaultFields]],
         ];
 
+        // Fetch the latest PDS entry
         $entry = $this->user->entries()
             ->with([
                 'personalInformation.addresses',
@@ -329,23 +329,39 @@ class Create extends Component
                 'recognitions',
                 'organizations',
                 'question',
-                'attachment'
+                'attachment',
+                'submissions',
             ])
-            ->firstOrNew(
-                ['status' => SubmissionStatus::DRAFT],
-                ['is_current' => false]
-            );
+            ->latest()
+            ->first();
 
-        // dd($entry->personalInformation->addresses);
+        // Check if an entry exists and its status
+        if ($entry) {
+            if ($entry->status === SubmissionStatus::APPROVED->value) {
+                // Calculate the date when the user can update again (1 year after approval)
+                $this->nextUpdateAllowedAt = Carbon::parse($entry->updated_at)
+                    ->endOfYear()
+                    ->addDay();  
 
-        if (!$entry->exists) {
-            $entry->save();
+                // Empty the entry collection to prevent editing
+                $entry = collect([]);
+            } elseif ($entry->status === SubmissionStatus::UNDER_REVIEW->value) {
+                // Empty the entry collection to prevent editing
+                $entry = collect([]);
+            } elseif ($entry->status === SubmissionStatus::DRAFT->value || $entry->status === SubmissionStatus::NEEDS_REVISION->value) {
+                // Load the data if the entry is still a draft or needs revision
+                $this->loadEntryData($entry);
+            }
         } else {
+            // Create a new entry if none exists
+            $entry = $this->user->entries()->create(['is_current' => false]);
             $this->loadEntryData($entry);
         }
 
         $this->initializeEntries();
     }
+
+
 
     protected function loadUserAddresses($addresses)
     {
@@ -361,8 +377,6 @@ class Create extends Component
             residential: $addresses->get(1, collect()), // Default to empty collection if index 1 is missing
             permanent: $addresses->get(0, collect())   // Default to empty collection if index 0 is missing
         );
-
-
     }
 
     protected function loadEmployeeParentsInformation($parents)
@@ -506,32 +520,38 @@ class Create extends Component
     public function saveDraft()
     {
         // dd($this->all());
+
+        // Fetch the current PDS entry for the user
+        $entry = PdsEntry::where('user_id', $this->user->id)
+            ->whereIn('status', [SubmissionStatus::DRAFT, SubmissionStatus::NEEDS_REVISION]) // Only allow drafts or rejected entries to be edited
+            ->first();
+
+        // Prevent saving if the entry is under review or approved
+        if (!$entry) {
+            $this->dispatchAlertMessage(
+                'Action Not Allowed',
+                'Your PDS entry is either under review or already approved and cannot be modified.',
+                'warning'
+            );
+            return false;
+        }
+
         try {
             $this->validate($this->rules()[$this->currentStep]);
         } catch (ValidationException $e) {
             $this->setErrorBag($e->errors());
 
             $generalMessage = "Please check all the fields and correct any errors.";
-
-            $errors = $e->validator->errors();
-            $firstField = $errors->keys()[0] ?? null;
-            $firstErrorMessage = $errors->first();
-
+            $firstField = $e->validator->errors()->keys()[0] ?? null;
+            $firstErrorMessage = $e->validator->errors()->first();
             $detailedMessage = $firstField
                 ? $firstErrorMessage
                 : "Please review your input: $firstErrorMessage";
 
-            // $this->dispatchAlertMessage(ucfirst(str_replace('_', ' ', $firstField)), $generalMessage, 'error');
             $this->dispatchAlertMessage('Validation Error', $detailedMessage, 'error');
 
             return false; // Stop execution if validation fails
         }
-
-        // Proceed with draft saving
-        $entry = PdsEntry::firstOrCreate(
-            ['user_id' => $this->user->id, 'status' => SubmissionStatus::DRAFT],
-            ['is_current' => false]
-        );
 
         try {
             switch ($this->currentStep) {
@@ -578,7 +598,6 @@ class Create extends Component
 
             return true; // Indicate success
         } catch (Exception $e) {
-
             \Log::error('Failed to save draft', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -592,22 +611,38 @@ class Create extends Component
         }
     }
 
+
     #[On('entry-submitted')]
     public function save()
     {
-        $this->validate($this->rules()[$this->currentStep]);
-        // Fetch the current draft entry for the authenticated user
-        $entry = $this->user->entries()
-            ->where('status', SubmissionStatus::DRAFT)
-            ->first();
+        try {
+            $this->validate($this->rules()[$this->currentStep]);
+        } catch (ValidationException $e) {
+            $this->setErrorBag($e->errors());
 
-        // Check if a draft entry exists
+            $generalMessage = "Please check all the fields and correct any errors.";
+            $firstField = $e->validator->errors()->keys()[0] ?? null;
+            $firstErrorMessage = $e->validator->errors()->first();
+            $detailedMessage = $firstField
+                ? $firstErrorMessage
+                : "Please review your input: $firstErrorMessage";
+
+            $this->dispatchAlertMessage('Validation Error', $detailedMessage, 'error');
+
+            return; // Stop execution if validation fails
+        }
+
+        // Fetch the user's latest PDS entry
+        $entry = $this->user->entries()->latest()->first();
+
         if (!$entry) {
-            $this->dispatchAlertMessage(
-                "Error",
-                "No draft entry found to submit.",
-                "error"
-            );
+            $this->dispatchAlertMessage("Error", "No PDS entry found to submit.", "error");
+            return;
+        }
+
+        // Prevent new submission if the latest submission is still under review or draft
+        if ($entry->status === SubmissionStatus::UNDER_REVIEW) {
+            $this->dispatchAlertMessage("Error", "Your latest entry is already under review.", "error");
             return;
         }
 
@@ -615,28 +650,15 @@ class Create extends Component
         DB::beginTransaction();
 
         try {
-            // Update the status of the entry to UNDER_REVIEW
-            $status = $this->pdsService->updateStatus($entry->id, SubmissionStatus::UNDER_REVIEW);
-
-            if (!$status) {
-                throw new \Exception("Failed to update entry status.");
-            }
-
-            // Fetch the latest submission version
-            $latestSubmission = Submission::where('pds_entry_id', $entry->id)
-                ->orderBy('version', 'desc')
-                ->first();
-
-            $version = $latestSubmission ? $latestSubmission->version + 1 : 1;
-
             // Create a new submission record
             Submission::create([
-                'user_id' => Auth::user()->id,
                 'pds_entry_id' => $entry->id,
-                'version' => $version,
                 'status' => SubmissionStatus::UNDER_REVIEW,
                 'remarks' => 'Initial Submission', // You can make this dynamic if needed
             ]);
+
+            // Updates the entry
+            $this->pdsService->updateStatus($entry->id, SubmissionStatus::UNDER_REVIEW);
 
             // Commit the transaction
             DB::commit();
@@ -646,11 +668,7 @@ class Create extends Component
             session(['highest_step_reached' => 0]);
 
             // Display success message and redirect
-            $this->dispatchAlertMessage(
-                "Success",
-                "Your entry has been submitted for review.",
-                "success"
-            );
+            $this->dispatchAlertMessage("Success", "Your entry has been submitted for review.", "success");
 
             return redirect()->route('employee.submission.logs');
         } catch (\Exception $e) {
@@ -658,16 +676,13 @@ class Create extends Component
             DB::rollBack();
 
             // Display error message
-            $this->dispatchAlertMessage(
-                "Error",
-                "Failed to submit your entry. Please try again.",
-                "error"
-            );
+            $this->dispatchAlertMessage("Error", "Failed to submit your entry. Please try again.", "error");
 
             // Log the error for debugging
             logger()->error('Entry submission failed: ' . $e->getMessage());
         }
     }
+
 
     protected function saveStepOne($entry)
     {

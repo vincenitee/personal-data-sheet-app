@@ -25,7 +25,7 @@
     
 
     <div class="table-responsive">
-        <table class="table table-hover" style="font-size: 14px">
+        <table class="table table-hover" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th wire:click="sortBy('id')" style="cursor: pointer">
@@ -44,12 +44,7 @@
                             <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </th>
-                    <th wire:click="sortBy('version')" style="cursor: pointer">
-                        Version
-                        <!--[if BLOCK]><![endif]--><?php if($sortField === 'version'): ?>
-                            <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                </th>
+
                     <th wire:click="sortBy('created_at')" style="cursor: pointer">
                         Date Submitted
                         <!--[if BLOCK]><![endif]--><?php if($sortField === 'created_at'): ?>
@@ -61,24 +56,28 @@
 
             </thead>
 
-            
             <tbody>
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $this->submissionEntries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $entry): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <tr>
+
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $this->submissionEntries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $submissionEntry): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    
+                    <tr class="p-4">
                         
-                        <td class="align-middle"><?php echo e($entry->id); ?></td>
+                        <td class="align-middle"><?php echo e($index + 1); ?></td>
                         <td class="align-middle">
                             <div class="d-flex align-items-center gap-3">
                                 <div>
                                     
-                                    <img src="<?php echo e(asset('storage/' . ($entry->entry->attachment?->passport_photo ?? 'passport_photos/default.png') )); ?>"
+                                    <img src="<?php echo e(asset('storage/' . ($submissionEntry->attachment?->passport_photo ?? 'passport_photos/default.png'))); ?>"
                                         alt="Employee Photo" class="rounded border shadow-sm" width="45"
                                         height="45" style="object-fit: cover">
                                 </div>
                                 <div class="employee-details">
-                                    <h6 class="fw-semibold mb-1"><a href="<?php echo e(url(route('submissions.review', $entry->id))); ?>" class="nav-link text-primary" wire:navigate><?php echo e($this->getUserFullName($entry->user)); ?></a></h6>
+                                    <h6 class="fw-semibold mb-1"><a
+                                            href="<?php echo e(url(route('submissions.review', $submissionEntry->id))); ?>"
+                                            class="nav-link text-primary"
+                                            wire:navigate><?php echo e($this->getUserFullName($submissionEntry->user)); ?></a></h6>
                                     <span class="text-muted fs-7">
-                                        Employee ID: <span class="fw-medium"><?php echo e($entry->user->id); ?></span>
+                                        Employee ID: <span class="fw-medium"><?php echo e($submissionEntry->user->id); ?></span>
                                     </span>
                                 </div>
                             </div>
@@ -86,14 +85,9 @@
                         <td class="align-middle">
                             <span class="badge bg-warning">Under Review</span>
                         </td>
-                        <td class="align-middle">
-                            <?php echo e($entry->version); ?>
 
-
-                            
-                        </td>
                         <td class="align-middle">
-                            <?php echo e($entry->created_at->format('M d, Y')); ?>
+                            <?php echo e($submissionEntry->created_at->format('M d, Y')); ?>
 
                         </td>
                         <td class="align-middle">
@@ -106,7 +100,8 @@
 
                                 <ul class="dropdown-menu dropdown-menu-start">
                                     <li>
-                                        <a href="<?php echo e(url(route('submissions.review', $entry->id))); ?>" class="dropdown-item">View</a>
+                                        <a href="<?php echo e(url(route('submissions.review', $submissionEntry->id))); ?>"
+                                            class="dropdown-item">View</a>
                                         <a href="" class="dropdown-item">Download</a>
                                         <a href="" class="dropdown-item">Print</a>
                                     </li>

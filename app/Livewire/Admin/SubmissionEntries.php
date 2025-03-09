@@ -15,10 +15,11 @@ class SubmissionEntries extends Component
     use SortableSearchable, WithPagination;
 
     #[Computed]
-    public function submissionEntries(){
-        return Submission::where('status', SubmissionStatus::UNDER_REVIEW)
-            ->with('user')
-            ->whereHas('user', function($query){
+    public function submissionEntries()
+    {
+        return PdsEntry::where('status', SubmissionStatus::UNDER_REVIEW)
+            ->with(['user', 'attachment']) // Fetch user through entry
+            ->whereHas('user', function ($query) {
                 $query->where('first_name', 'like', "%{$this->search}%")
                     ->orWhere('middle_name', 'like', "%{$this->search}%")
                     ->orWhere('last_name', 'like', "%{$this->search}%");
@@ -27,7 +28,8 @@ class SubmissionEntries extends Component
             ->paginate(10);
     }
 
-    public function getUserFullName($user){
+    public function getUserFullName($user)
+    {
         return "{$user->first_name} {$user->middle_name} {$user->last_name}";
     }
 

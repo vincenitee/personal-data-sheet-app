@@ -12,7 +12,7 @@
         <div class="container-fluid p-0 mb-4">
 
         </div>
-        <table class="table table-hover" style="font-size: 14px">
+        <table class="table table-hover" style="font-size: 14px; min-height: 150px;">
             <thead>
                 <tr>
                     <th wire:click="sortBy('id')" style="cursor: pointer;">

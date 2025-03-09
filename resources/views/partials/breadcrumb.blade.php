@@ -1,13 +1,16 @@
 @php
+    // Get the current URI
     $currentUri = request()->path();
 
+    // Define the pages and their corresponding names
     $pages = [
         'dashboard' => 'Dashboard',
         'profile' => 'Profile',
-        'pds/create' => 'Add New Entry',
-        'notification' => 'Notifications',
+        'employee/pds/create' => 'Manage My PDS',
+        'employee/notification' => 'Notifications',
         'manage-signups' => 'Manage Signups',
-        'submission-logs' => 'Submission Logs',
+        'employee/submission-logs' => 'Submission Logs',
+        'print' => 'Print Entry',
         'manage-users' => 'Manage Users',
         'users/*/edit' => 'Edit User Information', // Dynamic route
     ];
@@ -16,6 +19,7 @@
     $matchDynamicRoute = function ($uri, $pattern) {
         // Replace * with a regex pattern to match any segment
         $pattern = str_replace('*', '([^/]+)', $pattern);
+
         // Escape slashes for regex
         $pattern = str_replace('/', '\/', $pattern);
 
@@ -25,7 +29,9 @@
 
     // Find the current page by matching the URI
     $currentPage = null;
+
     foreach ($pages as $uri => $pageName) {
+
         if (str_contains($uri, '*')) {
             // Match dynamic routes
             if ($matchDynamicRoute($currentUri, $uri)) {
@@ -52,6 +58,12 @@
     // Get the appropriate dashboard route based on user role
     $role = Auth::user()->getRoleNames()->first();
     $dashboardRoute = $role . '.dashboard';
+
+    // Debugging (optional)
+    // echo "Current URI: $currentUri<br>";
+    // echo "Current Page: $currentPage<br>";
+    // echo "User ID: $userId<br>";
+    // echo "Dashboard Route: $dashboardRoute<br>";
 @endphp
 
 <nav aria-label="breadcrumb">

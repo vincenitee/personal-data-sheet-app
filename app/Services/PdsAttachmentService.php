@@ -22,6 +22,7 @@ class PdsAttachmentService
                     'right_thumbmark_photo' => $data['right_thumbmark_photo'],
                     'government_id_type' => $data['government_id_type'],
                     'government_id_no' => $data['government_id_no'],
+                    'date_of_issuance' => $data['date_of_issuance'],
                     'government_id_photo' => $data['government_id_photo'],
                     'signature_photo' => $data['signature_photo'],
                     'otr_photo' => $data['otr_photo'],

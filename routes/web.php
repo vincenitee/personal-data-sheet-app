@@ -1,26 +1,27 @@
 <?php
 
+use App\Models\User;
+use App\Livewire\Profile;
+use App\Livewire\Welcome;
+use App\Mail\SignupStatus;
+use App\Livewire\PrintEntry;
 use App\Livewire\Admin\AddUser;
-use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Auth\LoginUser;
+use App\Mail\PdsEntryStatusMail;
+use App\Livewire\Admin\ManageUsers;
+use App\Livewire\Auth\RegisterUser;
 use App\Livewire\Admin\EditUserPage;
 use App\Livewire\Admin\ManageSignup;
-use App\Livewire\Auth\LoginUser;
-use App\Livewire\Auth\RegisterUser;
-use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\ResetPassword;
-use App\Livewire\Employee\Dashboard as EmployeeDashboard;
-use App\Livewire\Employee\Pds\Create;
-use App\Livewire\Profile;
-use App\Livewire\Employee\Notification;
-use App\Livewire\Employee\SubmissionLogs;
-use App\Livewire\Admin\ManageUsers;
 use App\Livewire\Admin\PdsReviewForm;
-use App\Livewire\Admin\SubmissionEntries;
-use App\Livewire\Welcome;
-use App\Mail\PdsEntryStatusMail;
-use App\Mail\SignupStatus;
-use App\Models\User;
+use App\Livewire\Auth\ForgotPassword;
+use App\Livewire\Employee\Pds\Create;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Employee\Notification;
+use App\Livewire\Admin\SubmissionEntries;
+use App\Livewire\Employee\SubmissionLogs;
+use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Employee\Dashboard as EmployeeDashboard;
 
 Route::get('test', function (){
     $user = User::find(8);
@@ -59,7 +60,7 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
     Route::get('/admin/submissions', SubmissionEntries::class)
         ->name('admin.submissions');
 
-    Route::get('/admin/submissions/{submission}/review', PdsReviewForm::class)
+    Route::get('/admin/submissions/{entry}/review', PdsReviewForm::class)
         ->name('submissions.review');
 });
 
@@ -67,6 +68,9 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
 Route::middleware(['auth', 'approved'])->group(function (){
     Route::get('/profile', Profile::class)
         ->name('profile');
+
+    Route::get('/print', PrintEntry::class)
+        ->name('print');
 });
 
 // Employee Routes
@@ -78,10 +82,10 @@ Route::middleware(['auth', 'approved', 'role:employee', 'active'])->group(functi
         ->name('employee.notification');
 
     Route::get('/employee/pds/create', Create::class)
-        ->name('employee.pds.create')
-        ->middleware('check-pds-creation');
+        ->name('employee.pds.create');
 
     Route::get('/employee/submission-logs', SubmissionLogs::class)
         ->name('employee.submission.logs');
+
 });
 

@@ -68,6 +68,7 @@
             'placeholder' => $field['placeholder'] ?? '',
             'type' => $field['type'] ?? 'text',
             'required' => isset($field['required']) && $field['required'] === false ? false : true,
+            'disabled' => isset($field['disabled']) && $field['disabled'] === true ? true : false,
         ];
 
         $field['type'] = $field['type'] ?? 'text';
@@ -79,7 +80,7 @@
     <div class="col-md-{{ $colClass }}">
         @if ($isSelect)
             <!-- Render select input -->
-            <x-forms.select :model="$inputAttributes['model']" :name="$inputAttributes['name']" :label="$inputAttributes['label']" :required="$inputAttributes['required']">
+            <x-forms.select :model="$inputAttributes['model']" :name="$inputAttributes['name']" :label="$inputAttributes['label']" :required="$inputAttributes['required']" :disabled="$inputAttributes['disabled']">
                 @foreach ($field['options'] as $key => $label)
                     <option value="{{ $key }}">{{ $label }} </option>
                 @endforeach

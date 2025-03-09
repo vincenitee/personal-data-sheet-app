@@ -18,6 +18,7 @@ class Attachments extends Component
     public $right_thumbmark_photo = null;
     public $government_id_photo = null;
     public $government_id_type = null;
+    public $date_of_issuance = null;
     public $government_id_no = null;
     public $signature_photo = null;
     public $otr_photo = null;

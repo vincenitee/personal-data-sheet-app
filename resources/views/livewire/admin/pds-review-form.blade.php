@@ -15,21 +15,6 @@
                 </small>
             </p>
         </div>
-
-        <div>
-            @php
-                $status = $entry->status;
-                $statusColor = match ($status) {
-                    'under_review' => 'warning',
-                    'rejected' => 'danger',
-                    'approved' => 'success',
-                    default => 'secondary',
-                };
-            @endphp
-            <span class="badge bg-{{ $statusColor }}">
-                {{ ucwords(str_replace('_', ' ', $status)) }}
-            </span>
-        </div>
     </div>
 
     {{-- End of Header --}}
@@ -97,11 +82,13 @@
             <i class="bi bi-arrow-return-left"></i>
             Return for revisions
         </x-forms.button>
-        <x-forms.button class="btn-sm btn-success">
+
+        <x-forms.button @click="confirmEntryApproval({{ $entry->id }})" class="btn-sm btn-success">
             <i class="bi bi-check-circle"></i>
             Approve Entry
         </x-forms.button>
     </div>
+
 
     {{-- Revision Modal --}}
     <div class="modal fade" id="remarksModal">
@@ -133,9 +120,15 @@
                     <x-forms.button type="button" class="btn-sm btn-secondary" data-bs-dismiss="modal">
                         Cancel
                     </x-forms.button>
-                    <x-forms.button type="button" class="btn-sm btn-danger" wire:click="submitForRevisions()">
+                    <x-forms.button type="button" class="btn-sm btn-danger" wire:click="submitForRevisions()"
+                        wire:loading.attr="disabled" wire:target="submitForRevisions">
+                        <span wire:loading wire:target="submitForRevisions">
+                            <span class="spinner-border spinner-border-sm me-1" role="status"
+                                aria-hidden="true"></span>
+                        </span>
                         Submit Revision Request
                     </x-forms.button>
+
                 </div>
             </div>
         </div>

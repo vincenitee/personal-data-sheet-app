@@ -79,7 +79,19 @@ window.toggleUserStatus = function (userId, currentStatus) {
             Livewire.dispatch('toggle-user-status', { userId, currentStatus });
         }
     });
+}
 
+window.confirmEntryApproval = function (entryId) {
+    confirmAction({
+        title: "Approve Entry?",
+        text: "Are you sure you want to approve this entry?", 
+        icon: "question",
+        confirmButtonText: "Yes, approve it",
+        cancelButtonText: "Cancel",
+        onConfirm: () => {
+            Livewire.dispatch('entry-approved', { entryId: entryId }); 
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

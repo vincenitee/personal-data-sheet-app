@@ -213,6 +213,7 @@ trait HandlesPdsData
             'government_id_type' => $this->government_id_type,
             'government_id_no' => $this->government_id_no,
             'government_id_photo' => $this->government_id_photo,
+            'date_of_issuance' => $this->date_of_issuance,
             'signature_photo' => $this->signature_photo,
             'otr_photo' => $this->otr_photo,
             'diploma_photo' => $this->diploma_photo,

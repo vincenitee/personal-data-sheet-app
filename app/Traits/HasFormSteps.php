@@ -301,6 +301,12 @@ trait HasFormSteps
 
                 'government_id_type' => 'required|required_with:government_id_photo|string|max:255',
                 'government_id_no' => 'required|required_with:government_id_photo|string|max:255',
+                'date_of_issuance' => [
+                    'required',
+                    'date',
+                    'before_or_equal:today',
+                    'after_or_equal:1900-01-01', // Prevent unrealistic dates
+                ],
 
                 'signature_photo' => $this->isFileUpload($this->signature_photo)
                     ? 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
@@ -598,6 +604,11 @@ trait HasFormSteps
             'government_id_no.required_with' => 'The government ID number is required when uploading an ID photo.',
             'government_id_no.string' => 'The government ID number must be a valid string.',
             'government_id_no.max' => 'The government ID number must not exceed 255 characters.',
+
+            'date_of_issuance.required' => 'The issuance date is required.',
+            'date_of_issuance.date' => 'Please enter a valid date format (YYYY-MM-DD).',
+            'date_of_issuance.before_or_equal' => 'The issuance date cannot be in the future.',
+            'date_of_issuance.after_or_equal' => 'The issuance date must be after January 1, 1900.',
 
             'signature_photo.image' => 'The signature photo must be an image file.',
             'signature_photo.mimes' => 'The signature photo must be a file of type: jpg, jpeg, png, gif, webp.',
