@@ -64,7 +64,7 @@
                             </div>
                         @elseif ($submission->status === 'approved')
                             <div class="d-flex justify-content-end mt-3">
-                                <a href="{{ url(route('print')) }}"
+                                <a href="{{ url(route('employee.preview.entry')) }}"
                                     class="btn btn-sm btn-outline-{{ $config['color'] }}">
                                     <i class="bi bi-printer me-1"></i> Print
                                 </a>

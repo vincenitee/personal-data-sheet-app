@@ -10,7 +10,7 @@
         'employee/notification' => 'Notifications',
         'manage-signups' => 'Manage Signups',
         'employee/submission-logs' => 'Submission Logs',
-        'print' => 'Print Entry',
+        'employee/preview-entry' => 'Preview Entry',
         'manage-users' => 'Manage Users',
         'users/*/edit' => 'Edit User Information', // Dynamic route
     ];

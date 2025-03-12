@@ -186,6 +186,14 @@ trait HasFormSteps
                 'education.elementary.school_name' => 'nullable|string|max:255',
                 'education.secondary.school_name' => 'nullable|string|max:255',
 
+                'education.elementary.attendance_from' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.elementary.attendance_to' => 'nullable|digits:4|integer|min:1900|max:' . date('Y') . '|gte:education.elementary.attendance_from',
+                'education.elementary.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+
+                'education.secondary.attendance_from' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.secondary.attendance_to' => 'nullable|digits:4|integer|min:1900|max:' . date('Y') . '|gte:education.secondary.attendance_from',
+                'education.secondary.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+
                 // Vocational, College, and Graduate Studies (Multiple Entries)
                 'education.vocational.*.school_name' => 'nullable|string|max:255',
                 'education.college.*.school_name' => 'nullable|string|max:255',
@@ -195,18 +203,19 @@ trait HasFormSteps
                 'education.college.*.degree_earned' => 'nullable|string|max:255',
                 'education.graduate_studies.*.degree_earned' => 'nullable|string|max:255',
 
-                'education.vocational.*.attendance_from' => 'nullable|date',
-                'education.college.*.attendance_from' => 'nullable|date',
-                'education.graduate_studies.*.attendance_from' => 'nullable|date',
+                'education.vocational.*.attendance_from' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.college.*.attendance_from' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+                'education.graduate_studies.*.attendance_from' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
 
-                'education.vocational.*.attendance_to' => 'nullable|date|after_or_equal:education.vocational.*.attendance_from',
-                'education.college.*.attendance_to' => 'nullable|date|after_or_equal:education.college.*.attendance_from',
-                'education.graduate_studies.*.attendance_to' => 'nullable|date|after_or_equal:education.graduate_studies.*.attendance_from',
+                'education.vocational.*.attendance_to' => 'nullable|digits:4|integer|min:1900|max:' . date('Y') . '|gte:education.vocational.*.attendance_from',
+                'education.college.*.attendance_to' => 'nullable|digits:4|integer|min:1900|max:' . date('Y') . '|gte:education.college.*.attendance_from',
+                'education.graduate_studies.*.attendance_to' => 'nullable|digits:4|integer|min:1900|max:' . date('Y') . '|gte:education.graduate_studies.*.attendance_from',
 
                 'education.vocational.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
                 'education.college.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
                 'education.graduate_studies.*.year_graduated' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
             ],
+
             4 => [
                 'eligibilities.*.career_service' => 'nullable|string',
                 'eligibilities.*.ratings' => 'nullable|numeric|between:0,100',
@@ -451,13 +460,36 @@ trait HasFormSteps
             'education.college.*.school_name.required' => 'The school name is required.',
             'education.graduate_studies.*.school_name.required' => 'The school name is required.',
 
-            'education.vocational.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
-            'education.college.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
-            'education.graduate_studies.*.attendance_to.after_or_equal' => 'The attendance to date must be after or equal to the attendance from date.',
+            // Ensure attendance_from and attendance_to are valid 4-digit years
+            'education.elementary.attendance_from.digits:4' => 'The attendance from year must be a 4-digit year.',
+            'education.elementary.attendance_to.digits:4' => 'The attendance to year must be a 4-digit year.',
 
-            'education.vocational.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
-            'education.college.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
-            'education.graduate_studies.*.year_graduated.digits' => 'The year graduated must be a 4-digit year.',
+            'education.secondary.attendance_from.digits:4' => 'The attendance from year must be a 4-digit year.',
+            'education.secondary.attendance_to.digits:4' => 'The attendance to year must be a 4-digit year.',
+
+            'education.vocational.*.attendance_from.digits:4' => 'The attendance from year must be a 4-digit year.',
+            'education.vocational.*.attendance_to.digits:4' => 'The attendance to year must be a 4-digit year.',
+
+            'education.college.*.attendance_from.digits:4' => 'The attendance from year must be a 4-digit year.',
+            'education.college.*.attendance_to.digits:4' => 'The attendance to year must be a 4-digit year.',
+
+            'education.graduate_studies.*.attendance_from.digits:4' => 'The attendance from year must be a 4-digit year.',
+            'education.graduate_studies.*.attendance_to.digits:4' => 'The attendance to year must be a 4-digit year.',
+
+            // Ensure attendance_to is greater than or equal to attendance_from
+            'education.elementary.attendance_to.gte:education.elementary.attendance_from' => 'The attendance to year must be after or equal to the attendance from year.',
+            'education.secondary.attendance_to.gte:education.secondary.attendance_from' => 'The attendance to year must be after or equal to the attendance from year.',
+
+            'education.vocational.*.attendance_to.gte:education.vocational.*.attendance_from' => 'The attendance to year must be after or equal to the attendance from year.',
+            'education.college.*.attendance_to.gte:education.college.*.attendance_from' => 'The attendance to year must be after or equal to the attendance from year.',
+            'education.graduate_studies.*.attendance_to.gte:education.graduate_studies.*.attendance_from' => 'The attendance to year must be after or equal to the attendance from year.',
+
+            // Ensure year_graduated is a valid 4-digit year
+            'education.elementary.year_graduated.digits:4' => 'The year graduated must be a 4-digit year.',
+            'education.secondary.year_graduated.digits:4' => 'The year graduated must be a 4-digit year.',
+            'education.vocational.*.year_graduated.digits:4' => 'The year graduated must be a 4-digit year.',
+            'education.college.*.year_graduated.digits:4' => 'The year graduated must be a 4-digit year.',
+            'education.graduate_studies.*.year_graduated.digits:4' => 'The year graduated must be a 4-digit year.',
 
             // ------------------- Step 4: Civil Service Elibility-------------------
             'eligibilities.*.career_service.required' => 'The career service field is required.',

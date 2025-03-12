@@ -79,6 +79,16 @@
         <li class="nav-item">
             <a
                 wire:navigate
+                {{-- href="{{ url(route('admin.reports')) }}" --}}
+                class="nav-link text-white"
+            >
+                <i class="bi bi-cloud-upload me-1" style="font-size: 1.1rem;"></i>
+                <span>Backups</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a
+                wire:navigate
                 {{-- href="{{ url(route('admin.settings')) }}" --}}
                 class="nav-link text-white"
             >

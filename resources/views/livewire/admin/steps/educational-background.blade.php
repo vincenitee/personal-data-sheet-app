@@ -29,7 +29,7 @@
                     <tr>
                         <td class="align-middle text-center fw-semibold text-dark">
                             @if (!empty($background->level))
-                                {{ ucwords($background->level) }}
+                                {{ ucwords(str_replace('_', ' ', $background->level)) }}
                             @else
                                 <span
                                     class="badge bg-soft-warning bg-warning d-inline-flex align-items-center gap-2 py-1 px-2 rounded-2">

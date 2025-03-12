@@ -17,46 +17,89 @@ class CivilServiceEligibilityService
      */
     public function store($data): bool
     {
-        DB::beginTransaction();
-        try {
-            $pdsEntryId = $data['pds_entry_id'];
+        // Validate required data
+        if (empty($data['eligibilities']) || !is_array($data['eligibilities'])) {
+            \Log::warning('No eligibilities provided or invalid format');
+            return false;
+        }
 
+        $pdsEntryId = $data['pds_entry_id'] ?? null;
+        if (empty($pdsEntryId)) {
+            \Log::warning('No PDS entry ID provided');
+            return false;
+        }
+
+        \Log::info('Processing eligibilities for PDS entry: ' . $pdsEntryId);
+        \Log::info('Data received: ' . json_encode($data['eligibilities']));
+
+        DB::beginTransaction();
+
+        try {
             $existingRecords = CivilServiceEligibility::where('pds_entry_id', $pdsEntryId)
                 ->get()
                 ->keyBy(function ($item) {
-                    return $item->pds_entry_id . '_' . $item->career_service;
+                    return $this->generateUniqueKey($item);
                 });
 
+            \Log::info('Existing records: ' . $existingRecords->count());
 
             $processedData = $this->filterData($data['eligibilities'], $pdsEntryId, ['career_service']);
             $processedKeys = [];
+            \Log::info('Filtered data count: ' . count($processedData));
 
             // dd($processedData);
 
             foreach ($processedData as $entry) {
-                $key = $entry['pds_entry_id'] . '_' . $entry['career_service'];
+                if (isset($entry['exam_date']) && !empty($entry['exam_date'])) {
+                    $entry['exam_date'] = date('Y-m-d', strtotime($entry['exam_date']));
+                }
+
+                $key = $this->generateUniqueKey($entry);
                 $processedKeys[] = $key;
 
+                \Log::info('Processing entry: ' . json_encode($entry));
+                \Log::info('Generated key: ' . $key);
+
                 if ($existingRecords->has($key)) {
+                    \Log::info('Updating existing record');
                     $existingRecords[$key]->update($entry);
                 } else {
+                    \Log::info('Creating new record');
                     CivilServiceEligibility::create($entry);
                 }
             }
 
-            if (!empty($pdsEntryId)) {
-                CivilServiceEligibility::where('pds_entry_id', $pdsEntryId)
-                    ->whereNotIn(DB::raw("CONCAT(pds_entry_id, '_', career_service)"), $processedKeys)
-                    ->delete();
+            if (!empty($pdsEntryId) && count($processedKeys) > 0) {
+                $deleteQuery = CivilServiceEligibility::where('pds_entry_id', $pdsEntryId)
+                    ->whereNotIn(DB::raw("CONCAT(pds_entry_id, '_', LOWER(TRIM(career_service)), '_', DATE_FORMAT(exam_date, '%Y-%m-%d'))"), $processedKeys);
+
+                $toDelete = $deleteQuery->count();
+                \Log::info('Records to delete: ' . $toDelete);
+                if ($toDelete > 0) {
+                    $deleteQuery->delete();
+                }
             }
 
             DB::commit();
             return true;
         } catch (Exception $e) {
             DB::rollback();
-            \Log::error('Failed to update eligibilities:', ['error' => $e->getMessage()]);
+            \Log::error('Failed to update eligibilities:', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return false;
         }
+    }
+
+    private function generateUniqueKey($entry)
+    {
+        return trim($entry['pds_entry_id']) . '_' .
+            strtolower(trim($entry['career_service'])) . '_' .
+            date('Y-m-d', strtotime($entry['exam_date']));
     }
 
     public function filterData($entries, $pdsEntryId, $columns = [])

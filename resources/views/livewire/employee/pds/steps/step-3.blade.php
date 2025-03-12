@@ -15,14 +15,15 @@
             ],
             [
                 'label' => 'Attendance From',
-                'type' => 'date',
+                'type' => 'number',
                 'required' => false,
-                'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Attendance To',
-                'type' => 'date',
+                'type' => 'number',
                 'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Level Unit Earned',
@@ -33,8 +34,8 @@
             [
                 'label' => 'Year Graduated',
                 'type' => 'number',
-                'placeholder' => 'e.g., 2016',
                 'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Academic Honors',
@@ -63,13 +64,15 @@
             ],
             [
                 'label' => 'Attendance From',
-                'type' => 'date',
+                'type' => 'number',
                 'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Attendance To',
-                'type' => 'date',
+                'type' => 'number',
                 'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Level Unit Earned',
@@ -80,8 +83,8 @@
             [
                 'label' => 'Year Graduated',
                 'type' => 'number',
-                'placeholder' => 'e.g., 2016',
                 'required' => false,
+                'placeholder' => 'Enter year (e.g., 2024)',
             ],
             [
                 'label' => 'Academic Honors',
@@ -97,7 +100,6 @@
 <!-- Vocational Level -->
 <x-card title="Vocational/Trade Course" icon="bi-tools" loadingTarget="addEducationEntry('vocational')">
     @foreach ($education['vocational'] as $index => $entry)
-
         @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
@@ -106,38 +108,40 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter vocational school name',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Automotive Servicing NC II',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'required' => false,
+                    'placeholder' => 'Enter year (e.g., 2024)',
                 ],
                 [
                     'label' => 'Attendance To',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'required' => false,
+                    'placeholder' => 'Enter year (e.g., 2024)',
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
-                    'placeholder' => 'e.g., 2020',
-                'required' => false,
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., TESDA Scholar, With Distinction',
-                'required' => false,
+                    'required' => false,
                 ],
             ],
         ])
@@ -170,7 +174,6 @@
 {{-- College --}}
 <x-card title="College" icon="bi-mortarboard-fill" loadingTarget="addEducationEntry('college')">
     @foreach ($education['college'] as $index => $entry)
-
         @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
@@ -179,39 +182,41 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter college or university name',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Bachelor of Science in Computer Science',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Attendance To',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
                     'placeholder' => 'e.g., 120 (enter the total units completed if not graduated)',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
-                    'placeholder' => 'e.g., 2023',
-                'required' => false,
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., Cum Laude, Dean\'s Lister',
-                'required' => false,
+                    'required' => false,
                 ],
             ],
         ])
@@ -244,7 +249,6 @@
 {{-- Graduate Studies --}}
 <x-card title="Graduate Studies" icon="bi-award" loadingTarget="addEducationEntry('graduate_studies')">
     @foreach ($education['graduate_studies'] as $index => $entry)
-
         @include('partials.count-indicator', ['count' => $index])
 
         @include('partials.form-fields', [
@@ -253,39 +257,41 @@
                 [
                     'label' => 'School Name',
                     'placeholder' => 'Enter graduate school or university name',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Degree Earned',
                     'placeholder' => 'e.g., Master of Business Administration (MBA)',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Attendance From',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Attendance To',
-                    'type' => 'date',
-                'required' => false,
+                    'type' => 'number',
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Level Unit Earned',
                     'type' => 'number',
                     'placeholder' => 'e.g., 36 credit units (enter the total units completed if not graduated)',
-                'required' => false,
+                    'required' => false,
                 ],
                 [
                     'label' => 'Year Graduated',
                     'type' => 'number',
-                    'placeholder' => 'e.g., 2025',
-                'required' => false,
+                    'placeholder' => 'Enter year (e.g., 2024)',
+                    'required' => false,
                 ],
                 [
                     'label' => 'Academic Honors',
                     'placeholder' => 'e.g., With Distinction, Best Thesis Award',
-                'required' => false,
+                    'required' => false,
                 ],
             ],
         ])
@@ -313,4 +319,3 @@
         </div>
     @endslot
 </x-card>
-

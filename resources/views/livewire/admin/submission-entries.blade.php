@@ -42,7 +42,7 @@
 
             <tbody>
 
-                @forelse ($this->submissionEntries as $index => $submissionEntry)
+                @forelse ($this->pdsEntries as $index => $pdsEntry)
                     {{-- @dump($submissionEntry) --}}
                     <tr class="p-4">
                         {{-- @dump($submissionEntry) --}}
@@ -51,17 +51,17 @@
                             <div class="d-flex align-items-center gap-3">
                                 <div>
                                     {{-- @dump($submissionEntry->attachment?->passport_photo) --}}
-                                    <img src="{{ asset('storage/' . ($submissionEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}"
+                                    <img src="{{ asset('storage/' . ($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}"
                                         alt="Employee Photo" class="rounded border shadow-sm" width="45"
                                         height="45" style="object-fit: cover">
                                 </div>
                                 <div class="employee-details">
                                     <h6 class="fw-semibold mb-1"><a
-                                            href="{{ url(route('submissions.review', $submissionEntry->id)) }}"
+                                            href="{{ url(route('submissions.review', $pdsEntry->id)) }}"
                                             class="nav-link text-primary"
-                                            wire:navigate>{{ $this->getUserFullName($submissionEntry->user) }}</a></h6>
+                                            wire:navigate>{{ $this->getUserFullName($pdsEntry->user) }}</a></h6>
                                     <span class="text-muted fs-7">
-                                        Employee ID: <span class="fw-medium">{{ $submissionEntry->user->id }}</span>
+                                        Employee ID: <span class="fw-medium">{{ $pdsEntry->user->id }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                         </td>
 
                         <td class="align-middle">
-                            {{ $submissionEntry->created_at->format('M d, Y') }}
+                            {{ $pdsEntry->created_at->format('M d, Y') }}
                         </td>
                         <td class="align-middle">
                             {{-- <div class="d-flex align-items-center justify-content-center gap-2">
@@ -87,7 +87,7 @@
 
                                 <ul class="dropdown-menu dropdown-menu-start">
                                     <li>
-                                        <a href="{{ url(route('submissions.review', $submissionEntry->id)) }}"
+                                        <a href="{{ url(route('submissions.review', $pdsEntry->id)) }}"
                                             class="dropdown-item">View</a>
                                         <a href="" class="dropdown-item">Download</a>
                                         <a href="" class="dropdown-item">Print</a>
@@ -108,8 +108,8 @@
     </div>
 
     <div class="mt-3 d-flex justify-content-end">
-        @if ($this->submissionEntries->hasPages())
-            {{ $this->submissionEntries->links() }}
+        @if ($this->pdsEntries->hasPages())
+            {{ $this->pdsEntries->links() }}
         @else
             <p class="text-muted mx-2">Showing all entries</p>
         @endif

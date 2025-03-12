@@ -192,17 +192,34 @@ trait LoadsEmployeeData
         $sortedWorkExperiences = collect($workExperiences)->sortByDesc('date_from');
 
         foreach ($sortedWorkExperiences as $workExperience) {
+            if (isset($workExperience['date_from']) && !empty($workExperience['date_from'])) {
+                $workExperience['date_from'] = date('Y-m-d', strtotime($workExperience['date_from']));
+            }
+
+            if (isset($workExperience['date_to']) && !empty($workExperience['date_to'])) {
+                $workExperience['date_to'] = Carbon::parse($workExperience['date_to'])->format('Y-m-d');
+            }
+
             $this->workExperiences[] = $this->filterData($workExperience, ['id', 'pds_entry_id', 'timestamps']);
         }
+
+        // dd($this->workExperiences);
     }
 
     protected function loadVolWorkEntries($voluntaryWorks)
     {
         if (empty($voluntaryWorks)) return;
-
         $sortedVolWorkExperiences = collect($voluntaryWorks)->sortByDesc('date_from');
 
         foreach ($sortedVolWorkExperiences as $volWorkExperience) {
+            if (isset($volWorkExperience['date_from']) && !empty($volWorkExperience['date_from'])) {
+                $volWorkExperience['date_from'] = date('Y-m-d', strtotime($volWorkExperience['date_from']));
+            }
+
+            if (isset($volWorkExperience['date_to']) && !empty($volWorkExperience['date_to'])) {
+                $volWorkExperience['date_to'] = date('Y-m-d', strtotime($volWorkExperience['date_to']));
+            }
+
             $this->voluntaryWorks[] = $this->filterData($volWorkExperience, ['id', 'pds_entry_id', 'timestamps']);
         }
     }
@@ -308,7 +325,7 @@ trait LoadsEmployeeData
             if (!empty($attachments->{$field})) {
                 // ✅ Properly check if the field is "date_of_issuance" and format it
                 if ($field === 'date_of_issuance') {
-                    $this->{$field} = Carbon::parse($attachments->{$field})->format('m/d/Y');
+                    $this->{$field} = Carbon::parse($attachments->{$field})->format('Y-m-d');
                 } else {
                     $this->{$field} = $attachments->{$field};
                 }

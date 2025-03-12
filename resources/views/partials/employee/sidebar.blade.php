@@ -24,10 +24,10 @@
                 <i class="bi bi-file-plus me-1" style="font-size: 1.1rem;"></i>
                 Manage My PDS</a>
         </li>
-        <li class="nav-item {{ request()->is('print') ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ request()->is('print') ? 'active' : '' }}">
             <a wire:navigate.hover href="{{ url(route('print')) }}" class="nav-link text-white">
-                <i class="bi bi-file-plus me-1" style="font-size: 1.1rem;"></i>
-                Print My Entry</a>
+                <i class="bi bi-printer me-1" style="font-size: 1.1rem;"></i>
+                Print My Entry</a> --}}
         </li>
         <li class="nav-item {{ request()->is('employee/submission-logs') ? 'active' : '' }}">
             <a wire:navigate.hover href="{{ url(route('employee.submission.logs')) }}" class="nav-link text-white">

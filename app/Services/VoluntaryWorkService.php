@@ -17,37 +17,78 @@ class VoluntaryWorkService
      */
     public function store($data)
     {
+        if (empty($data['voluntaryWorks']) || !is_array($data['voluntaryWorks'])) {
+            \Log::warning('No voluntary work experiences provided or invalid format');
+            return false;
+        }
+
+        $pdsEntryId = $data['pds_entry_id'] ?? null;
+
+        if (empty($pdsEntryId)) {
+            \Log::warning('No PDS entry ID provided');
+            return false;
+        }
+
+        \Log::info('Processing work experiences for PDS entry: ' . $pdsEntryId);
+        \Log::info('Data received: ' . json_encode($data['voluntaryWorks']));
+
         DB::beginTransaction();
 
         try {
-            $pdsEntryId = $data['pds_entry_id'] ?? null;
-
             $existingRecords = VoluntaryWorkExperience::where('pds_entry_id', $pdsEntryId)
                 ->get()
                 ->keyBy(function ($item) {
-                    return "{$item->pds_entry_id}_{$item->position}_{$item->organization_name}_{$item->date_from}";
+                    return $this->generateUniqueKey($item);
                 });
+            \Log::info('Existing records: ' . $existingRecords->count());
+
 
             $processedData =  $this->filterData($data['voluntaryWorks'], $pdsEntryId, ['position', 'organization_name', 'date_from']);
+            \Log::info('Filtered data count: ' . count($processedData));
+
             $processedKeys = [];
 
-
             foreach ($processedData as $entry) {
-                $key = "{$entry['pds_entry_id']}_{$entry['position']}_{$entry['organization_name']}_{$entry['date_from']}";
+                // Ensure date_from is in correct format
+                if (isset($entry['date_from']) && !empty($entry['date_from'])) {
+                    $entry['date_from'] = date('Y-m-d', strtotime($entry['date_from']));
+                }
 
+                $key = $this->generateUniqueKey($entry);
                 $processedKeys[] = $key;
 
+                \Log::info('Processing entry: ' . json_encode($entry));
+                \Log::info('Generated key: ' . $key);
+
                 if ($existingRecords->has($key)) {
+                    \Log::info('Updating existing record');
                     $existingRecords[$key]->update($entry);
                 } else {
+                    \Log::info('Creating new record');
                     VoluntaryWorkExperience::create($entry);
                 }
             }
 
             if (!empty($pdsEntryId) && count($processedKeys) > 0) {
-                VoluntaryWorkExperience::where('pds_entry_id', $pdsEntryId)
-                    ->whereNotIn(DB::raw("CONCAT(pds_entry_id, '_', position, '_', organization_name, '_', date_from)"), $processedKeys)
-                    ->delete();
+                $deleteQuery = VoluntaryWorkExperience::where('pds_entry_id', $pdsEntryId)
+                    ->whereNotIn(DB::raw("
+                        CONCAT(
+                            pds_entry_id,
+                            '_',
+                            LOWER(TRIM(position)),
+                            '_',
+                            LOWER(TRIM(organization_name)),
+                            '_',
+                            DATE_FORMAT(date_from, '%Y-%m-%d'
+                        ))"), $processedKeys);
+
+                // dd($deleteQuery);
+                $toDelete = $deleteQuery->count();
+                \Log::info('Records to delete: ' . $toDelete);
+
+                if($toDelete > 0){
+                    $deleteQuery->delete();
+                }
             }
 
             DB::commit();
@@ -59,6 +100,17 @@ class VoluntaryWorkService
 
             return false;
         }
+    }
+
+    /**
+     * Generate a consistent and unique key for work experience entries.
+     */
+    private function generateUniqueKey($entry)
+    {
+        return trim($entry['pds_entry_id']) . '_' .
+            strtolower(trim($entry['position'])) . '_' .
+            strtolower(trim($entry['organization_name'])) . '_' .
+            date('Y-m-d', strtotime($entry['date_from']));
     }
 
     /**

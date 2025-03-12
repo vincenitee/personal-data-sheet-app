@@ -60,6 +60,8 @@ class Create extends Component
 
     public $user = null;
     public $nextUpdateAllowedAt = null;
+    public $status = null;
+    public $comments;
 
     // Basic Information
     public $first_name = null;
@@ -335,32 +337,46 @@ class Create extends Component
             ->latest()
             ->first();
 
-        // Check if an entry exists and its status
         if ($entry) {
-            if ($entry->status === SubmissionStatus::APPROVED->value) {
-                // Calculate the date when the user can update again (1 year after approval)
-                $this->nextUpdateAllowedAt = Carbon::parse($entry->updated_at)
-                    ->endOfYear()
-                    ->addDay();  
+            $this->status = $entry->status;
 
-                // Empty the entry collection to prevent editing
-                $entry = collect([]);
-            } elseif ($entry->status === SubmissionStatus::UNDER_REVIEW->value) {
-                // Empty the entry collection to prevent editing
-                $entry = collect([]);
-            } elseif ($entry->status === SubmissionStatus::DRAFT->value || $entry->status === SubmissionStatus::NEEDS_REVISION->value) {
-                // Load the data if the entry is still a draft or needs revision
-                $this->loadEntryData($entry);
+            switch ($entry->status) {
+                case SubmissionStatus::APPROVED->value:
+                    // User can update 1 year after last approval
+                    $this->nextUpdateAllowedAt = Carbon::parse($entry->updated_at)->addYear();
+                    break;
+
+                case SubmissionStatus::UNDER_REVIEW->value:
+                    // No need for special handling, just set the status
+                    break;
+
+                case SubmissionStatus::NEEDS_REVISION->value:
+                    // Fetch comments associated with the revision
+                    $this->comments = $entry->submissions()
+                        ->where('status', SubmissionStatus::UNDER_REVIEW->value)
+                        ->latest()
+                        ->first()
+                        ?->comments ?? collect();
+
+                    $this->highestStepReached = 10;
+                    // dd($this->comments);
+                    // No break; allow data loading
+                case SubmissionStatus::DRAFT->value:
+                    $this->loadEntryData($entry);
+                    break;
             }
         } else {
-            // Create a new entry if none exists
-            $entry = $this->user->entries()->create(['is_current' => false]);
+            // If no entry exists, create a new one
+            $entry = $this->user->entries()->create([
+                'is_current' => false,
+                'status' => SubmissionStatus::DRAFT->value,
+            ]);
+
             $this->loadEntryData($entry);
         }
 
         $this->initializeEntries();
     }
-
 
 
     protected function loadUserAddresses($addresses)
@@ -1116,6 +1132,7 @@ class Create extends Component
             'livewire.employee.pds.create',
             ['steps' => $this->steps, 'stepIcons' => $this->stepIcons],
             $this->getOptions(),
+
         )
             ->extends('layouts.app')
             ->title('Add New Entry')

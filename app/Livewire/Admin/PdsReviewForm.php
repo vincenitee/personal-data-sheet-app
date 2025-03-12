@@ -16,7 +16,7 @@ use App\Notifications\PdsStatusNotification;
 
 class PdsReviewForm extends Component
 {
-    public PdsEntry $entry;
+    public PdsEntry $pdsEntry;
     public Submission $submission;
     public string $remarks = 'Please review and provide necessary corrections';
 
@@ -31,10 +31,10 @@ class PdsReviewForm extends Component
         $this->pdsService = $pdsService;
     }
 
-    public function mount(PdsEntry $entry)
+    public function mount(PdsEntry $pdsEntry)
     {
-        $this->submission = $entry->submissions()->latest()->first();
-        $this->entry = $entry->load([
+        // dd($pdsEntry);
+        $this->pdsEntry = $pdsEntry->load([
             'user',
             'personalInformation',
             'parents',
@@ -50,7 +50,10 @@ class PdsReviewForm extends Component
             'organizations',
             'question',
             'attachment',
+            'submissions'
         ]);
+
+        $this->submission = $pdsEntry->submissions()->latest()->first();
 
         // dd($this->submission->comments);
         // dd($this->entry->workExperiences);
@@ -58,64 +61,85 @@ class PdsReviewForm extends Component
 
     public function submitForRevisions()
     {
-        // Prepares the data
-        if (!$this->pdsService->updateStatus($this->entry->id, SubmissionStatus::NEEDS_REVISION)) {
+        // Ensure the PDS entry exists before proceeding
+        if (!$this->pdsEntry) {
             $this->dispatch('show-alert', [
-                'title' => 'Success',
-                'text' => 'The entry has been sent back for revisions',
-                'icon' => 'info'
+                'title' => 'Error',
+                'text' => 'PDS entry not found.',
+                'icon' => 'error'
             ]);
+            return;
         }
 
+        // Attempt to update the status
+        $statusUpdated = $this->pdsService->updateStatus($this->pdsEntry->id, SubmissionStatus::NEEDS_REVISION);
+
+        if (!$statusUpdated) {
+            $this->dispatch('show-alert', [
+                'title' => 'Error',
+                'text' => 'Failed to update status. Please try again.',
+                'icon' => 'error'
+            ]);
+            return;
+        }
+
+        // Prepare submission data
         $data = [
-            'pds_entry_id' => $this->entry->id,
+            'pds_entry_id' => $this->pdsEntry->id,
             'status' => SubmissionStatus::NEEDS_REVISION->value,
             'remarks' => $this->remarks,
         ];
 
+        // dd($data);
+
+        // Create a submission record
         $this->submissionService->create($data);
 
-        // Get the user
-        $user = $this->entry->user;
+        // Get the associated user
+        $user = $this->pdsEntry->user;
 
-        $comments = $this->submission->comments()->pluck('comment')->toArray();
+        // Fetch previous comments related to the submission
+        $comments = $this->pdsEntry->submission?->comments()->pluck('comment')->toArray() ?? [];
 
-        if ($user) {
-            // Sends an email notification to the user
+        // Send notifications if user exists and has an email
+        if ($user && !empty($user->email)) {
+            // Queue email notification
             Mail::to($user->email)->queue(
                 new PdsEntryStatusMail(
                     $user,
                     SubmissionStatus::NEEDS_REVISION->value,
                     $this->remarks,
-                    $this->entry,
-                    $comments,
+                    $this->pdsEntry,
+                    $comments
                 )
             );
 
-            // Sends a system notification
+            // Send system notification
             $user->notify(new PdsStatusNotification(
                 SubmissionStatus::NEEDS_REVISION->value,
                 'Your PDS entry has been returned for revisions. Remarks: ' . $this->remarks
             ));
         }
 
+        // Success alert
         $this->dispatch('show-alert', [
             'title' => 'Revision Returned',
             'text' => 'The entry has been successfully sent back for revisions.',
             'icon' => 'success',
         ]);
 
-
         // Redirect to the submissions page
-        return $this->redirect(url: url(route('admin.submissions')), navigate: true);
+        return $this->redirect(url: route('admin.submissions'), navigate: true);
     }
+
+
 
     #[On('entry-approved')]
     public function approveEntry($entryId)
     {
         // Update entry status
         $this->pdsService->updateStatus($entryId, SubmissionStatus::APPROVED);
-        
+
         $this->pdsService->update($entryId, ['is_current' => true]);
 
         // Create a submission entry
@@ -128,7 +152,7 @@ class PdsReviewForm extends Component
         $this->submissionService->create($data);
 
         // Get the user
-        $user = $this->entry->user;
+        $user = $this->pdsEntry->user;
 
         if ($user) {
             // Sends an email notification to the user
@@ -137,7 +161,7 @@ class PdsReviewForm extends Component
                     $user,
                     SubmissionStatus::APPROVED->value,
                     $this->remarks,
-                    $this->entry
+                    $this->pdsEntry
                 )
             );
 
@@ -158,8 +182,6 @@ class PdsReviewForm extends Component
         // Redirect to the submissions page
         return $this->redirect(url: url(route('admin.submissions')), navigate: true);
     }
-
-
 
     public function render()
     {

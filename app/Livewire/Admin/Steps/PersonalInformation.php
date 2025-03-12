@@ -30,6 +30,8 @@ class PersonalInformation extends Component
         // Extract permanent and current addresses
         $this->permanentAddress = $this->personalInfo->addresses->where('address_type', 'permanent')->first();
         $this->residentialAddress = $this->personalInfo->addresses->where('address_type', 'residential')->first();
+
+        
     }
 
     public function render()

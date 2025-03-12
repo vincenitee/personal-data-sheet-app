@@ -47,7 +47,7 @@
                                 class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-eye me-1"></i> View PDF
                             </a>
-                            <a href="{{ Storage::url($government_id_photo) }}" download
+                            <a href="{{ Storage::url($government_id_photo) }}"
                                 class="btn btn-sm btn-outline-secondary ms-2">
                                 <i class="bi bi-download me-1"></i> Download
                             </a>

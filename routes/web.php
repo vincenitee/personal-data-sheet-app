@@ -3,8 +3,6 @@
 use App\Models\User;
 use App\Livewire\Profile;
 use App\Livewire\Welcome;
-use App\Mail\SignupStatus;
-use App\Livewire\PrintEntry;
 use App\Livewire\Admin\AddUser;
 use App\Livewire\Auth\LoginUser;
 use App\Mail\PdsEntryStatusMail;
@@ -22,6 +20,7 @@ use App\Livewire\Admin\SubmissionEntries;
 use App\Livewire\Employee\SubmissionLogs;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Employee\Dashboard as EmployeeDashboard;
+use App\Livewire\Employee\PreviewEntry;
 
 Route::get('test', function (){
     $user = User::find(8);
@@ -60,7 +59,7 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
     Route::get('/admin/submissions', SubmissionEntries::class)
         ->name('admin.submissions');
 
-    Route::get('/admin/submissions/{entry}/review', PdsReviewForm::class)
+    Route::get('/admin/submissions/{pdsEntry}/review', PdsReviewForm::class)
         ->name('submissions.review');
 });
 
@@ -68,9 +67,6 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
 Route::middleware(['auth', 'approved'])->group(function (){
     Route::get('/profile', Profile::class)
         ->name('profile');
-
-    Route::get('/print', PrintEntry::class)
-        ->name('print');
 });
 
 // Employee Routes
@@ -87,5 +83,10 @@ Route::middleware(['auth', 'approved', 'role:employee', 'active'])->group(functi
     Route::get('/employee/submission-logs', SubmissionLogs::class)
         ->name('employee.submission.logs');
 
+    Route::get('/employee/preview-entry', PreviewEntry::class)
+        ->name('employee.preview.entry');
+
+    Route::get('/employee/profile', Profile::class)
+        ->name('employee.profile');
 });
 

@@ -15,4 +15,6 @@ class Submission extends Model
     {
         return $this->hasMany(SubmissionComment::class, 'submission_id');
     }
+
+    
 }

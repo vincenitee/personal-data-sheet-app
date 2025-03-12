@@ -48,7 +48,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item" wire:navigate href="{{ url(route('profile')) }}">
+                        <a class="dropdown-item" wire:navigate href="{{ url(route('employee.profile')) }}">
                             <i class="bi bi-user"></i>
                             Profile
                         </a>

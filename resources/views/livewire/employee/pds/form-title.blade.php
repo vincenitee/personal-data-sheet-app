@@ -35,14 +35,20 @@
 
         <!-- Progress bar (optional, uncomment if needed) -->
         <div class="progress mt-3" style="height: 4px;">
-            <div
-                class="progress-bar bg-primary"
-                role="progressbar"
+            <div class="progress-bar bg-primary" role="progressbar"
                 style="width: {{ ($currentStep / count($steps)) * 100 }}%"
-                aria-valuenow="{{ ($currentStep / count($steps)) * 100 }}"
-                aria-valuemin="0"
-                aria-valuemax="100">
+                aria-valuenow="{{ ($currentStep / count($steps)) * 100 }}" aria-valuemin="0" aria-valuemax="100">
             </div>
         </div>
+
+        @if ($status === 'needs_revision')
+            <div class="mt-3">
+                <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#commentsOffcanvas">
+                    <i class="bi bi-chat-square-text me-1"></i> View Comments <span
+                        class="badge bg-danger ms-1">{{ count($comments) }}</span>
+                </button>
+            </div>
+        @endif
     </div>
 </div>

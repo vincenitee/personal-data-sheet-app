@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class VoluntaryWorkExperience extends Model
 {
     protected $casts = [
-        'date_from' => 'date',
-        'date_to' => 'date',
+        'date_from' => 'date:Y-m-d',
+        'date_to' => 'date:Y-m-d',
     ];
 
     public function entry()
     {
-        return $this->belongsTo(PdsEntry::class);
+        return $this->belongsTo(PdsEntry::class, 'pds_entry_id');
     }
 
     public function getOrgAddressAndNameAttribute()

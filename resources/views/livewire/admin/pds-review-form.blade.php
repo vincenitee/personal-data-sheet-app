@@ -7,11 +7,11 @@
                 <small>
                     Submitted by:
                     <strong>
-                        {{ $entry->personalInformation?->first_name }}
-                        {{ $entry->personalInformation?->middle_name }}
-                        {{ $entry->personalInformation?->last_name }}
+                        {{ $pdsEntry->personalInformation?->first_name }}
+                        {{ $pdsEntry->personalInformation?->middle_name }}
+                        {{ $pdsEntry->personalInformation?->last_name }}
                     </strong>
-                    on <strong>{{ $entry->created_at->format('F d, Y') }}</strong>
+                    on <strong>{{ $pdsEntry->created_at->format('F d, Y') }}</strong>
                 </small>
             </p>
         </div>
@@ -22,59 +22,59 @@
     {{-- Personal Information --}}
     @livewire('admin.steps.personal-information', [
         'submissionId' => $submission->id,
-        'personalInfo' => $entry->personalInformation,
+        'personalInfo' => $pdsEntry->personalInformation,
     ])
 
-    {{-- @dump($entry->educationalBackgrounds) --}}
+    {{-- @dump($pdsEntry->educationalBackgrounds) --}}
 
     {{-- Family Background --}}
     @livewire('admin.steps.family-background', [
         'submissionId' => $submission->id,
-        'spouse' => $entry->spouse,
-        'parents' => $entry->parents,
-        'children' => $entry->children,
+        'spouse' => $pdsEntry->spouse,
+        'parents' => $pdsEntry->parents,
+        'children' => $pdsEntry->children,
     ])
 
     @livewire('admin.steps.educational-background', [
         'submissionId' => $submission->id,
-        'educationalBackgrounds' => $entry->educationalBackgrounds,
+        'educationalBackgrounds' => $pdsEntry->educationalBackgrounds,
     ])
 
     @livewire('admin.steps.civil-service', [
         'submissionId' => $submission->id,
-        'eligibilities' => $entry->eligibilities,
+        'eligibilities' => $pdsEntry->eligibilities,
     ])
 
     @livewire('admin.steps.work-experience', [
         'submissionId' => $submission->id,
-        'workExperiences' => $entry->workExperiences,
+        'workExperiences' => $pdsEntry->workExperiences,
     ])
 
     @livewire('admin.steps.voluntary-work', [
         'submissionId' => $submission->id,
-        'volWorkExperiences' => $entry->volWorkExperiences,
+        'volWorkExperiences' => $pdsEntry->volWorkExperiences,
     ])
 
     @livewire('admin.steps.trainings', [
         'submissionId' => $submission->id,
-        'trainings' => $entry->trainings,
+        'trainings' => $pdsEntry->trainings,
     ])
 
     @livewire('admin.steps.other-information', [
         'submissionId' => $submission->id,
-        'skills' => $entry->skills,
-        'recognitions' => $entry->recognitions,
-        'organizations' => $entry->organizations,
+        'skills' => $pdsEntry->skills,
+        'recognitions' => $pdsEntry->recognitions,
+        'organizations' => $pdsEntry->organizations,
     ])
 
     @livewire('admin.steps.questionnaire', [
         'submissionId' => $submission->id,
-        'questionResponses' => $entry->question,
+        'questionResponses' => $pdsEntry->question,
     ])
 
     @livewire('admin.steps.attachments', [
         'submissionId' => $submission->id,
-        'attachment' => $entry?->attachment,
+        'attachment' => $pdsEntry?->attachment,
     ])
 
     <div class="d-flex align-items-center justify-content-end gap-2 mt-4">
@@ -83,7 +83,7 @@
             Return for revisions
         </x-forms.button>
 
-        <x-forms.button @click="confirmEntryApproval({{ $entry->id }})" class="btn-sm btn-success">
+        <x-forms.button @click="confirmEntryApproval({{ $pdsEntry->id }})" class="btn-sm btn-success">
             <i class="bi bi-check-circle"></i>
             Approve Entry
         </x-forms.button>

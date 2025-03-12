@@ -18,7 +18,8 @@
                         Export
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-file-earmark-pdf me-2 text-danger"></i>PDF</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="#"><i
+                                    class="bi bi-file-earmark-pdf me-2 text-danger"></i>PDF</a></li>
                     </ul>
                 </div>
             </div>
@@ -84,25 +85,73 @@
                 @case(2)
                     @livewire('print.sections.c2', [
                         'eligibilities' => $pdsEntry?->eligibilities,
-                        'workExperiences' => $pdsEntry?->workExperiences
+                        'workExperiences' => $pdsEntry?->workExperiences,
                     ])
                 @break
 
                 @case(3)
                     @livewire('print.sections.c3', [
-                        'personalInformation' => $pdsEntry?->personalInformation,
+                        'volWorkExperiences' => $pdsEntry?->volWorkExperiences,
+                        'trainings' => $pdsEntry?->trainings,
+                        'skills' => $pdsEntry?->skills,
+                        'recognitions' => $pdsEntry?->recognitions,
+                        'organizations' => $pdsEntry?->organizations,
                     ])
                 @break
 
                 @case(4)
                     @livewire('print.sections.c4', [
-                        'personalInformation' => $pdsEntry?->personalInformation,
+                        'questions' => $pdsEntry?->question,
+                        'attachment' => $pdsEntry?->attachment,
                     ])
                 @break
 
                 @default
             @endswitch
         </div>
+
+        <nav aria-label="Page navigation" class="d-flex justify-content-between align-items-center mb-4">
+            <span class="badge bg-light text-dark border px-3 py-2"><i class="bi bi-layers me-1"></i>Pages</span>
+
+            <ul class="pagination pagination-md-sm mb-0">
+                <li class="page-item {{ $currentStep === 1 ? 'active' : '' }}">
+                    <button type="button" class="page-link rounded-start" wire:click="jumpToSection(1)">
+                        <span wire:loading.remove wire:target="jumpToSection(1)">1</span>
+                        <span wire:loading wire:target="jumpToSection(1)" class="spinner-border spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="page-item {{ $currentStep === 2 ? 'active' : '' }}">
+                    <button type="button" class="page-link" wire:click="jumpToSection(2)">
+                        <span wire:loading.remove wire:target="jumpToSection(2)">2</span>
+                        <span wire:loading wire:target="jumpToSection(2)" class="spinner-border spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="page-item {{ $currentStep === 3 ? 'active' : '' }}">
+                    <button type="button" class="page-link" wire:click="jumpToSection(3)">
+                        <span wire:loading.remove wire:target="jumpToSection(3)">3</span>
+                        <span wire:loading wire:target="jumpToSection(3)" class="spinner-border spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="page-item {{ $currentStep === 4 ? 'active' : '' }}">
+                    <button type="button" class="page-link rounded-end" wire:click="jumpToSection(4)">
+                        <span wire:loading.remove wire:target="jumpToSection(4)">4</span>
+                        <span wire:loading wire:target="jumpToSection(4)" class="spinner-border spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
     @else
         <div class="card border-light shadow-sm rounded-3">
             <div class="card-body text-center p-4">
@@ -115,7 +164,8 @@
 
                 <h4 class="card-title mb-3">Print Action Unavailable</h4>
                 <p class="card-text text-muted mb-3">You don't have an approved PDS entry at the moment.</p>
-                <p class="card-text text-muted mb-4">Please wait for your submission to be reviewed or create a new entry if you haven't done so.</p>
+                <p class="card-text text-muted mb-4">Please wait for your submission to be reviewed or create a new
+                    entry if you haven't done so.</p>
 
                 <div class="d-grid gap-2 col-md-7 mx-auto">
                     <a href="{{ url(route('employee.submission.logs')) }}" class="btn btn-primary text-white">

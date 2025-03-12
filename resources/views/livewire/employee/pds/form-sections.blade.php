@@ -1,16 +1,16 @@
+    
     <!-- Form Navigation -->
     <div x-data="{
-            scrollToActive() {
-                this.$nextTick(() => {
-                    let activeStep = this.$refs.activeStep;
-                    if (activeStep) {
-                        activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                    }
-                });
-            }
-        }"
-        x-init="scrollToActive()"
-        class="card shadow-sm sticky-top bg-white border-0" style="top: 93px; z-index: 1020;">
+        scrollToActive() {
+            this.$nextTick(() => {
+                let activeStep = this.$refs.activeStep;
+                if (activeStep) {
+                    activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            });
+        }
+    }" x-init="scrollToActive()" class="card shadow-sm sticky-top bg-white border-0"
+        style="top: 93px; z-index: 1020;">
 
         <div class="card-header bg-light py-2 px-3">
             <div class="row align-items-center">
@@ -46,12 +46,10 @@
                     <nav class="nav nav-pills flex-nowrap overflow-auto pb-2" x-ref="navContainer">
                         @foreach ($steps as $index => $step)
                             <div class="nav-item me-2">
-                                <button
-                                    wire:click="jumpToStep({{ $index }})"
+                                <button wire:click="jumpToStep({{ $index }})"
                                     class="nav-link d-inline-flex align-items-center rounded-pill btn-sm {{ $currentStep === $index ? 'active bg-primary' : 'text-body' }}"
                                     @if ($index > $highestStepReached) disabled @endif wire:loading.attr="disabled"
-                                    x-ref="{{ $currentStep === $index ? 'activeStep' : '' }}"
-                                    @click="scrollToActive()">
+                                    x-ref="{{ $currentStep === $index ? 'activeStep' : '' }}" @click="scrollToActive()">
                                     <i class="{{ $stepIcons[$index] }} me-2"></i>
                                     <span class="text-truncate" style="max-width: 100px;">{{ $step }}</span>
                                     <div wire:loading wire:target="jumpToStep({{ $index }})"
@@ -70,8 +68,7 @@
                         <button wire:click="jumpToStep({{ $index }})"
                             class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 px-3 border-0 rounded {{ $currentStep === $index ? 'active bg-primary text-white' : '' }}"
                             @if ($index > $highestStepReached) disabled @endif wire:loading.attr="disabled"
-                            x-ref="{{ $currentStep === $index ? 'activeStep' : '' }}"
-                            @click="scrollToActive()">
+                            x-ref="{{ $currentStep === $index ? 'activeStep' : '' }}" @click="scrollToActive()">
                             <div class="d-flex align-items-center">
                                 <i class="{{ $stepIcons[$index] }} me-2"></i>
                                 <span class="fw-medium">{{ $step }}</span>

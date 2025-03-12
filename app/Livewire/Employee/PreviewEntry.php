@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Employee;
 
 use App\Enums\SubmissionStatus;
 use App\Models\PdsEntry;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class PrintEntry extends Component
+class PreviewEntry extends Component
 {
     public ?PdsEntry $pdsEntry;
 
     public $currentStep = 1;
 
-    public function mount()
+    public function mount(?PdsEntry $pdsEntry)
     {
         $this->currentStep = session('current_print_step', 1);
         $this->pdsEntry = PdsEntry::with([
@@ -39,7 +39,7 @@ class PrintEntry extends Component
             ->latest()
             ->first();
 
-        // dd($this->pdsEntry->skills);
+        // dd($this->pdsEntry->workExperiences);
     }
 
     public function jumpToSection(int $step){
@@ -50,9 +50,9 @@ class PrintEntry extends Component
 
     public function render()
     {
-        return view('livewire.print-entry')
+        return view('livewire.employee.preview-entry')
             ->extends('layouts.app')
-            ->title('Print Entry')
+            ->title('Preview Entry')
             ->section('content');
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class WorkExperienceService
 {
-
     /**
      * Creates or updates the work experience entry
      * @param array $data
@@ -17,53 +16,91 @@ class WorkExperienceService
      */
     public function store($data): bool
     {
-        // dd($data);
+        // Validate required data
+        if (empty($data['workExperiences']) || !is_array($data['workExperiences'])) {
+            \Log::warning('No work experiences provided or invalid format');
+            return false;
+        }
+
+        $pdsEntryId = $data['pds_entry_id'] ?? null;
+        if (empty($pdsEntryId)) {
+            \Log::warning('No PDS entry ID provided');
+            return false;
+        }
+
+        \Log::info('Processing work experiences for PDS entry: ' . $pdsEntryId);
+        \Log::info('Data received: ' . json_encode($data['workExperiences']));
+
         DB::beginTransaction();
 
         try {
-            $pdsEntryId = $data['pds_entry_id'] ?? null;
-
-            // Fetch existing records
+            // Fetch existing records with normalized keys
             $existingRecords = WorkExperience::where('pds_entry_id', $pdsEntryId)
                 ->get()
                 ->keyBy(function ($item) {
-                    return "{$item->pds_entry_id}_{$item->position}_{$item->agency}_{$item->date_from}";
+                    return $this->generateUniqueKey($item);
                 });
 
+            \Log::info('Existing records: ' . $existingRecords->count());
+
             $processedData = $this->filterData($data['workExperiences'], $pdsEntryId, ['position', 'agency', 'status', 'date_from']);
+            \Log::info('Filtered data count: ' . count($processedData));
+
             $processedKeys = [];
 
-            foreach($processedData as $entry){
-                $key = "{$entry['pds_entry_id']}_{$entry['position']}_{$entry['agency']}_{$entry['date_from']}";
-                $processedKeys[] = $key;
-
-                if($existingRecords->has($key)){
-                    // dump($existingRecords);
-                    $existingRecords[$key]->update($entry);
-                } else{
-                    WorkExperience::create($entry);
+            foreach ($processedData as $entry) {
+                // Ensure date_from is in the correct format
+                if (isset($entry['date_from']) && !empty($entry['date_from'])) {
+                    $entry['date_from'] = date('Y-m-d', strtotime($entry['date_from']));
                 }
 
-                // dump($entry);
+                $key = $this->generateUniqueKey($entry);
+                $processedKeys[] = $key;
+
+                \Log::info('Processing entry: ' . json_encode($entry));
+                \Log::info('Generated key: ' . $key);
+
+                if ($existingRecords->has($key)) {
+                    \Log::info('Updating existing record');
+                    $existingRecords[$key]->update($entry);
+                } else {
+                    \Log::info('Creating new record');
+                    WorkExperience::create($entry);
+                }
             }
 
-            if(!empty($pdsEntryId)){
-                WorkExperience::where('pds_entry_id', $pdsEntryId)
-                    ->whereNotIn(DB::raw("CONCAT(pds_entry_id, '_', position, '_', agency, '_', date_from)"), $processedKeys)
-                    ->delete();
+            if (!empty($pdsEntryId) && count($processedKeys) > 0) {
+                $deleteQuery = WorkExperience::where('pds_entry_id', $pdsEntryId)
+                    ->whereNotIn(DB::raw("CONCAT(pds_entry_id, '_', LOWER(TRIM(position)), '_', LOWER(TRIM(agency)), '_', DATE_FORMAT(date_from, '%Y-%m-%d'))"), $processedKeys);
+
+                $toDelete = $deleteQuery->count();
+                \Log::info('Records to delete: ' . $toDelete);
+
+                if ($toDelete > 0) {
+                    $deleteQuery->delete();
+                }
             }
 
             DB::commit();
             return true;
         } catch (Exception $e) {
             DB::rollback();
-
             \Log::error('Failed to update work experiences data: ' . $e->getMessage());
-
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
             return false;
         }
     }
 
+    /**
+     * Generate a consistent and unique key for work experience entries.
+     */
+    private function generateUniqueKey($entry)
+    {
+        return trim($entry['pds_entry_id']) . '_' .
+            strtolower(trim($entry['position'])) . '_' .
+            strtolower(trim($entry['agency'])) . '_' .
+            date('Y-m-d', strtotime($entry['date_from']));
+    }
 
     /**
      * Filters and validates work experience entries
@@ -72,32 +109,28 @@ class WorkExperienceService
     {
         $validData = [];
 
-        // Ensure $entries is an array
         if (!is_array($entries)) {
             throw new InvalidArgumentException('Invalid entry provided. Must be an array.');
         }
 
         foreach ($entries as $entry) {
-            // Convert object to array if necessary
             $entryArray = is_object($entry) ? (array) $entry : $entry;
-
             $entryArray['pds_entry_id'] = $pdsEntryId;
 
             $isValid = true;
 
-            // Validate each required column
             foreach ($columns as $column) {
                 if (!array_key_exists($column, $entryArray) || is_null($entryArray[$column])) {
                     $isValid = false;
-                    break; // Skip adding this entry
+                    break;
                 }
             }
 
             if ($isValid) {
-                $validData[] = $entryArray; // Store only valid data
+                $validData[] = $entryArray;
             }
         }
 
-        return $validData; // Return only filtered valid entries
+        return $validData;
     }
 }

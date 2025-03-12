@@ -15,7 +15,7 @@ class SubmissionEntries extends Component
     use SortableSearchable, WithPagination;
 
     #[Computed]
-    public function submissionEntries()
+    public function pdsEntries()
     {
         return PdsEntry::where('status', SubmissionStatus::UNDER_REVIEW)
             ->with(['user', 'attachment']) // Fetch user through entry
