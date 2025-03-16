@@ -1,15 +1,10 @@
-<div class="card card-body h-100" wire:ignore>
-    <div id="employeeChart" style="height: 350px; height: 100%"></div>
-
-    {{-- <div class="d-flex align-items-center justify-content-end">
-        <button class="btn btn-sm btn-success">Export</button>
-    </div> --}}
-    {{-- <button class="btn btn-outline-primary" wire:click="refreshChart()">Refresh</button> --}}
+<div class="card card-body" wire:ignore>
+    <div id="jobChart" style="height: 350px; width: 100%;"></div>
 </div>
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('DOMContentLoaded', function() {
             function generateDistinctColors(numColors) {
                 let colors = [];
                 const baseHues = [210, 180, 145, 330, 280, 45]; // Blues, teals, oranges, magentas, purples, yellows
@@ -33,30 +28,32 @@
 
             var options = {
                 title: {
-                    text: "Employee Distribution by Status"
+                    text: "Employee Distribution by Job Positions"
                 },
                 subtitle: {
                     text: "Based on approved entries"
                 },
-                labels: @json($chartData['labels']),
-                series: @json($chartData['series']),
-                colors: generateDistinctColors(@json(count($chartData['labels']))),
+                series: [{
+                    data: @json($chartData['series'])
+                }],
                 chart: {
-                    type: 'donut',
                     height: 350,
-                    toolbar: {
-                        show: true,
-                        tools: {
-                            download: true
+                    type: 'bar',
+                    events: {
+                        click: function(chart, w, e) {
+                            console.log(chart, w, e)
                         }
                     }
                 },
-                dataLabels: {
-                    enabled: true,
-                    formatter: function(val, opts) {
-                        return opts.w.globals.series[opts.seriesIndex] +
-                            " Employees"; // Show count inside slices
+                colors: generateDistinctColors(@json(count($chartData['labels']))),
+                plotOptions: {
+                    bar: {
+                        columnWidth: '35%',
+                        distributed: true,
                     }
+                },
+                dataLabels: {
+                    enabled: false
                 },
                 responsive: [{
                     breakpoint: 480,
@@ -68,12 +65,23 @@
                             position: 'bottom'
                         }
                     }
-                }]
+                }],
+                legend: {
+                    show: false
+                },
+                xaxis: {
+                    categories: @json($chartData['labels']),
+                    labels: {
+                        style: {
+                            colors: generateDistinctColors(@json(count($chartData['labels']))),
+                            fontSize: '12px'
+                        }
+                    }
+                }
             };
 
-            var chart = new ApexCharts(document.querySelector("#employeeChart"), options);
+            var chart = new ApexCharts(document.querySelector("#jobChart"), options);
             chart.render();
-
-        });
+        })
     </script>
 @endpush

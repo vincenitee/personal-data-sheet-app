@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="col-12">
-                            <x-forms.button class="w-100 bg-{{ $sidebarColor }}">
+                            <x-forms.button class="w-100 btn-{{ $sidebarColor }}">
                                 <span>Register</span>
                                 <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading
                                     wire:target="save">

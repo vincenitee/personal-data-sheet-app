@@ -48,6 +48,7 @@ class EditUserPage extends Component
 
     public function save()
     {
+        // dd($this->all());
         $this->validate();
 
         $this->user->update([

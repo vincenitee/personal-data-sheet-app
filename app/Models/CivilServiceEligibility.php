@@ -11,6 +11,11 @@ class CivilServiceEligibility extends Model
         'license_validity' => 'date:Y-m-d',
     ];
 
+    public function setLicenseValidityAttribute($value)
+    {
+        $this->attributes['license_validity'] = $value ?: null; // Convert empty string to NULL
+    }
+
     public function entry()
     {
         return $this->belongsTo(PdsEntry::class, 'pds_entry_id');

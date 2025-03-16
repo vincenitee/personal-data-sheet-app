@@ -1,13 +1,10 @@
-<div class="card card-body h-100" wire:ignore>
-    <div id="employeeChart" style="height: 350px; height: 100%"></div>
-
-    
-    
+<div class="card card-body" wire:ignore>
+    <div id="jobChart" style="height: 350px; width: 100%;"></div>
 </div>
 
 <?php $__env->startPush('scripts'); ?>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('DOMContentLoaded', function() {
             function generateDistinctColors(numColors) {
                 let colors = [];
                 const baseHues = [210, 180, 145, 330, 280, 45]; // Blues, teals, oranges, magentas, purples, yellows
@@ -31,30 +28,32 @@
 
             var options = {
                 title: {
-                    text: "Employee Distribution by Status"
+                    text: "Employee Distribution by Job Positions"
                 },
                 subtitle: {
                     text: "Based on approved entries"
                 },
-                labels: <?php echo json_encode($chartData['labels'], 15, 512) ?>,
-                series: <?php echo json_encode($chartData['series'], 15, 512) ?>,
-                colors: generateDistinctColors(<?php echo json_encode(count($chartData['labels']), 15, 512) ?>),
+                series: [{
+                    data: <?php echo json_encode($chartData['series'], 15, 512) ?>
+                }],
                 chart: {
-                    type: 'donut',
                     height: 350,
-                    toolbar: {
-                        show: true,
-                        tools: {
-                            download: true
+                    type: 'bar',
+                    events: {
+                        click: function(chart, w, e) {
+                            console.log(chart, w, e)
                         }
                     }
                 },
-                dataLabels: {
-                    enabled: true,
-                    formatter: function(val, opts) {
-                        return opts.w.globals.series[opts.seriesIndex] +
-                            " Employees"; // Show count inside slices
+                colors: generateDistinctColors(<?php echo json_encode(count($chartData['labels']), 15, 512) ?>),
+                plotOptions: {
+                    bar: {
+                        columnWidth: '35%',
+                        distributed: true,
                     }
+                },
+                dataLabels: {
+                    enabled: false
                 },
                 responsive: [{
                     breakpoint: 480,
@@ -66,13 +65,24 @@
                             position: 'bottom'
                         }
                     }
-                }]
+                }],
+                legend: {
+                    show: false
+                },
+                xaxis: {
+                    categories: <?php echo json_encode($chartData['labels'], 15, 512) ?>,
+                    labels: {
+                        style: {
+                            colors: generateDistinctColors(<?php echo json_encode(count($chartData['labels']), 15, 512) ?>),
+                            fontSize: '12px'
+                        }
+                    }
+                }
             };
 
-            var chart = new ApexCharts(document.querySelector("#employeeChart"), options);
+            var chart = new ApexCharts(document.querySelector("#jobChart"), options);
             chart.render();
-
-        });
+        })
     </script>
 <?php $__env->stopPush(); ?>
-<?php /**PATH C:\xampp\htdocs\personal-data-sheet-app\resources\views/livewire/admin/charts/employee-chart.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\personal-data-sheet-app\resources\views/livewire/admin/charts/job-position-distribution.blade.php ENDPATH**/ ?>

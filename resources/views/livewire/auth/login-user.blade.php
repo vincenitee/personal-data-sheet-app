@@ -43,7 +43,7 @@
                         </div>
                     </div>
 
-                    <x-forms.button @click="$wire.submit()" class="w-100 bg-{{ $sidebarColor }}">
+                    <x-forms.button @click="$wire.submit()" class="w-100 btn-{{ $sidebarColor }}">
                         <span>Sign in</span>
                         <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading
                             wire:target="submit">

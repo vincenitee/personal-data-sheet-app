@@ -1,13 +1,8 @@
 <div class="card card-body h-100" wire:ignore>
-    <div id="employeeChart" style="height: 350px; height: 100%"></div>
-
-    {{-- <div class="d-flex align-items-center justify-content-end">
-        <button class="btn btn-sm btn-success">Export</button>
-    </div> --}}
-    {{-- <button class="btn btn-outline-primary" wire:click="refreshChart()">Refresh</button> --}}
+    <div id="sexGroups" style="height: 350px; height: 100%"></div>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             function generateDistinctColors(numColors) {
@@ -33,16 +28,16 @@
 
             var options = {
                 title: {
-                    text: "Employee Distribution by Status"
+                    text: "Employee Distribution by Gender"
                 },
                 subtitle: {
-                    text: "Based on approved entries"
+                    text: "Based on approved users"
                 },
-                labels: @json($chartData['labels']),
-                series: @json($chartData['series']),
-                colors: generateDistinctColors(@json(count($chartData['labels']))),
+                labels: <?php echo json_encode($chartData['labels'], 15, 512) ?>,
+                series: <?php echo json_encode($chartData['series'], 15, 512) ?>,
+                colors: generateDistinctColors(<?php echo json_encode(count($chartData['labels']), 15, 512) ?>),
                 chart: {
-                    type: 'donut',
+                    type: 'pie',
                     height: 350,
                     toolbar: {
                         show: true,
@@ -71,9 +66,10 @@
                 }]
             };
 
-            var chart = new ApexCharts(document.querySelector("#employeeChart"), options);
+            var chart = new ApexCharts(document.querySelector("#sexGroups"), options);
             chart.render();
 
-        });
+        })
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php /**PATH C:\xampp\htdocs\personal-data-sheet-app\resources\views/livewire/admin/charts/sex-groups.blade.php ENDPATH**/ ?>

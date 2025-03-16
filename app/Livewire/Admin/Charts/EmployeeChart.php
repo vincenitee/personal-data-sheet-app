@@ -41,7 +41,7 @@ class EmployeeChart extends Component
         )->count();
 
         // Add "No Work Experience" to the labels and series
-        $labels->push("No Work Experience");
+        $labels->push("No Prior Work Experience");
         $series->push($employeesWithoutExperience);
 
         // Store data for the chart
@@ -57,7 +57,7 @@ class EmployeeChart extends Component
     {
         // dd($employmentStatus);
         // Fetch employees with the selected employment status
-        if ($employmentStatus === "No Work Experience") {
+        if ($employmentStatus === "No Prior Work Experience") {
             $employees = PdsEntry::where('status', 'approved')->doesntHave('workExperiences')->get();
         } else {
             $employmentStatus = strtolower(str_replace(' ', '_', $employmentStatus));
