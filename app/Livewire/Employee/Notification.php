@@ -18,6 +18,7 @@ class Notification extends Component
     public function markAllAsRead()
     {
         Auth::user()->unreadNotifications->markAsRead();
+        return $this->reset();
     }
 
     public function render()

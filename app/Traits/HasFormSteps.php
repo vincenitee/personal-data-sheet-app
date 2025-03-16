@@ -129,7 +129,7 @@ trait HasFormSteps
                 'identifiers.*' => 'sometimes|nullable|string|max:20',
 
                 'citizenship' => 'required|in:filipino,dual',
-                'citizenship_by' => 'required_if:citizenship,dual|in:birth,naturalization',
+                'citizenship_by' => 'required|in:birth,naturalization',
                 'country' => 'required_if:citizenship,dual',
 
                 'residential.region' => 'required',

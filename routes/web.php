@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Livewire\Profile;
 use App\Livewire\Welcome;
 use App\Livewire\Admin\AddUser;
+use App\Livewire\Admin\BackupManager;
 use App\Livewire\Auth\LoginUser;
 use App\Mail\PdsEntryStatusMail;
 use App\Livewire\Admin\ManageUsers;
@@ -19,12 +20,14 @@ use App\Livewire\Employee\Notification;
 use App\Livewire\Admin\SubmissionEntries;
 use App\Livewire\Employee\SubmissionLogs;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\Profile as AdminProfile;
+use App\Livewire\Admin\Settings;
 use App\Livewire\Employee\Dashboard as EmployeeDashboard;
 use App\Livewire\Employee\PreviewEntry;
+use App\Livewire\PrintPdsEntry;
 
-Route::get('test', function (){
-    $user = User::find(8);
-    return new PdsEntryStatusMail($user, 'rejected', '', $user->entries()->first());
+Route::get('/test', function (){
+    return view('test-print');
 });
 
 
@@ -61,12 +64,24 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
 
     Route::get('/admin/submissions/{pdsEntry}/review', PdsReviewForm::class)
         ->name('submissions.review');
+
+    Route::get('/admin/backup', BackupManager::class)
+        ->name('admin.backup');
+
+    Route::get('/admin/profile', AdminProfile::class)
+        ->name('admin.profile');
+
+    Route::get('/admin/settings', Settings::class)
+        ->name('admin.settings');
 });
 
 // Common Routes
 Route::middleware(['auth', 'approved'])->group(function (){
     Route::get('/profile', Profile::class)
         ->name('profile');
+
+    Route::get('/print/{pdsEntry}', PrintPdsEntry::class)
+        ->name('pds.print');
 });
 
 // Employee Routes
@@ -83,10 +98,10 @@ Route::middleware(['auth', 'approved', 'role:employee', 'active'])->group(functi
     Route::get('/employee/submission-logs', SubmissionLogs::class)
         ->name('employee.submission.logs');
 
-    Route::get('/employee/preview-entry', PreviewEntry::class)
+    Route::get('/employee/{pdsEntry}/preview-entry', PreviewEntry::class)
         ->name('employee.preview.entry');
 
-    Route::get('/employee/profile', Profile::class)
-        ->name('employee.profile');
+    // Route::get('/employee/profile', Profile::class)
+    //     ->name('employee.profile');
 });
 

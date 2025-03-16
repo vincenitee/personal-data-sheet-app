@@ -3,7 +3,7 @@
         <table id="pds-table">
             <tbody class="table-header">
                 <tr>
-                    <td colspan="12" class="h5">
+                    <td colspan="12">
                         <i><b>CS Form No. 212</b></i>
                     </td>
                 </tr>

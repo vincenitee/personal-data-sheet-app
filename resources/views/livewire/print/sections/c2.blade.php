@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive m-0">
     <table id="pds-table">
         <tbody class="table-body">
             <tr>
@@ -131,7 +131,7 @@
             </tr>
 
             {{-- Entry Starts --}}
-            @for ($i = 0; $i < 27; $i++)
+            @for ($i = 0; $i < 26; $i++)
                 @php
                     $experience = $workExperiences->get($i);
                 @endphp

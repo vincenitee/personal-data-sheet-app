@@ -10,8 +10,18 @@
 
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-2">
-                        <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="logo"
-                            class="img-fluid" id="login-logo">
+                        @if (!empty($logoPath) && Str::startsWith($logoPath, 'http'))
+                            <img src="{{ $logoPath }}" alt="Logo" id="logo"
+                                class="img-fluid mb-2 shadow-sm rounded-circle border"
+                                style="height: 85px; width: 85px; object-fit: cover;">
+                        @elseif (!empty($logoPath) && Storage::disk('public')->exists($logoPath))
+                            <img src="{{ Storage::url($logoPath) }}" alt="Logo" id="logo"
+                                class="img-fluid mb-2 shadow-sm rounded-circle border"
+                                style="height: 85px; width: 85px; object-fit: cover;">
+                        @else
+                            <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="Default Logo"
+                                id="logo" style="height: 85px; width: 85px; object-fit: cover;">
+                        @endif
                         <div class="d-flex flex-column align-items-center mb-3">
                             <h3 class="text-centerfw-bold">Forgot your password?</h3>
                             <span class="text-center text-muted mx-auto" style="font-size: 0.9rem">No problem. Just let
@@ -23,15 +33,15 @@
                     {{-- Inputs --}}
                     <div class="mb-3">
                         <x-forms.input model="email" icon="bi bi-envelope" name="email" label=""
-                                :required="false" placeholder="Email Address" />
+                            :required="false" placeholder="Email Address" />
                     </div>
 
-                    <x-forms.button class="w-100">
+                    <button class="btn btn-{{ $sidebarColor ?? 'dark' }} w-100">
                         Send password reset link
                         <div class="spinner-border spinner-border-sm ms-1" role="status" wire:loading>
                             <span class="sr-only"></span>
                         </div>
-                    </x-forms.button>
+                    </button>
 
                 </x-forms.form>
             </div>

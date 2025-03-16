@@ -9,10 +9,14 @@ class EducationalBackground extends Component
 {
     public int $submissionId;
     public Collection $educationalBackgrounds;
+    public $openCard;
+    public $entryStatus;
 
-    public function mount(int $submissionId, Collection $educationalBackgrounds)
+    public function mount(int $submissionId, Collection $educationalBackgrounds, string $entryStatus)
     {
         $this->submissionId = $submissionId;
+
+        $this->entryStatus = $entryStatus;
 
         // Define the order of education levels
         $order = [

@@ -21,6 +21,8 @@
 
                 <div class="notification-list">
                     @foreach ($unreadNotifications as $notification)
+                    {{-- @dd($notification); --}}
+
                         <div
                             class="notification-item unread position-relative mb-3 p-3 rounded-3 border-start border-primary border-3">
                             <div class="notification-content">
@@ -63,6 +65,7 @@
 
             <div class="notification-list">
                 @forelse($readNotifications as $notification)
+                    {{-- @dd($notification); --}}
                     <div class="notification-item read position-relative mb-2 p-3 rounded-3">
                         <div class="notification-content opacity-75">
                             <div class="d-flex justify-content-between align-items-start mb-2">

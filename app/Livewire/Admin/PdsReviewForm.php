@@ -18,7 +18,7 @@ class PdsReviewForm extends Component
 {
     public PdsEntry $pdsEntry;
     public Submission $submission;
-    public string $remarks = 'Please review and provide necessary corrections';
+    public string $remarks;
 
     protected SubmissionService $submissionService;
     protected PdsService $pdsService;
@@ -33,6 +33,7 @@ class PdsReviewForm extends Component
 
     public function mount(PdsEntry $pdsEntry)
     {
+        $this->remarks = '';
         // dd($pdsEntry);
         $this->pdsEntry = $pdsEntry->load([
             'user',
@@ -133,13 +134,13 @@ class PdsReviewForm extends Component
     }
 
 
-
     #[On('entry-approved')]
     public function approveEntry($entryId)
     {
         // Update entry status
         $this->pdsService->updateStatus($entryId, SubmissionStatus::APPROVED);
 
+        // Mark the entry as current
         $this->pdsService->update($entryId, ['is_current' => true]);
 
         // Create a submission entry
@@ -151,28 +152,30 @@ class PdsReviewForm extends Component
 
         $this->submissionService->create($data);
 
-        // Get the user
-        $user = $this->pdsEntry->user;
+        // Fetch the PDS entry
+        $pdsEntry = $this->pdsService->findById($entryId);
 
-        if ($user) {
-            // Sends an email notification to the user
+        if ($pdsEntry && $pdsEntry->user) {
+            $user = $pdsEntry->user;
+
+            // Send an email notification
             Mail::to($user->email)->queue(
                 new PdsEntryStatusMail(
                     $user,
                     SubmissionStatus::APPROVED->value,
-                    $this->remarks,
-                    $this->pdsEntry
+                    'Your entry has been approved',
+                    $pdsEntry
                 )
             );
 
-            // Sends a system notification
+            // Send a system notification
             $user->notify(new PdsStatusNotification(
                 SubmissionStatus::APPROVED->value,
                 'Your Entry has been approved'
             ));
         }
 
-        // Dispatch a alert indicating success
+        // Dispatch a success alert
         $this->dispatch('show-alert', [
             'title' => 'Approved Entry',
             'text' => 'The entry has been successfully approved',
@@ -181,6 +184,57 @@ class PdsReviewForm extends Component
 
         // Redirect to the submissions page
         return $this->redirect(url: url(route('admin.submissions')), navigate: true);
+    }
+
+
+    #[On('entry-reverted')]
+    public function entryReverted(int $entryId)
+    {
+        // Fetch the PDS Entry
+        $pdsEntry = $this->pdsService->findById($entryId); // Ensure this method exists in your service
+
+        if (!$pdsEntry) {
+            return;
+        }
+
+        // Update entry status to "Under Review"
+        $this->pdsService->updateStatus($entryId, SubmissionStatus::UNDER_REVIEW);
+
+        // Create a submission entry
+        $this->submissionService->create([
+            'pds_entry_id' => $entryId,
+            'status' => SubmissionStatus::UNDER_REVIEW->value,
+            'remarks' => 'Your entry has been reverted for review',
+        ]);
+
+        // Get the user from the entry
+        $user = $pdsEntry->user;
+
+        if ($user) {
+            // Send email notification
+            Mail::to($user->email)->queue(new PdsEntryStatusMail(
+                $user,
+                SubmissionStatus::UNDER_REVIEW->value,
+                'Your entry has been reverted for review',
+                $pdsEntry
+            ));
+
+            // Send system notification
+            $user->notify(new PdsStatusNotification(
+                SubmissionStatus::UNDER_REVIEW->value,
+                'Your Entry has been reverted for review'
+            ));
+        }
+
+        // Dispatch an alert indicating success
+        $this->dispatch('show-alert', [
+            'title' => 'Reverted Entry',
+            'text' => 'The entry has been successfully reverted for review',
+            'icon' => 'warning'
+        ]);
+
+        // Redirect to the submissions page
+        return $this->redirect(route('admin.submissions'), navigate: true);
     }
 
     public function render()

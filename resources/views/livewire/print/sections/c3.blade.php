@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive m-0">
     <table id="pds-table">
         <tbody class="table-body"></tbody>
         <tbody class="table-body">
@@ -96,7 +96,7 @@
             </tr>
 
             @php
-                $trainings = $trainings->pad(21, (object) []);
+                $trainings = $trainings->pad(41, (object) []);
             @endphp
 
             @foreach ($trainings as $training)

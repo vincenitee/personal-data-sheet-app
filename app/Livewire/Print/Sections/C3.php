@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Print\Sections;
 
+use App\Models\PdsEntry;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,20 +16,15 @@ class C3 extends Component
     public ?Collection $organizations;
     public $dateAccomplished;
 
-    public function mount(
-        ?Collection $volWorkExperiences,
-        ?Collection $trainings,
-        ?Collection $skills,
-        ?Collection $recognitions,
-        ?Collection $organizations,
+    public function mount(?PdsEntry $pdsEntry
     ){
-        $this->volWorkExperiences = $volWorkExperiences?->sortBy('date_to') ?? collect();
-        $this->trainings = $trainings?->sortByDesc('date_to') ?? collect();
-        $this->skills = $skills;
-        $this->recognitions = $recognitions;
-        $this->organizations = $organizations;
+        $this->volWorkExperiences = $pdsEntry?->volWorkExperiences->sortBy('date_to') ?? collect();
+        $this->trainings = $pdsEntry?->trainings->sortByDesc('date_to') ?? collect();
+        $this->skills = $pdsEntry?->skills ?? collect();
+        $this->recognitions = $pdsEntry?->recognitions ?? collect();
+        $this->organizations = $pdsEntry?->organizations ?? collect();
 
-        $this->dateAccomplished = Carbon::parse($this->volWorkExperiences->first()->created_at)->format('m/d/Y');
+        $this->dateAccomplished = Carbon::parse($pdsEntry->created_at)->format('m/d/Y');
         // dd($this->recognitions);
     }
 

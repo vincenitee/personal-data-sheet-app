@@ -20,7 +20,7 @@
 
         @if ($status === 'needs_revision')
             <div class="offcanvas offcanvas-end" tabindex="-1" id="commentsOffcanvas"
-                aria-labelledby="offcanvasRightLabel">
+                aria-labelledby="offcanvasRightLabel" style="z-index: 9999">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasRightLabel">
                         Revision Comments <span class="badge bg-primary rounded-pill">{{ $comments->count() }}</span>
@@ -176,10 +176,10 @@
                         <p class="text-success mb-2"><i class="bi bi-clipboard-check me-1"></i>Your PDS entry has been
                             approved</p>
                         <div class="d-flex flex-column btn-lg-group gap-2 align-self-center w-100">
-                            <a href="{{ url(route('employee.preview.entry')) }}" class="btn btn-sm btn-primary w-100">
+                            <a href="{{ url(route('employee.preview.entry', $entry->id)) }}" class="btn btn-sm btn-primary w-100">
                                 <i class="bi bi-printer me-1"></i>Print PDS
                             </a>
-                            <a href="{{ url(route('employee.preview.entry')) }}" class="btn btn-sm btn-outline-primary w-100">
+                            <a href="{{ url(route('employee.preview.entry', $entry->id)) }}" class="btn btn-sm btn-outline-primary w-100">
                                 <i class="bi bi-download me-1"></i>Download PDF
                             </a>
                         </div>

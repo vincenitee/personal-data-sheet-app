@@ -24,6 +24,12 @@ class PdsService
         return $this->pdsRepository->update(['status' => $status->value], $id);
     }
 
+    public function findById(int $entryId): ?PdsEntry
+    {
+        return PdsEntry::with('user')->find($entryId);
+    }
+
+
     /**
      * Update the PDS entry by ID.
      *

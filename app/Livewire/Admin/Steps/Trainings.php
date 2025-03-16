@@ -9,11 +9,16 @@ class Trainings extends Component
 {
     public int $submissionId;
     public ?Collection $trainings;
+    public $openCard;
+    public $entryStatus;
 
     public function mount(
         int $submissionId,
-        ?Collection $trainings
+        ?Collection $trainings,
+        string $entryStatus
     ){
+        $this->entryStatus = $entryStatus;
+        
         // dd($trainings);
         $this->submissionId = $submissionId;
         $this->trainings = $trainings->sortByDesc('date_from');

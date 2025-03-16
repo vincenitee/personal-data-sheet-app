@@ -9,6 +9,7 @@ class EducationalBackgroundService
 {
     public function store($data)
     {
+        // dd($data);
         DB::beginTransaction();
 
         try {

@@ -4,6 +4,7 @@ namespace App\Livewire\Employee;
 
 use App\Enums\SubmissionStatus;
 use App\Models\PdsEntry;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 

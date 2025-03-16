@@ -1,5 +1,6 @@
 <div class="card border-0 shadow-sm mb-3">
     <div class="card-body">
+        {{-- {{ $status }} --}}
         <!-- Header Section -->
         <div class="d-flex justify-content-between align-items-start gap-3">
             <div class="flex-grow-1">

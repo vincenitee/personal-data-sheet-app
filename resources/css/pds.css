@@ -1,7 +1,7 @@
  #pds-table {
      width: 100%;
      /* max-width: 9in; */
-     margin: 0 auto;
+     margin: auto;
      font-family: 'Arial Narrow', Arial, sans-serif;
      border: 2px solid #000;
  }

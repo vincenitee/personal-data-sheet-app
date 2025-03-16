@@ -3,9 +3,11 @@
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
+use App\Models\Settings;
 use App\Services\UserService;
-use App\Livewire\Forms\RegisterUserForm;
 use App\Traits\HasAlertMessage;
+use Illuminate\Support\Facades\Vite;
+use App\Livewire\Forms\RegisterUserForm;
 use Illuminate\Validation\ValidationException;
 
 class RegisterUser extends Component
@@ -16,9 +18,18 @@ class RegisterUser extends Component
 
     protected UserService $userService;
 
+    public $sidebarColor;
+    public $logoPath;
+
     public function boot(UserService $userService)
     {
         $this->userService = $userService;
+    }
+
+    public function mount()
+    {
+        $this->sidebarColor = Settings::where('key', 'sidebar_color')->value('value') ?? 'dark';
+        $this->logoPath = Settings::where('key', 'logo')->value('value') ?? Vite::asset('resources/images/hris-logo-white.png');
     }
 
     public function save()
@@ -38,7 +49,6 @@ class RegisterUser extends Component
                 'status' => 'success',
                 'message' => "Registration successfull! Please wait for account approval to login."
             ]);
-
         } catch (ValidationException $e) {
             $this->setErrorBag($e->errors());
 

@@ -11,12 +11,19 @@ class PersonalInformation extends Component
     public $permanentAddress;
     public $residentialAddress;
     public int $submissionId;
+    public $entryStatus;
+    public $openCard;
+
+    public $isReviewed;
 
     public function mount(
         int $submissionId,
-        ModelsPersonalInformation $personalInfo
+        ModelsPersonalInformation $personalInfo,
+        string $entryStatus,
     )
     {
+        $this->entryStatus = $entryStatus;
+
         $this->submissionId = $submissionId;
         // Eager load related models
         $this->personalInfo = $personalInfo->load([
@@ -30,8 +37,6 @@ class PersonalInformation extends Component
         // Extract permanent and current addresses
         $this->permanentAddress = $this->personalInfo->addresses->where('address_type', 'permanent')->first();
         $this->residentialAddress = $this->personalInfo->addresses->where('address_type', 'residential')->first();
-
-        
     }
 
     public function render()

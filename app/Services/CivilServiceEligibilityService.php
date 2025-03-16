@@ -17,6 +17,7 @@ class CivilServiceEligibilityService
      */
     public function store($data): bool
     {
+        // dd($data);
         // Validate required data
         if (empty($data['eligibilities']) || !is_array($data['eligibilities'])) {
             \Log::warning('No eligibilities provided or invalid format');

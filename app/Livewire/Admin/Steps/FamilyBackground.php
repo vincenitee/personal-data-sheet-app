@@ -15,15 +15,20 @@ class FamilyBackground extends Component
     public EmployeeParent $father;
     public EmployeeParent $mother;
     public ?Collection $children;
+    public $openCard;
+    public $entryStatus;
 
     public function mount(
         int $submissionId,
         Spouse $spouse,
         Collection $parents,
         ?Collection $children,
+        string $entryStatus,
     ){
-        $this->mother = $parents->get(0);
-        $this->father = $parents->get(1);
+        $this->entryStatus = $entryStatus;
+
+        $this->mother = $parents->get(1);
+        $this->father = $parents->get(0);
 
         $this->submissionId = $submissionId;
         $this->spouse = $spouse;

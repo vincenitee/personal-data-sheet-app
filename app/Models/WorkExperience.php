@@ -11,6 +11,6 @@ class WorkExperience extends Model
         'date_to' => 'date:Y-m-d',
     ];
     public function entry(){
-        return $this->belongsTo(PdsEntry::class);
+        return $this->belongsTo(PdsEntry::class, 'pds_entry_id');
     }
 }

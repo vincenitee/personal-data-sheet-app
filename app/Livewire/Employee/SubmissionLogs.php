@@ -16,6 +16,7 @@ class SubmissionLogs extends Component
             ->first();
 
         return view('livewire.employee.submission-logs', [
+            'entry' => $entry,
             'submissions' => $entry ? $entry->submissions->sortByDesc('created_at') : collect(),
         ])
             ->extends('layouts.app')

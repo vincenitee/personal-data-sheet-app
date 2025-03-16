@@ -48,11 +48,16 @@ class Questionnaire extends Component
     public bool $is_solo_parent = false;
     public $solo_parent_id = null;
 
+    public $openCard;
+
+    public $entryStatus;
+
     public function mount(
         int $submissionId,
-        AdditionalQuestion $questionResponses
+        AdditionalQuestion $questionResponses,
+        string $entryStatus
     ){
-
+        $this->entryStatus = $entryStatus;
         // dd($questionResponses->referencePersons);
         $this->submissionId = $submissionId;
         $this->questionResponses = $questionResponses;

@@ -44,7 +44,7 @@ class Comments extends Component
             'submission_id' => $this->submissionId,
             'admin_id' => Auth::id(),
             'section' => $this->pdsSection, // Change dynamically based on section
-            'comment' => $this->comment
+            'comment' => trim($this->comment)
         ]);
 
         $this->comment = '';

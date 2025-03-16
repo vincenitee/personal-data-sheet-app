@@ -18,11 +18,12 @@
     },
     "dependencies": {
         "alpinejs": "^3.14.8",
+        "apexcharts": "^4.5.0",
         "bootstrap-icons": "^1.11.3",
         "choices.js": "^11.0.3",
         "flatpickr": "^4.6.13",
+        "puppeteer": "^24.4.0",
         "simplebar": "^6.3.0",
-        "sweetalert2": "^11.6.13",
-        "tom-select": "^2.4.2"
+        "sweetalert2": "^11.6.13"
     }
 }

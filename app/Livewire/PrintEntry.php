@@ -13,10 +13,10 @@ class PrintEntry extends Component
 
     public $currentStep = 1;
 
-    public function mount()
+    public function mount(?PdsEntry $pdsEntry)
     {
         $this->currentStep = session('current_print_step', 1);
-        $this->pdsEntry = PdsEntry::with([
+        $this->pdsEntry = $pdsEntry::with([
             'user',
             'personalInformation',
             'parents',

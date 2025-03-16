@@ -9,6 +9,9 @@ enum EmploymentStatus: string
     case CASUAL = 'casual';
     case CONTRACT_OF_SERVICE = 'contract_of_service';
     case TEMPORARY = 'temporary';
+    case FIXED_TERM = 'fixed_term';
+    case PROVISIONAL = 'provisional';
+    case COTERMINOUS = 'coterminous';
 
     public static function values(): array
     {

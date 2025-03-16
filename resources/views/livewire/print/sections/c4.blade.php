@@ -128,16 +128,16 @@
                 <td colspan="2">Date Filed:</td>
                 <td colspan="3" class="fw-bold">
                     @if ($questions->criminal_charge_date)
-                        {{ $questions->criminal_charge_date }}
+                        {{ \Carbon\Carbon::parse($questions->criminal_charge_date)->format('m/d/Y') }}
                     @endif
                 </td>
             </tr>
             <tr>
                 <td colspan="7" class="s-label"></td>
                 <td colspan="2">Status of Case/s:</td>
-                <td colspan="3" class="text-start class="text-uppercase fw-bold"">
-                    @if ($questions->criminal_charge_date)
-                        {{ $questions->criminal_charge_date }}
+                <td colspan="3" class="text-uppercase fw-bold">
+                    @if ($questions->criminal_charge_status)
+                        {{ str_replace('_', ' ', $questions->criminal_charge_status) }}
                     @endif
                 </td>
             </tr>
@@ -356,8 +356,8 @@
             <tr>
                 <td colspan="7" class="s-label"><span class="count"></span><br /></td>
                 <td colspan="2">If YES, please specify:</td>
-                <td colspan="3">
-                    {{ optional($questions)->details ?? '' }}
+                <td colspan="3" class="fw-bold text-uppercase">
+                    {{ optional($questions)->indigenous_details ?? '' }}
                 </td>
             </tr>
             <tr>
@@ -380,7 +380,7 @@
             <tr>
                 <td colspan="7" class="s-label"></td>
                 <td colspan="2">If YES, please specify:</td>
-                <td colspan="3">
+                <td colspan="3" class="fw-bold">
                     {{ optional($questions)->disabled_person_id ?? '' }}
                 </td>
             </tr>
@@ -404,7 +404,7 @@
             <tr>
                 <td colspan="7" class="s-label"></td>
                 <td colspan="2">If YES, please specify:</td>
-                <td colspan="3">
+                <td colspan="3" class="fw-bold">
                     {{ optional($questions)->solo_parent_id ?? '' }}
                 </td>
             </tr>

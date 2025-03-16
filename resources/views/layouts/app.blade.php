@@ -17,9 +17,9 @@
     {{-- Main Container --}}
     <div x-data="{ open: true }" class="d-flex" style="min-height: 100vh">
         @role('employee')
-            @include('partials.employee.sidebar')
+            @livewire('employee.sidebar')
         @else
-            @include('partials.admin.sidebar')
+            @livewire('admin.sidebar')
         @endrole
 
         <div class="flex-1 w-100">

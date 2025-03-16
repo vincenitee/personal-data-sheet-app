@@ -58,6 +58,7 @@ class Create extends Component
         HasAlertMessage,
         WithFileUploads;
 
+    public ?PdsEntry $entry;
     public $user = null;
     public $nextUpdateAllowedAt = null;
     public $status = null;
@@ -297,6 +298,7 @@ class Create extends Component
 
     public function mount()
     {
+        // Make the entry available to the blade file
         $this->currentStep = session('current_step', 1);
         $this->highestStepReached = session('highest_step_reached', 0);
         $this->user = Auth::user();
@@ -336,6 +338,8 @@ class Create extends Component
             ])
             ->latest()
             ->first();
+
+        $this->entry = $entry;
 
         if ($entry) {
             $this->status = $entry->status;
@@ -631,6 +635,7 @@ class Create extends Component
     #[On('entry-submitted')]
     public function save()
     {
+        $this->saveDraft();
         try {
             $this->validate($this->rules()[$this->currentStep]);
         } catch (ValidationException $e) {

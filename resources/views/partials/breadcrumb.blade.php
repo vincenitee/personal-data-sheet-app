@@ -1,6 +1,7 @@
 @php
     // Get the current URI
     $currentUri = request()->path();
+    \Log::info("Current URI: " . $currentUri); // Log current URI
 
     // Define the pages and their corresponding names
     $pages = [
@@ -10,61 +11,57 @@
         'employee/notification' => 'Notifications',
         'manage-signups' => 'Manage Signups',
         'employee/submission-logs' => 'Submission Logs',
-        'employee/preview-entry' => 'Preview Entry',
+        'employee/*/preview-entry' => 'Preview Entry',
         'manage-users' => 'Manage Users',
-        'users/*/edit' => 'Edit User Information', // Dynamic route
+
+
+        'admin/users/*/edit' => 'Edit User Information',
+        'admin/add-user' => 'Add User',
+        'admin/users' => 'Manage Users',
+        'admin/manage-signups' => 'Manage Signups',
+        'admin/settings' => 'Settings',
+        'admin/backup' => 'Manage Backup',
+        'admin/submissions' => 'Submissions',
+        'admin/submissions/*/review' => 'Review Entry',
     ];
 
     // Function to match dynamic routes (e.g., users/*/edit)
-    $matchDynamicRoute = function ($uri, $pattern) {
-        // Replace * with a regex pattern to match any segment
-        $pattern = str_replace('*', '([^/]+)', $pattern);
+    function matchRoute($uri, $pattern) {
+        // Convert '*' to regex pattern and escape slashes
+        $regex = '/^' . preg_replace('/\//', '\/', str_replace('*', '([^/]+)', $pattern)) . '$/';
 
-        // Escape slashes for regex
-        $pattern = str_replace('/', '\/', $pattern);
+        // Log the regex pattern being used
+        \Log::info("Matching URI: $uri with Pattern: $pattern => Regex: $regex");
 
-        // Match the pattern against the URI
-        return preg_match("/^{$pattern}$/", $uri);
-    };
+        return preg_match($regex, $uri);
+    }
 
     // Find the current page by matching the URI
-    $currentPage = null;
+    $currentPage = 'Dashboard'; // Default page
 
     foreach ($pages as $uri => $pageName) {
+        if (str_contains($uri, '*') ? matchRoute($currentUri, $uri) : $currentUri === $uri) {
+            \Log::info("Matched Route: " . $uri . " => Page: " . $pageName);
 
-        if (str_contains($uri, '*')) {
-            // Match dynamic routes
-            if ($matchDynamicRoute($currentUri, $uri)) {
-                $currentPage = $pageName;
-                break;
-            }
-        } elseif ($currentUri === $uri) {
-            // Match exact routes
             $currentPage = $pageName;
             break;
         }
     }
 
-    // Default to Dashboard if no match found
-    $currentPage = $currentPage ?? 'Dashboard';
-
-    // Extract user ID from URI for dynamic routes
+    // Extract user ID from dynamic route if applicable
     $userId = null;
-    if ($currentPage === 'Edit User Information') {
-        preg_match('/users\/(\d+)\/edit/', $currentUri, $matches);
-        $userId = $matches[1] ?? null;
+    if ($currentPage === 'Edit User Information' && preg_match('/users\/(\d+)\/edit/', $currentUri, $matches)) {
+        $userId = $matches[1];
+        \Log::info("Extracted User ID: " . $userId);
     }
 
     // Get the appropriate dashboard route based on user role
     $role = Auth::user()->getRoleNames()->first();
     $dashboardRoute = $role . '.dashboard';
+    \Log::info("User Role: $role => Dashboard Route: $dashboardRoute");
 
-    // Debugging (optional)
-    // echo "Current URI: $currentUri<br>";
-    // echo "Current Page: $currentPage<br>";
-    // echo "User ID: $userId<br>";
-    // echo "Dashboard Route: $dashboardRoute<br>";
 @endphp
+
 
 <nav aria-label="breadcrumb">
     <h4 class="fw-medium" style="margin-bottom: 0;">{{ $currentPage }}</h4>
@@ -73,7 +70,9 @@
 
         <!-- Intermediate breadcrumb for dynamic routes -->
         @if($currentPage === 'Edit User Information')
-            <li class="breadcrumb-item"><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.users') }}" wire:navigate>Manage Users</a></li>
+        @elseif($currentPage === 'Review Entry')
+            <li class="breadcrumb-item"><a href="{{ route('admin.submissions') }}" wire:navigate>Submissions</a></li>
         @endif
 
         <li class="breadcrumb-item active" aria-current="page">

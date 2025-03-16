@@ -9,6 +9,7 @@ class CivilService extends Component
 {
     public int $submissionId;
     public ?Collection $eligibilities;
+    public $openCard;
 
     public function mount(
         int $submissionId,
@@ -18,6 +19,7 @@ class CivilService extends Component
         $withoutExam = $eligibilities->whereNull('exam_date');
 
         $this->eligibilities = $withExam->merge($withoutExam);
+        $this->submissionId = $submissionId;
     }
 
     public function render()

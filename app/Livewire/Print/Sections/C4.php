@@ -5,6 +5,7 @@ namespace App\Livewire\Print\Sections;
 use Livewire\Component;
 use App\Models\AdditionalQuestion;
 use App\Models\PdsAttachment;
+use App\Models\PdsEntry;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,16 +17,13 @@ class C4 extends Component
     public $dateAccomplished;
 
     public function mount(
-        ?AdditionalQuestion $questions,
-        ?PdsAttachment $attachment,
+        ?PdsEntry $pdsEntry
     ) {
-        $this->questions = $questions;
-        $this->referencePersons = $this->questions?->referencePersons ?? collect();
-        $this->attachment = $attachment;
+        $this->questions = $pdsEntry->question;
+        $this->referencePersons = $this->questions?->referencePersons;
+        $this->attachment = $pdsEntry->attachment;
 
-        $this->dateAccomplished = Carbon::parse($this->attachment->entry->updated_at)->format('m/d/Y');
-        // dd($this->attachment);
-        // dd($referencePersons);
+        $this->dateAccomplished = Carbon::parse($pdsEntry->updated_at)->format('m/d/Y');
     }
     public function render()
     {

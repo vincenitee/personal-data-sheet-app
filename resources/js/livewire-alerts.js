@@ -84,12 +84,25 @@ window.toggleUserStatus = function (userId, currentStatus) {
 window.confirmEntryApproval = function (entryId) {
     confirmAction({
         title: "Approve Entry?",
-        text: "Are you sure you want to approve this entry?", 
+        text: "Are you sure you want to approve this entry?",
         icon: "question",
         confirmButtonText: "Yes, approve it",
         cancelButtonText: "Cancel",
         onConfirm: () => {
-            Livewire.dispatch('entry-approved', { entryId: entryId }); 
+            Livewire.dispatch('entry-approved', { entryId: entryId });
+        }
+    });
+}
+
+window.confirmRevertEntry = function (entryId) {
+    confirmAction({
+        title: "Revert Entry?",
+        text: "Are you sure you want to revert this entry?",
+        icon: "question",
+        confirmButtonText: "Yes, revert it",
+        cancelButtonText: "Cancel",
+        onConfirm: () => {
+            Livewire.dispatch('entry-reverted', { entryId: entryId });
         }
     });
 }

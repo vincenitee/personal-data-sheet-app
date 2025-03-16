@@ -3,8 +3,9 @@
 namespace App\Livewire\Print\Sections;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
+use App\Models\PdsEntry;
+use Illuminate\Database\Eloquent\Collection;
 
 class C2 extends Component
 {
@@ -13,14 +14,13 @@ class C2 extends Component
     public $dateAccomplished;
 
     public function mount(
-        ?Collection $eligibilities,
-        ?Collection $workExperiences
+        ?PdsEntry $pdsEntry
     ) {
-        $this->eligibilities = $eligibilities;
-        $this->workExperiences = $workExperiences;
+        $this->eligibilities = $pdsEntry->eligibilities;
+        $this->workExperiences = $pdsEntry->workExperiences;
 
         // dd($eligibilities, $workExperiences);
-        $this->dateAccomplished = Carbon::parse($this->eligibilities->first()->entry->created_at)->format('m/d/Y');
+        $this->dateAccomplished = Carbon::parse($pdsEntry->created_at)->format('m/d/Y');
     }
 
     public function render()

@@ -57,14 +57,14 @@
 
                         @if ($submission->status === 'needs_revision')
                             <div class="d-flex justify-content-end mt-3">
-                                <a href="{{ url(route('employee.pds.create')) }}"
+                                <a href="{{ route('employee.pds.create') }}"
                                     class="btn btn-sm btn-outline-{{ $config['color'] }}">
                                     <i class="bi bi-pencil me-1"></i> Edit
                                 </a>
                             </div>
                         @elseif ($submission->status === 'approved')
                             <div class="d-flex justify-content-end mt-3">
-                                <a href="{{ url(route('employee.preview.entry')) }}"
+                                <a href="{{ route('employee.preview.entry', $entry->id) }}"
                                     class="btn btn-sm btn-outline-{{ $config['color'] }}">
                                     <i class="bi bi-printer me-1"></i> Print
                                 </a>
