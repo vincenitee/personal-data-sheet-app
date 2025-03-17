@@ -149,7 +149,7 @@ trait HasFormSteps
                 'permanent.house' => 'required|string|max:20',
 
                 'telephone_no' => 'sometimes|nullable|string|max:20',
-                'mobile_no' => 'required|string|max:15',
+                'mobile_no' => 'required|string|max:11',
                 'email' => 'required|email|max:255',
             ],
 
@@ -415,7 +415,7 @@ trait HasFormSteps
 
             'telephone_no.max' => 'Telephone number must not exceed 20 characters.',
             'mobile_no.required' => 'Mobile number is required.',
-            'mobile_no.max' => 'Mobile number must not exceed 15 characters.',
+            'mobile_no.max' => 'Mobile number must not exceed 11 characters.',
             'email.required' => 'Email address is required.',
             'email.email' => 'Please enter a valid email address.',
             'email.max' => 'Email address must not exceed 255 characters.',

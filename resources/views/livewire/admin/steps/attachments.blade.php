@@ -64,7 +64,7 @@
                     </div>
                     <div class="attachment-details mt-3 text-center">
                         @php
-                            $govt_id_extension = pathinfo(Storage::url($government_id_photo), PATHINFO_EXTENSION);
+                            $govt_id_extension = pathinfo(asset($government_id_photo), PATHINFO_EXTENSION);
                             $is_govt_id_pdf = strtolower($govt_id_extension) === 'pdf';
                         @endphp
 
@@ -74,11 +74,11 @@
                                     <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="document-actions">
-                                    <a href="{{ Storage::url($government_id_photo) }}" target="_blank"
+                                    <a href="{{ asset($government_id_photo) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> View PDF
                                     </a>
-                                    <a href="{{ Storage::url($government_id_photo) }}"
+                                    <a href="{{ asset($government_id_photo) }}"
                                         class="btn btn-sm btn-outline-secondary ms-2">
                                         <i class="bi bi-download me-1"></i> Download
                                     </a>
@@ -86,7 +86,7 @@
                             </div>
                         @else
                             <div class="document-preview">
-                                <img src="{{ Storage::url($government_id_photo) }}" alt="Government ID Photo"
+                                <img src="{{ asset($government_id_photo) }}" alt="Government ID Photo"
                                     class="img-fluid border rounded">
                             </div>
                         @endif
@@ -111,7 +111,7 @@
                     </div>
                     <div class="attachment-details mt-3 text-center">
                         @php
-                            $passport_extension = pathinfo(Storage::url($passport_photo), PATHINFO_EXTENSION);
+                            $passport_extension = pathinfo(asset($passport_photo), PATHINFO_EXTENSION);
                             $is_passport_pdf = strtolower($passport_extension) === 'pdf';
                         @endphp
 
@@ -121,11 +121,11 @@
                                     <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="document-actions">
-                                    <a href="{{ Storage::url($passport_photo) }}" target="_blank"
+                                    <a href="{{ asset($passport_photo) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> View PDF
                                     </a>
-                                    <a href="{{ Storage::url($passport_photo) }}" download
+                                    <a href="{{ asset($passport_photo) }}" download
                                         class="btn btn-sm btn-outline-secondary ms-2">
                                         <i class="bi bi-download me-1"></i> Download
                                     </a>
@@ -133,7 +133,7 @@
                             </div>
                         @else
                             <div class="document-preview">
-                                <img src="{{ Storage::url($passport_photo) }}" alt="Passport Photo"
+                                <img src="{{ asset($passport_photo) }}" alt="Passport Photo"
                                     class="img-fluid border rounded">
                             </div>
                         @endif
@@ -155,7 +155,7 @@
                     </div>
                     <div class="attachment-details mt-3 text-center">
                         @php
-                            $thumbmark_extension = pathinfo(Storage::url($right_thumbmark_photo), PATHINFO_EXTENSION);
+                            $thumbmark_extension = pathinfo(asset($right_thumbmark_photo), PATHINFO_EXTENSION);
                             $is_thumbmark_pdf = strtolower($thumbmark_extension) === 'pdf';
                         @endphp
 
@@ -165,11 +165,11 @@
                                     <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="document-actions">
-                                    <a href="{{ Storage::url($right_thumbmark_photo) }}" target="_blank"
+                                    <a href="{{ asset($right_thumbmark_photo) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> View PDF
                                     </a>
-                                    <a href="{{ Storage::url($right_thumbmark_photo) }}" download
+                                    <a href="{{ asset($right_thumbmark_photo) }}" download
                                         class="btn btn-sm btn-outline-secondary ms-2">
                                         <i class="bi bi-download me-1"></i> Download
                                     </a>
@@ -177,7 +177,7 @@
                             </div>
                         @else
                             <div class="document-preview">
-                                <img src="{{ Storage::url($right_thumbmark_photo) }}" alt="Right Thumbmark"
+                                <img src="{{ asset($right_thumbmark_photo) }}" alt="Right Thumbmark"
                                     class="img-fluid border rounded">
                             </div>
                         @endif
@@ -199,7 +199,7 @@
                     </div>
                     <div class="attachment-details mt-3 text-center">
                         @php
-                            $signature_extension = pathinfo(Storage::url($signature_photo), PATHINFO_EXTENSION);
+                            $signature_extension = pathinfo(asset($signature_photo), PATHINFO_EXTENSION);
                             $is_signature_pdf = strtolower($signature_extension) === 'pdf';
                         @endphp
 
@@ -209,11 +209,11 @@
                                     <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="document-actions">
-                                    <a href="{{ Storage::url($signature_photo) }}" target="_blank"
+                                    <a href="{{ asset($signature_photo) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> View PDF
                                     </a>
-                                    <a href="{{ Storage::url($signature_photo) }}" download
+                                    <a href="{{ asset($signature_photo) }}" download
                                         class="btn btn-sm btn-outline-secondary ms-2">
                                         <i class="bi bi-download me-1"></i> Download
                                     </a>
@@ -221,7 +221,7 @@
                             </div>
                         @else
                             <div class="document-preview">
-                                <img src="{{ Storage::url($signature_photo) }}" alt="Signature"
+                                <img src="{{ asset($signature_photo) }}" alt="Signature"
                                     class="img-fluid border rounded">
                             </div>
                         @endif
@@ -248,7 +248,7 @@
                     </div>
                     <div class="attachment-details mt-3 text-center">
                         @php
-                            $otr_extension = pathinfo(Storage::url($otr_photo), PATHINFO_EXTENSION);
+                            $otr_extension = pathinfo(asset($otr_photo), PATHINFO_EXTENSION);
                             $is_otr_pdf = strtolower($otr_extension) === 'pdf';
                         @endphp
 
@@ -258,11 +258,11 @@
                                     <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="document-actions">
-                                    <a href="{{ Storage::url($otr_photo) }}" target="_blank"
+                                    <a href="{{ asset($otr_photo) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> View PDF
                                     </a>
-                                    <a href="{{ Storage::url($otr_photo) }}" download
+                                    <a href="{{ asset($otr_photo) }}" download
                                         class="btn btn-sm btn-outline-secondary ms-2">
                                         <i class="bi bi-download me-1"></i> Download
                                     </a>
@@ -270,7 +270,7 @@
                             </div>
                         @else
                             <div class="document-preview">
-                                <img src="{{ Storage::url($otr_photo) }}" alt="OTR"
+                                <img src="{{ asset($otr_photo) }}" alt="OTR"
                                     class="img-fluid border rounded">
                             </div>
                         @endif
@@ -292,7 +292,7 @@
                     <div class="attachment-details mt-3 text-center">
                         @if (!empty($diploma_photo))
                             @php
-                                $diploma_extension = pathinfo(Storage::url($diploma_photo), PATHINFO_EXTENSION);
+                                $diploma_extension = pathinfo(asset($diploma_photo), PATHINFO_EXTENSION);
                                 $is_diploma_pdf = strtolower($diploma_extension) === 'pdf';
                             @endphp
 
@@ -302,11 +302,11 @@
                                         <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                     </div>
                                     <div class="document-actions">
-                                        <a href="{{ Storage::url($diploma_photo) }}" target="_blank"
+                                        <a href="{{ asset($diploma_photo) }}" target="_blank"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye me-1"></i> View PDF
                                         </a>
-                                        <a href="{{ Storage::url($diploma_photo) }}" download
+                                        <a href="{{ asset($diploma_photo) }}" download
                                             class="btn btn-sm btn-outline-secondary ms-2">
                                             <i class="bi bi-download me-1"></i> Download
                                         </a>
@@ -314,7 +314,7 @@
                                 </div>
                             @else
                                 <div class="document-preview">
-                                    <img src="{{ Storage::url($diploma_photo) }}" alt="Diploma"
+                                    <img src="{{ asset($diploma_photo) }}" alt="Diploma"
                                         class="img-fluid border rounded">
                                 </div>
                             @endif
@@ -342,7 +342,7 @@
                     <div class="attachment-details mt-3 text-center">
                         @if (!empty($employement_certificate))
                             @php
-                                $cert_extension = pathinfo(Storage::url($employement_certificate), PATHINFO_EXTENSION);
+                                $cert_extension = pathinfo(asset($employement_certificate), PATHINFO_EXTENSION);
                                 $is_cert_pdf = strtolower($cert_extension) === 'pdf';
                             @endphp
 
@@ -352,11 +352,11 @@
                                         <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2.5rem;"></i>
                                     </div>
                                     <div class="document-actions">
-                                        <a href="{{ Storage::url($employement_certificate) }}" target="_blank"
+                                        <a href="{{ asset($employement_certificate) }}" target="_blank"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye me-1"></i> View PDF
                                         </a>
-                                        <a href="{{ Storage::url($diploma_photo) }}" download
+                                        <a href="{{ asset($diploma_photo) }}" download
                                             class="btn btn-sm btn-outline-secondary ms-2">
                                             <i class="bi bi-download me-1"></i> Download
                                         </a>
@@ -364,7 +364,7 @@
                                 </div>
                             @else
                                 <div class="document-preview">
-                                    <img src="{{ Storage::url($diploma_photo) }}" alt="Diploma"
+                                    <img src="{{ asset($diploma_photo) }}" alt="Diploma"
                                         class="img-fluid border rounded">
                                 </div>
                             @endif

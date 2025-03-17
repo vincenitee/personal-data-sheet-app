@@ -4,17 +4,17 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/sass/app.scss',
-                    'resources/css/app.css',
-                    'resources/js/app.js'],
+            input: [
+                'resources/sass/app.scss',
+                'resources/css/app.css',
+                'resources/js/app.js'
+            ],
             refresh: true,
         }),
     ],
-    server: {
-        host: '0.0.0.0',
-        port: 8000, // Or any other free port
-        hmr: {
-            host: '192.168.254.159', // Replace with your actual IP
-        },
-    },
+    // build: {
+    //     outDir: 'public/build', // Ensure assets are placed in public/build
+    //     emptyOutDir: true, // Clean old files before building
+    //     manifest: true, // Generate manifest for Laravel
+    // },
 });

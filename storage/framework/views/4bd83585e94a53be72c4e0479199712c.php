@@ -1,22 +1,12 @@
 
-<aside class="bg-<?php echo e($sidebarColor); ?> bg-gradient text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
+<aside
+    class="bg-<?php echo e($sidebarColor); ?> bg-gradient text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
     :class="{ 'w-0': !open, 'w-250': open }" @click.outside="if (!event.target.closest('#sidebar-toggler')) open = false"
     id="sidebar">
     
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-light" style="height: 80px;">
-        <!--[if BLOCK]><![endif]--><?php if(!empty($logoPath) && Str::startsWith($logoPath, 'http')): ?>
-            <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        <?php elseif(!empty($logoPath) && Storage::disk('public')->exists($logoPath)): ?>
-            <img src="<?php echo e(Storage::url($logoPath)); ?>" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        <?php else: ?>
-            <img src="<?php echo e(Vite::asset('resources/images/hris-logo-white.png')); ?>" alt="Default Logo" id="logo"
-            style="height: 45px; width: 45px; object-fit: cover;"
-            >
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo" class="img-fluid mb-2 shadow-sm rounded-circle border"
+            style="height: 45px; width: 45px; object-fit: cover;">
 
         <span>Digital PDS</span>
         <button @click="open = false" class="ms-auto btn btn-sm text-white">
@@ -54,7 +44,7 @@
                 ?>
 
                 <!--[if BLOCK]><![endif]--><?php if($notificationCount > 0): ?>
-                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;"><?php echo e($notificationCount); ?></span>
+                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;"><?php echo e($no7tificationCount); ?></span>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </li>

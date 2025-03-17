@@ -13,7 +13,7 @@
                         <i class="bi bi-printer me-2"></i>
                         Print
                     </a>
-                    <div class="dropdown">
+                    {{-- <div class="dropdown">
                         <button type="button" class="btn btn-outline-success dropdown-toggle px-3"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-download me-2"></i>
@@ -24,7 +24,7 @@
                                     <i class="bi bi-file-earmark-pdf me-2 text-danger"></i>Export as PDF
                                 </a></li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

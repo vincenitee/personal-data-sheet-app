@@ -10,13 +10,12 @@
             <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
-        <?php elseif(!empty($logoPath) && Storage::disk('public')->exists($logoPath)): ?>
-            <img src="<?php echo e(Storage::url($logoPath)); ?>" alt="Logo" id="logo"
+        <?php elseif(!empty($logoPath) && file_exists(public_path('uploads/system_logo/' . $logoPath))): ?>
+            <img src="<?php echo e(asset('uploads/system_logo/' . $logoPath)); ?>" alt="Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
         <?php else: ?>
-            <img src="<?php echo e(Vite::asset('resources/images/hris-logo-white.png')); ?>"
-                alt="Default Logo" id="logo"
+            <img src="<?php echo e(asset('images/hris-logo-white.png')); ?>" alt="Default Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -31,25 +30,25 @@
     
     <ul class="nav flex-column gap-1 mt-3">
         <li class="nav-item <?php echo e(request()->is('admin/dashboard') ? 'bg-white bg-opacity-10' : ''); ?>">
-            <a wire:navigate href="<?php echo e(url(route('admin.dashboard'))); ?>" class="nav-link text-white">
+            <a wire:navigate href="<?php echo e(route('admin.dashboard')); ?>" class="nav-link text-white">
                 <i class="bi bi-speedometer2 me-1" style="font-size: 1.1rem;"></i>
                 <span>Dashboard</span><br>
             </a>
         </li>
         <li class="nav-item <?php echo e(request()->is('admin/add-user') ? 'bg-white bg-opacity-10' : ''); ?>">
-            <a wire:navigate href="<?php echo e(url(route('admin.add-user'))); ?>" class="nav-link text-white">
+            <a wire:navigate href="<?php echo e(route('admin.add-user')); ?>" class="nav-link text-white">
                 <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
                 <span>Add User</span>
             </a>
         </li>
         <li class="nav-item <?php echo e(request()->is('admin/users') ? 'bg-white bg-opacity-10' : ''); ?>">
-            <a wire:navigate href="<?php echo e(url(route('admin.users'))); ?>" class="nav-link text-white">
+            <a wire:navigate href="<?php echo e(route('admin.users')); ?>" class="nav-link text-white">
                 <i class="bi bi-people me-1" style="font-size: 1.1rem;"></i>
                 <span>Manage Users</span>
             </a>
         </li>
         <li class="nav-item <?php echo e(request()->is('admin/manage-signups') ? 'bg-white bg-opacity-10' : ''); ?>">
-            <a wire:navigate href="<?php echo e(url(route('admin.manage-signup'))); ?>" class="nav-link text-white">
+            <a wire:navigate href="<?php echo e(route('admin.manage-signup')); ?>" class="nav-link text-white">
                 <i class="bi bi-person-check me-1" style="font-size: 1.1rem;"></i>
                 <span>Signups</span>
             </a>

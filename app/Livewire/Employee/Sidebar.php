@@ -4,7 +4,9 @@ namespace App\Livewire\Employee;
 
 use Livewire\Component;
 use App\Models\Settings;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Storage;
 
 class Sidebar extends Component
 {
@@ -18,8 +20,22 @@ class Sidebar extends Component
 
     public function mount()
     {
+        // Get sidebar color setting
         $this->sidebarColor = Settings::where('key', 'sidebar_color')->value('value') ?? 'dark';
-        $this->logoPath = Settings::where('key', 'logo')->value('value') ?? Vite::asset('resources/images/hris-logo-white.png');
+
+        // Get logo from settings
+        $logo = get_setting('logo');
+
+        if (!empty($logo) && Str::startsWith($logo, ['http', 'https'])) {
+            // External URL
+            $this->logoPath = $logo;
+        } elseif (!empty($logo) && file_exists(public_path('uploads/system_logo/' . $logo))) {
+            // Logo in public/uploads/system_logo directory
+            $this->logoPath = asset('uploads/system_logo/' . $logo);
+        } else {
+            // Default logo
+            $this->logoPath = asset('images/hris-logo-white.png');
+        }
     }
 
     public function updateSidebarColor($color)
@@ -29,8 +45,8 @@ class Sidebar extends Component
 
     public function updateLogo($logoPath)
     {
-        if(empty($logoPath)){
-            $this->logoPath = Vite::asset('resources/images/hris-logo-white.png');
+        if (empty($logoPath)) {
+            $this->logoPath = asset('images/hris-logo-white.png');
         }
 
         $this->logoPath = $logoPath;

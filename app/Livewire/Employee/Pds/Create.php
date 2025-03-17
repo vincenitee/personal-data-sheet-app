@@ -1065,57 +1065,102 @@ class Create extends Component
         if (str_ends_with($key, '.certificate')) {
             $index = explode('.', $key)[0]; // Get the training entry index
 
-            // Check if there is an existing certificate file
-            $existingFile = $this->trainings[$index]['certificate'] ?? null;
-
             // Check if the uploaded file is valid
             if (isset($this->trainings[$index]['certificate']) && is_object($this->trainings[$index]['certificate'])) {
+                try {
+                    // Ensure the directory exists
+                    $uploadPath = public_path('uploads/training');
+                    if (!file_exists($uploadPath)) {
+                        if (!mkdir($uploadPath, 0755, true)) {
+                            throw new \Exception("Failed to create upload directory.");
+                        }
+                    }
 
-                // Delete the previous file if it exists
-                if ($existingFile && Storage::disk('public')->exists($existingFile)) {
-                    Storage::disk('public')->delete($existingFile);
+                    // Generate a unique filename
+                    $filename = time() . '_' . $this->trainings[$index]['certificate']->getClientOriginalName();
+                    $filePath = 'uploads/training/' . $filename; // Relative path for storing
+
+                    // Get the temporary file path
+                    $tempPath = $this->trainings[$index]['certificate']->getRealPath();
+
+                    // Copy the file instead of moving it
+                    if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
+                        throw new \Exception("Failed to copy the file.");
+                    }
+
+                    // Delete the previous file if it exists
+                    if (!empty($this->trainings[$index]['certificate']) && file_exists(public_path($this->trainings[$index]['certificate']))) {
+                        @unlink(public_path($this->trainings[$index]['certificate']));
+                    }
+
+                    // Save the file path instead of the object
+                    $this->trainings[$index]['certificate'] = $filePath;
+                } catch (\Exception $e) {
+                    $this->dispatch('show-toast', [
+                        'type' => 'error',
+                        'title' => 'Error uploading certificate: ' . $e->getMessage()
+                    ]);
                 }
-
-                // Store new file in "storage/app/public/certificates"
-                $path = $this->trainings[$index]['certificate']->store('certificates', 'public');
-
-                // Save the file path instead of the object
-                $this->trainings[$index]['certificate'] = $path;
             }
         }
     }
 
     public function uploadImage($fileProperty, $dir)
     {
-        // dd($this->{$fileProperty}->temporaryUrl());
         // Ensure the file exists and is an object (to prevent issues with empty values)
         if (!isset($this->{$fileProperty}) || !is_object($this->{$fileProperty})) {
             return;
         }
 
-        // Validate file size (max: 2MB)
-        if ($this->{$fileProperty}->getSize() > 2 * 1024 * 1024) { // 2MB in bytes
-            $this->addError($fileProperty, "The uploaded file must not exceed 2MB.");
-            return;
+        try {
+            // Validate file size (max: 2MB)
+            if ($this->{$fileProperty}->getSize() > 2 * 1024 * 1024) { // 2MB in bytes
+                $this->addError($fileProperty, "The uploaded file must not exceed 2MB.");
+                return;
+            }
+
+            // Validate file type
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!in_array($this->{$fileProperty}->getMimeType(), $allowedMimeTypes)) {
+                $this->addError($fileProperty, "Invalid file format. Allowed formats: JPG, JPEG, PNG, GIF, WEBP.");
+                return;
+            }
+
+            // Ensure the directory exists
+            $uploadPath = public_path("uploads/{$dir}");
+            if (!file_exists($uploadPath)) {
+                if (!mkdir($uploadPath, 0755, true)) {
+                    throw new \Exception("Failed to create upload directory.");
+                }
+            }
+
+            // Generate a unique filename
+            $filename = time() . '_' . uniqid() . '.' . $this->{$fileProperty}->getClientOriginalExtension();
+            $filePath = "uploads/{$dir}/{$filename}"; // Relative path for storing
+
+            // Get the temporary file path
+            $tempPath = $this->{$fileProperty}->getRealPath();
+
+            // Copy the file instead of moving it
+            if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
+                throw new \Exception("Failed to copy the file.");
+            }
+
+            // Delete the old file if it exists
+            $oldFile = $this->{$fileProperty . 'Path'} ?? null;
+            if ($oldFile && file_exists(public_path($oldFile))) {
+                @unlink(public_path($oldFile));
+            }
+
+            // Store the relative path instead of the object
+            $this->{$fileProperty} = $filePath;
+
+            // Return the relative path
+            return $filePath;
+        } catch (\Exception $e) {
+            $this->addError($fileProperty, "Error uploading image: " . $e->getMessage());
+            return null;
         }
-
-        // Validate file type
-        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!in_array($this->{$fileProperty}->getMimeType(), $allowedMimeTypes)) {
-            $this->addError($fileProperty, "Invalid file format. Allowed formats: JPG, JPEG, PNG, GIF, WEBP.");
-            return;
-        }
-
-        // Delete the existing file if it exists
-        if ($this->{$fileProperty} && Storage::disk('public')->exists($this->{$fileProperty})) {
-            Storage::disk('public')->delete($this->{$fileProperty});
-        }
-
-        // Store the new file
-        $path = $this->{$fileProperty}->store($dir, 'public');
-
-        // Update the property with the new file path
-        $this->{$fileProperty} = $path;
     }
 
 

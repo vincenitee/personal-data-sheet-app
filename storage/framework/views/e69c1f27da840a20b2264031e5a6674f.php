@@ -24,18 +24,9 @@
 <?php $component->withAttributes(['wire:submit' => 'save','method' => 'POST']); ?>
                     
                     <div class="d-flex flex-column gap-1 align-items-center mb-3">
-                        <!--[if BLOCK]><![endif]--><?php if(!empty($logoPath) && Str::startsWith($logoPath, 'http')): ?>
-                            <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        <?php elseif(!empty($logoPath) && Storage::disk('public')->exists($logoPath)): ?>
-                            <img src="<?php echo e(Storage::url($logoPath)); ?>" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        <?php else: ?>
-                            <img src="<?php echo e(Vite::asset('resources/images/hris-logo-white.png')); ?>" alt="Default Logo"
-                                id="logo" style="height: 85px; width: 85px; object-fit: cover;">
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
+                            class="img-fluid mb-2 shadow-sm rounded-circle border"
+                            style="height: 85px; width: 85px; object-fit: cover;">
                         <div class="d-flex flex-column mb-3 align-items-center">
                             <h3 class="fw-bold">Create an account</h3>
                             <span class="text-secondary mx-auto" style="font-size: 0.9rem">Fill out the required fields
@@ -285,11 +276,13 @@
                             <div class="mt-3">
                                 <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 0;">
                                     <span>Already have an account?</span>
-                                    <a href="<?php echo e(route('login')); ?>" class="text-<?php echo e($sidebarColor); ?>" wire:navigate.hover>Signin here</a>
+                                    <a href="<?php echo e(route('login')); ?>" class="text-<?php echo e($sidebarColor); ?>"
+                                        wire:navigate.hover>Signin here</a>
                                 </p>
                                 <p class="text-muted" style="font-size: 0.9rem">
                                     <span>Forgot your password?</span>
-                                    <a href="<?php echo e(route('password.request')); ?>" class="text-<?php echo e($sidebarColor); ?>" wire:navigate.hover>Reset here</a>
+                                    <a href="<?php echo e(route('password.request')); ?>" class="text-<?php echo e($sidebarColor); ?>"
+                                        wire:navigate.hover>Reset here</a>
                                 </p>
                             </div>
                         </div>

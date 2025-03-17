@@ -22,7 +22,19 @@ class ForgotPassword extends Component
     public function mount()
     {
         $this->sidebarColor = Settings::where('key', 'sidebar_color')->value('value') ?? 'dark';
-        $this->logoPath = Settings::where('key', 'logo')->value('value') ?? Vite::asset('resources/images/hris-logo-white.png');
+
+        $logo = get_setting('logo');
+
+        if (!empty($logo) && Str::startsWith($logo, ['http', 'https'])) {
+            // External URL
+            $this->logoPath = $logo;
+        } elseif (!empty($logo) && file_exists(public_path('uploads/system_logo/' . $logo))) {
+            // Logo in public/uploads/system_logo directory
+            $this->logoPath = asset('uploads/system_logo/' . $logo);
+        } else {
+            // Default logo
+            $this->logoPath = asset('images/hris-logo-white.png');
+        }
     }
 
     public function sendResetLink()

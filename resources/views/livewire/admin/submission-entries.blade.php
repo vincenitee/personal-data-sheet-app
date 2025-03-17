@@ -168,7 +168,7 @@
                             <div class="d-flex align-items-center gap-3">
                                 <div>
                                     {{-- @dump($submissionEntry->attachment?->passport_photo) --}}
-                                    <img src="{{ asset('storage/' . ($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}"
+                                    <img src="{{ asset($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png') }}"
                                         loading="lazy" alt="Employee Photo" class="rounded border shadow-sm"
                                         width="45" height="45" style="object-fit: cover">
                                 </div>

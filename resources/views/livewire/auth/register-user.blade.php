@@ -15,18 +15,9 @@
                 <x-forms.form wire:submit="save" method="POST">
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-3">
-                        @if (!empty($logoPath) && Str::startsWith($logoPath, 'http'))
-                            <img src="{{ $logoPath }}" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        @elseif (!empty($logoPath) && Storage::disk('public')->exists($logoPath))
-                            <img src="{{ Storage::url($logoPath) }}" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        @else
-                            <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="Default Logo"
-                                id="logo" style="height: 85px; width: 85px; object-fit: cover;">
-                        @endif
+                        <img src="{{ $logoPath }}" alt="Logo" id="logo"
+                            class="img-fluid mb-2 shadow-sm rounded-circle border"
+                            style="height: 85px; width: 85px; object-fit: cover;">
                         <div class="d-flex flex-column mb-3 align-items-center">
                             <h3 class="fw-bold">Create an account</h3>
                             <span class="text-secondary mx-auto" style="font-size: 0.9rem">Fill out the required fields
@@ -112,11 +103,13 @@
                             <div class="mt-3">
                                 <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 0;">
                                     <span>Already have an account?</span>
-                                    <a href="{{ route('login') }}" class="text-{{ $sidebarColor }}" wire:navigate.hover>Signin here</a>
+                                    <a href="{{ route('login') }}" class="text-{{ $sidebarColor }}"
+                                        wire:navigate.hover>Signin here</a>
                                 </p>
                                 <p class="text-muted" style="font-size: 0.9rem">
                                     <span>Forgot your password?</span>
-                                    <a href="{{ route('password.request') }}" class="text-{{ $sidebarColor }}" wire:navigate.hover>Reset here</a>
+                                    <a href="{{ route('password.request') }}" class="text-{{ $sidebarColor }}"
+                                        wire:navigate.hover>Reset here</a>
                                 </p>
                             </div>
                         </div>

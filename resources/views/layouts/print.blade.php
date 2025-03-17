@@ -12,11 +12,7 @@
         rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <noscript>
-        <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
-    </noscript>
 
     <style>
         :root {

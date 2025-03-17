@@ -25,7 +25,7 @@
                                         {{ $background->attendance_from }} —
                                         {{ $background->attendance_to }}
                                     @else
-                                        —
+                                        Ongoing
                                     @endif
                                 </span>
                             </div>

@@ -44,11 +44,11 @@
         ])
 
         {{-- Uploaded image preview --}}
-        @if (!empty($entry['certificate']) && Storage::disk('public')->exists($entry['certificate']))
+        @if (!empty($entry['certificate']) && file_exists(public_path('uploads/training/' . $entry['certificate'])))
             @php
-                $filePath = Storage::url($entry['certificate']);
+                $filePath = asset('uploads/training/' . $entry['certificate']);
                 $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-                $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                $isImage = in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp']);
                 $fileName = basename($entry['certificate']);
             @endphp
 
@@ -61,7 +61,10 @@
                 <div class="card-body">
                     {{-- Loading Indicator --}}
                     <div class="d-flex justify-content-center align-items-center">
-                        @include('partials.loading', ['target' => "trainings.{{ $index }}.certificate", 'message' => 'Uploading document'])
+                        @include('partials.loading', [
+                            'target' => 'trainings.{{ $index }}.certificate',
+                            'message' => 'Uploading document',
+                        ])
                         <div wire:loading wire:target="trainings.{{ $index }}.certificate"
                             class="text-center mb-3">
                             <div class="spinner-border text-primary" role="status">
@@ -103,6 +106,7 @@
                 </div>
             </div>
         @endif
+
 
         <div class="col-12 text-end">
             <button type="button" @click="confirmDelete('trainings', {{ $index }})"

@@ -31,15 +31,16 @@
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 @elseif ($logo)
-                                                    <img src="{{ Storage::url($logo) }}" alt="Current Logo"
+                                                    <img src="{{ asset('uploads/system_logo/' . $logo) }}" alt="Current Logo"
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 @else
-                                                    <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}"
+                                                    <img src="{{ asset('images/hris-logo-white.png') }}"
                                                         alt="Default Logo"
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 @endif
+
                                             </div>
                                             <div class="badge bg-light text-dark">
                                                 @if ($temporaryLogo)

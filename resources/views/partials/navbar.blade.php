@@ -39,11 +39,11 @@
                             )->attachment?->passport_photo;
                         @endphp
 
-                        <img src="{{ $avatar ? Storage::url($avatar) : Vite::asset('resources/images/hris-logo-black.png') }}"
+                        <img src="{{ $avatar ? asset('storage/'.$avatar) : asset('images/hris-logo-black.png') }}"
                             alt="User Avatar" class="rounded-circle border border-primary"
                             style="height: 35px; width: 35px; object-fit: cover;">
                     @elseif($role === 'admin')
-                        <img src="{{ Vite::asset('resources/images/hris-logo-black.png') }}" alt="Admin Avatar"
+                        <img src="{{ asset('images/hris-logo-black.png') }}" alt="Admin Avatar"
                             class="rounded-circle border border-primary" style="height: 35px; width: 35px;">
                     @endif
 

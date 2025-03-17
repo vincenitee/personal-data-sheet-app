@@ -48,8 +48,12 @@
                 colors: generateDistinctColors(@json(count($chartData['labels']))),
                 plotOptions: {
                     bar: {
-                        columnWidth: '35%',
+                        columnHeight: '35%',
                         distributed: true,
+                        horizontal: true,
+                        dataLabels: {
+                            position: 'top'
+                        }
                     }
                 },
                 dataLabels: {

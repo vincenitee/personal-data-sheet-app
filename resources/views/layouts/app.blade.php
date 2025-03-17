@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PDS | {{ $title ?? 'Page Title' }}</title>
 
-    <link rel="shortcut icon" href="{{ Vite::asset('resources/images/hris-logo-white.png') }}" type="image/x-icon">
-    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="shortcut icon" href="{{ asset('images/hris-logo-white.png') }}" type="image/x-icon">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     @stack('styles')
 </head>

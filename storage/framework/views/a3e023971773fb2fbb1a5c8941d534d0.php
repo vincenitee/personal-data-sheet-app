@@ -39,11 +39,11 @@
                             )->attachment?->passport_photo;
                         ?>
 
-                        <img src="<?php echo e($avatar ? Storage::url($avatar) : Vite::asset('resources/images/hris-logo-black.png')); ?>"
+                        <img src="<?php echo e($avatar ? asset('storage/'.$avatar) : asset('images/hris-logo-black.png')); ?>"
                             alt="User Avatar" class="rounded-circle border border-primary"
                             style="height: 35px; width: 35px; object-fit: cover;">
                     <?php elseif($role === 'admin'): ?>
-                        <img src="<?php echo e(Vite::asset('resources/images/hris-logo-black.png')); ?>" alt="Admin Avatar"
+                        <img src="<?php echo e(asset('images/hris-logo-black.png')); ?>" alt="Admin Avatar"
                             class="rounded-circle border border-primary" style="height: 35px; width: 35px;">
                     <?php endif; ?>
 

@@ -10,13 +10,12 @@
             <img src="{{ $logoPath }}" alt="Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
-        @elseif (!empty($logoPath) && Storage::disk('public')->exists($logoPath))
-            <img src="{{ Storage::url($logoPath) }}" alt="Logo" id="logo"
+        @elseif (!empty($logoPath) && file_exists(public_path('uploads/system_logo/' . $logoPath)))
+            <img src="{{ asset('uploads/system_logo/' . $logoPath) }}" alt="Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
         @else
-            <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}"
-                alt="Default Logo" id="logo"
+            <img src="{{ asset('images/hris-logo-white.png') }}" alt="Default Logo" id="logo"
                 class="img-fluid mb-2 shadow-sm rounded-circle border"
                 style="height: 45px; width: 45px; object-fit: cover;">
         @endif
@@ -31,25 +30,25 @@
     {{-- Menu Items --}}
     <ul class="nav flex-column gap-1 mt-3">
         <li class="nav-item {{ request()->is('admin/dashboard') ? 'bg-white bg-opacity-10' : '' }}">
-            <a wire:navigate href="{{ url(route('admin.dashboard')) }}" class="nav-link text-white">
+            <a wire:navigate href="{{ route('admin.dashboard') }}" class="nav-link text-white">
                 <i class="bi bi-speedometer2 me-1" style="font-size: 1.1rem;"></i>
                 <span>Dashboard</span><br>
             </a>
         </li>
         <li class="nav-item {{ request()->is('admin/add-user') ? 'bg-white bg-opacity-10' : '' }}">
-            <a wire:navigate href="{{ url(route('admin.add-user')) }}" class="nav-link text-white">
+            <a wire:navigate href="{{ route('admin.add-user') }}" class="nav-link text-white">
                 <i class="bi bi-person-plus me-1" style="font-size: 1.1rem;"></i>
                 <span>Add User</span>
             </a>
         </li>
         <li class="nav-item {{ request()->is('admin/users') ? 'bg-white bg-opacity-10' : '' }}">
-            <a wire:navigate href="{{ url(route('admin.users')) }}" class="nav-link text-white">
+            <a wire:navigate href="{{ route('admin.users') }}" class="nav-link text-white">
                 <i class="bi bi-people me-1" style="font-size: 1.1rem;"></i>
                 <span>Manage Users</span>
             </a>
         </li>
         <li class="nav-item {{ request()->is('admin/manage-signups') ? 'bg-white bg-opacity-10' : '' }}">
-            <a wire:navigate href="{{ url(route('admin.manage-signup')) }}" class="nav-link text-white">
+            <a wire:navigate href="{{ route('admin.manage-signup') }}" class="nav-link text-white">
                 <i class="bi bi-person-check me-1" style="font-size: 1.1rem;"></i>
                 <span>Signups</span>
             </a>

@@ -36,7 +36,7 @@
                                         <?php echo e($background->attendance_to); ?>
 
                                     <?php else: ?>
-                                        —
+                                        Ongoing
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </span>
                             </div>

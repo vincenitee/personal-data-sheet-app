@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\DownloadBackupController;
 use App\Models\User;
 use App\Livewire\Profile;
 use App\Livewire\Welcome;
 use App\Livewire\Admin\AddUser;
-use App\Livewire\Admin\BackupManager;
+use App\Livewire\PrintPdsEntry;
+use App\Livewire\Admin\Settings;
 use App\Livewire\Auth\LoginUser;
 use App\Mail\PdsEntryStatusMail;
 use App\Livewire\Admin\ManageUsers;
@@ -12,26 +14,21 @@ use App\Livewire\Auth\RegisterUser;
 use App\Livewire\Admin\EditUserPage;
 use App\Livewire\Admin\ManageSignup;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Admin\BackupManager;
 use App\Livewire\Admin\PdsReviewForm;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Employee\Pds\Create;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Employee\Notification;
+use App\Livewire\Employee\PreviewEntry;
+use Illuminate\Support\Facades\Artisan;
 use App\Livewire\Admin\SubmissionEntries;
 use App\Livewire\Employee\SubmissionLogs;
-use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Profile as AdminProfile;
-use App\Livewire\Admin\Settings;
+use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Employee\Dashboard as EmployeeDashboard;
-use App\Livewire\Employee\PreviewEntry;
-use App\Livewire\PrintPdsEntry;
 
-Route::get('/test', function (){
-    return view('test-print');
-});
-
-
-Route::get('/', Welcome::class);
+// Route::get('/', Welcome::class);
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
@@ -43,7 +40,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth', 'role:admin'])->group(function (){
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', AdminDashboard::class)
         ->name('admin.dashboard');
 
@@ -73,10 +70,13 @@ Route::middleware(['auth', 'role:admin'])->group(function (){
 
     Route::get('/admin/settings', Settings::class)
         ->name('admin.settings');
+
+    Route::get('backup/download/{path}', DownloadBackupController::class)
+        ->name('backup.download');
 });
 
 // Common Routes
-Route::middleware(['auth', 'approved'])->group(function (){
+Route::middleware(['auth', 'approved'])->group(function () {
     Route::get('/profile', Profile::class)
         ->name('profile');
 
@@ -104,4 +104,3 @@ Route::middleware(['auth', 'approved', 'role:employee', 'active'])->group(functi
     // Route::get('/employee/profile', Profile::class)
     //     ->name('employee.profile');
 });
-

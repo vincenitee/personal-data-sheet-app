@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> PDS | <?php echo e($title ?? 'Page Title'); ?> </title>
 
-    <link rel="stylesheet" href="<?php echo e(Vite::asset('resources/css/app.css')); ?>">
-    <link rel="shortcut icon" href="<?php echo e(Vite::asset('resources/images/hris-logo-white.png')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('images/hris-logo-white.png')); ?>" type="image/x-icon">
     <?php echo app('Illuminate\Foundation\Vite')(['resources/sass/app.scss', 'resources/js/app.js']); ?>
 
     <?php echo $__env->yieldPushContent('styles'); ?>

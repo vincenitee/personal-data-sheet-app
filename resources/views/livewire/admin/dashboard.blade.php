@@ -32,4 +32,8 @@
     <div class="col-md-6">
         @livewire('admin.charts.sex-groups')
     </div>
+
+    <div class="col-md-6">
+        @livewire('admin.charts.salary-groups')
+    </div>
 </div>

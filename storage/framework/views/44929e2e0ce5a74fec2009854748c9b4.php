@@ -31,15 +31,16 @@
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 <?php elseif($logo): ?>
-                                                    <img src="<?php echo e(Storage::url($logo)); ?>" alt="Current Logo"
+                                                    <img src="<?php echo e(asset('uploads/system_logo/' . $logo)); ?>" alt="Current Logo"
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 <?php else: ?>
-                                                    <img src="<?php echo e(Vite::asset('resources/images/hris-logo-white.png')); ?>"
+                                                    <img src="<?php echo e(asset('images/hris-logo-white.png')); ?>"
                                                         alt="Default Logo"
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
                                             </div>
                                             <div class="badge bg-light text-dark">
                                                 <!--[if BLOCK]><![endif]--><?php if($temporaryLogo): ?>

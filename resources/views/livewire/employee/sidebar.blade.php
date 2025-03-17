@@ -1,22 +1,12 @@
 {{-- Sidebar --}}
-<aside class="bg-{{ $sidebarColor }} bg-gradient text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
+<aside
+    class="bg-{{ $sidebarColor }} bg-gradient text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
     :class="{ 'w-0': !open, 'w-250': open }" @click.outside="if (!event.target.closest('#sidebar-toggler')) open = false"
     id="sidebar">
     {{-- Logo and Brand --}}
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-light" style="height: 80px;">
-        @if (!empty($logoPath) && Str::startsWith($logoPath, 'http'))
-            <img src="{{ $logoPath }}" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        @elseif (!empty($logoPath) && Storage::disk('public')->exists($logoPath))
-            <img src="{{ Storage::url($logoPath) }}" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        @else
-            <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="Default Logo" id="logo"
-            style="height: 45px; width: 45px; object-fit: cover;"
-            >
-        @endif
+        <img src="{{ $logoPath }}" alt="Logo" id="logo" class="img-fluid mb-2 shadow-sm rounded-circle border"
+            style="height: 45px; width: 45px; object-fit: cover;">
 
         <span>Digital PDS</span>
         <button @click="open = false" class="ms-auto btn btn-sm text-white">
@@ -57,7 +47,7 @@
                 @endphp
 
                 @if ($notificationCount > 0)
-                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;">{{ $notificationCount }}</span>
+                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;">{{ $no7tificationCount }}</span>
                 @endif
             </div>
         </li>

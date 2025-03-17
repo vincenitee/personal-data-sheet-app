@@ -61,27 +61,47 @@ class Settings extends Component
     {
         $this->validate();
 
-        // Handle logo upload if a new logo was provided
         if ($this->newLogo) {
-            // Delete old logo if exists
-            if ($this->logo && Storage::disk('public')->exists($this->logo)) {
-                Storage::disk('public')->delete($this->logo);
+            try {
+                // Ensure directory exists
+                $uploadPath = public_path('uploads/system_logo/');
+                if (!file_exists($uploadPath)) {
+                    if (!mkdir($uploadPath, 0755, true)) {
+                        throw new \Exception("Failed to create upload directory");
+                    }
+                }
+
+                // Generate unique filename
+                $filename = time() . '.' . $this->newLogo->getClientOriginalExtension();
+
+                // Get the temporary file path
+                $tempPath = $this->newLogo->getRealPath();
+
+                // Copy the file instead of moving it
+                if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
+                    throw new \Exception("Failed to copy the file");
+                }
+
+                // Delete old logo if exists
+                if ($this->logo && file_exists(public_path('uploads/system_logo/' . $this->logo))) {
+                    @unlink(public_path('uploads/' . $this->logo));
+                }
+
+                // Update logo in DB
+                $this->logo = $filename;
+                ModelsSettings::updateOrCreate(['key' => 'logo'], ['value' => $this->logo]);
+
+                $this->dispatch('logoUpdated', $this->logo);
+            } catch (\Exception $e) {
+                $this->dispatch('show-toast', [
+                    'type' => 'error',
+                    'title' => 'Error saving logo: ' . $e->getMessage()
+                ]);
+                return;
             }
-
-            // Store the new logo
-            $logoPath = $this->newLogo->store('logos', 'public');
-            $this->logo = $logoPath;
-
-            // Update or create logo setting
-            ModelsSettings::updateOrCreate(
-                ['key' => 'logo'],
-                ['value' => $logoPath]
-            );
-
-            $this->dispatch('logoUpdated', $logoPath);
         }
 
-        // Always update sidebar color
+        // Update sidebar color
         ModelsSettings::updateOrCreate(
             ['key' => 'sidebar_color'],
             ['value' => $this->sidebarColor]
@@ -89,7 +109,7 @@ class Settings extends Component
 
         $this->dispatch('sidebarColorUpdated', $this->sidebarColor);
 
-        // Reset temporary properties
+        // Reset variables
         $this->newLogo = null;
         $this->temporaryLogo = null;
 

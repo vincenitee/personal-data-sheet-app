@@ -66,7 +66,7 @@
                                     <h6 class="certificate-title mb-0">Certificate Information</h6>
 
                                     <!--[if BLOCK]><![endif]--><?php if(!empty($training->certificate)): ?>
-                                        <a href="<?php echo e(Storage::url($training->certificate)); ?>" target="_blank"
+                                        <a href="<?php echo e(asset($training->certificate)); ?>" target="_blank"
                                             class="btn btn-sm btn-outline-primary rounded-2 d-flex align-items-center">
                                             <i class="bi bi-download me-1"></i> Download
                                         </a>
@@ -78,7 +78,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="certificate-thumbnail position-relative me-3"
                                                 style="width: 64px; height: 64px;">
-                                                <img src="<?php echo e(asset('storage/' . $training->certificate)); ?>"
+                                                <img src="<?php echo e(asset($training->certificate)); ?>"
                                                     alt="Training Certificate"
                                                     class="img-thumbnail rounded-2 object-fit-cover"
                                                     style="width: 64px; height: 64px; cursor: pointer;"
@@ -121,7 +121,7 @@
                                                             data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body text-center">
-                                                        <img src="<?php echo e(asset('storage/' . $training->certificate)); ?>"
+                                                        <img src="<?php echo e(asset($training->certificate)); ?>"
                                                             alt="Full Certificate" class="img-fluid">
                                                     </div>
                                                 </div>

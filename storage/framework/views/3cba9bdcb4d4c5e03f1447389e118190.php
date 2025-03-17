@@ -152,4 +152,23 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
     </div>
+
+    <div class="col-md-6">
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('admin.charts.salary-groups');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-4149426861-8', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    </div>
 </div><?php /**PATH C:\xampp\htdocs\personal-data-sheet-app\resources\views/livewire/admin/dashboard.blade.php ENDPATH**/ ?>

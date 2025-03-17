@@ -28,7 +28,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="" class="me-2" style="width: 45px; height: 45px; object-fit: contain;">
+                <img src="{{ asset('images/hris-logo-white.png') }}" alt="" class="me-2"
+                    style="width: 45px; height: 45px; object-fit: contain;">
                 Personal Data Sheet</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -207,8 +208,9 @@
             </div>
             <hr class="my-4">
             <div class="text-center text-light">
-                <small><i class="bi bi-c-circle me-1"></i>Diana bebecakes🫶🫶🫶</small>
+                <small>&copy; {{ now()->year }} {{ config('app.name') }}. All rights reserved.</small>
             </div>
+
         </div>
     </footer>
 </div>

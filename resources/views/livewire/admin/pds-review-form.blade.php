@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 
         <div class="d-flex align-items-center gap-3 p-2">
-            <img src="{{ asset('storage/' . ($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}" alt=""
+            <img src="{{ asset(($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}" alt=""
                 class="img-fluid rounded shadow-sm" style="width: 60px; heigth: 60px; object-fit: cover">
             <div class="d-flex justify-content-center flex-column">
                 <h4 class="fw-bold mb-0">PDS Entry Review Form</h4>

@@ -28,6 +28,7 @@
                         <tr>
                             <th>File</th>
                             <th>Backed up since</th>
+                            <th>Size</th>
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
@@ -42,18 +43,16 @@
                                 <td class="align-middle">
                                     {{ \Carbon\Carbon::createFromTimestamp($backup['created_at'])->diffForHumans() }}
                                 </td>
+                                <td class="align-middle">
+                                    {{ $backup['size'] }}
+                                </td>
                                 <td class="text-end align-middle">
-                                    <div class="d-flex justify-content-end align-items-center">
-                                        <button wire:click="downloadBackup('{{ $backup['path'] }}')"
-                                            class="btn btn-sm btn-primary me-2">
-                                            <div wire:loading wire:target="downloadBackup"
-                                                class="spinner-border spinner-border-sm text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-
+                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                        <a href="{{ route('backup.download', ['path' => base64_encode($backup['path'])]) }}"
+                                        class="btn btn-sm btn-primary">
                                             <i class="bi bi-download"></i>
-                                            <span class="d-none d-md-block">Download</span>
-                                        </button>
+                                            <span class="d-none d-md-inline-block">Download</span>
+                                        </a>
 
                                         <button wire:click="deleteBackup('{{ $backup['path'] }}')"
                                             class="btn btn-sm btn-outline-danger">
