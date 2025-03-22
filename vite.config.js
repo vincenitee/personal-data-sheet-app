@@ -12,9 +12,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    // build: {
-    //     outDir: 'public/build', // Ensure assets are placed in public/build
-    //     emptyOutDir: true, // Clean old files before building
-    //     manifest: true, // Generate manifest for Laravel
-    // },
+    build: {
+        outDir: 'public/build', // Ensure assets are placed in public/build
+        emptyOutDir: true, // Clean old files before building
+        manifest: true, // Generate manifest for Laravel
+    },
 });

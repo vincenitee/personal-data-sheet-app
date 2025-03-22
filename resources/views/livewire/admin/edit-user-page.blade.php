@@ -20,7 +20,7 @@
                         <x-forms.input label="Last Name" model="last_name" name="last_name"
                             placeholder="Enter last name"></x-forms.input>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <x-forms.select label="Sex" name="sex">
                             @foreach ($sexOptions as $key => $value)
                                 <option value="{{ $key }}" @if ($sex === $key) selected @endif>
@@ -29,9 +29,16 @@
                             @endforeach
                         </x-forms.select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <x-forms.input label="Birthdate" model="birth_date" name="birth_date"
                             type="date"></x-forms.input>
+                    </div>
+                    <div class="col-md-4">
+                        <x-forms.select label="Department" model="department" name="department">
+                            @foreach ($departments as $department)
+                                <option value="{{ $department['value'] }}">{{ $department['label'] }}</option>
+                            @endforeach
+                        </x-forms.select>
                     </div>
                 </div>
             </div>

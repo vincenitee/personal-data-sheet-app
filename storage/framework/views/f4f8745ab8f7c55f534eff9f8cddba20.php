@@ -55,29 +55,8 @@ unset($__defined_vars); ?>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div class="input-group">
-        <!--[if BLOCK]><![endif]--><?php if($icon): ?>
-            <?php if (isset($component)) { $__componentOriginalca561954248e4a92210f13e9d679c5cc = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalca561954248e4a92210f13e9d679c5cc = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input-icon','data' => ['icon' => $icon]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('forms.input-icon'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['icon' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($icon)]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalca561954248e4a92210f13e9d679c5cc)): ?>
-<?php $attributes = $__attributesOriginalca561954248e4a92210f13e9d679c5cc; ?>
-<?php unset($__attributesOriginalca561954248e4a92210f13e9d679c5cc); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalca561954248e4a92210f13e9d679c5cc)): ?>
-<?php $component = $__componentOriginalca561954248e4a92210f13e9d679c5cc; ?>
-<?php unset($__componentOriginalca561954248e4a92210f13e9d679c5cc); ?>
-<?php endif; ?>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
+        
+        
         <?php echo e($slot); ?>
 
 

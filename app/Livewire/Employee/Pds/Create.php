@@ -1039,25 +1039,25 @@ class Create extends Component
     }
 
     // Process Automatic filling up for salary grade an step
-    public function updatedWorkExperiences($value, $key)
-    {
-        if (str_contains($key, 'salary')) {
-            $salaryData = $this->salaryService->getSalaryGradeAndStep($value);
+    // public function updatedWorkExperiences($value, $key)
+    // {
+    //     if (str_contains($key, 'salary')) {
+    //         $salaryData = $this->salaryService->getSalaryGradeAndStep($value);
 
-            ['salary_grade' => $salaryGrade, 'salary_step' => $salaryStep] = $salaryData;
+    //         ['salary_grade' => $salaryGrade, 'salary_step' => $salaryStep] = $salaryData;
 
-            if (preg_match('/^(\d+)\.([a-zA-Z_]+)$/ ', $key, $matches)) {
+    //         if (preg_match('/^(\d+)\.([a-zA-Z_]+)$/ ', $key, $matches)) {
 
-                $arrayName = 'workExperiences';
-                $index = $matches[1];
+    //             $arrayName = 'workExperiences';
+    //             $index = $matches[1];
 
-                $this->$arrayName[$index] = array_merge($this->$arrayName[$index], [
-                    'salary_grade' => $salaryGrade,
-                    'salary_step' => $salaryStep
-                ]);
-            }
-        }
-    }
+    //             $this->$arrayName[$index] = array_merge($this->$arrayName[$index], [
+    //                 'salary_grade' => $salaryGrade,
+    //                 'salary_step' => $salaryStep
+    //             ]);
+    //         }
+    //     }
+    // }
 
     // Process Certificates
     public function updatedTrainings($value, $key)
@@ -1068,33 +1068,27 @@ class Create extends Component
             // Check if the uploaded file is valid
             if (isset($this->trainings[$index]['certificate']) && is_object($this->trainings[$index]['certificate'])) {
                 try {
-                    // Ensure the directory exists
-                    $uploadPath = public_path('uploads/training');
-                    if (!file_exists($uploadPath)) {
-                        if (!mkdir($uploadPath, 0755, true)) {
-                            throw new \Exception("Failed to create upload directory.");
-                        }
-                    }
-
                     // Generate a unique filename
                     $filename = time() . '_' . $this->trainings[$index]['certificate']->getClientOriginalName();
-                    $filePath = 'uploads/training/' . $filename; // Relative path for storing
 
-                    // Get the temporary file path
-                    $tempPath = $this->trainings[$index]['certificate']->getRealPath();
+                    // Store the file in storage/app/public/training directory
+                    $path = $this->trainings[$index]['certificate']->storeAs(
+                        'training',
+                        $filename,
+                        'public'
+                    );
 
-                    // Copy the file instead of moving it
-                    if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
-                        throw new \Exception("Failed to copy the file.");
+                    // Delete the previous file if it exists and is not the default path
+                    if (!empty($this->trainings[$index]['certificate_path']) && Storage::disk('public')->exists($this->trainings[$index]['certificate_path'])) {
+                        Storage::disk('public')->delete($this->trainings[$index]['certificate_path']);
                     }
 
-                    // Delete the previous file if it exists
-                    if (!empty($this->trainings[$index]['certificate']) && file_exists(public_path($this->trainings[$index]['certificate']))) {
-                        @unlink(public_path($this->trainings[$index]['certificate']));
-                    }
-
-                    // Save the file path instead of the object
-                    $this->trainings[$index]['certificate'] = $filePath;
+                    // Save the file path
+                    $this->trainings[$index]['certificate_path'] = $path;
+                    $this->trainings[$index]['certificate'] = null; // Clear the file object
+                    
+                    // For accessing the file in views, you would use Storage::url($path)
+                    // which returns something like: /storage/training/filename.pdf
                 } catch (\Exception $e) {
                     $this->dispatch('show-toast', [
                         'type' => 'error',

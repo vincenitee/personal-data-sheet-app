@@ -6,7 +6,8 @@ $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'icon' => false,
     'label' => false,
     'name',
-    'required' => true
+    'required' => true,
+    'placeholder' => null,
 ]));
 
 foreach ($attributes->all() as $__key => $__value) {
@@ -27,7 +28,8 @@ foreach (array_filter(([
     'icon' => false,
     'label' => false,
     'name',
-    'required' => true
+    'required' => true,
+    'placeholder' => null,
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
@@ -60,7 +62,7 @@ unset($__defined_vars); ?>
         <?php echo e($attributes); ?>
 
     >
-        <option value="">Choose an option</option>
+        <option value=""><?php echo e(!is_null($placeholder) ? $placeholder : 'Choose an Option'); ?></option>
         <?php echo e($slot); ?>
 
     </select>

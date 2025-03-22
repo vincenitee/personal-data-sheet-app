@@ -38,7 +38,7 @@ class LoginUser extends Component
         // dd($this->all());
         // Validates the credentials
         $credentials = $this->validate();
-
+    
         // Authenticate the user
         return $this->authService
             ->authenticate($credentials);

@@ -35,6 +35,12 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
+                    <th wire:click="sortBy('department')" style="cursor: pointer;">
+                        Office
+                        @if ($sortField === 'department')
+                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                    </th>
                     <th wire:click="sortBy('status')" style="cursor: pointer;">
                         Status
                         @if ($sortField === 'status')
@@ -62,6 +68,8 @@
                         </td>
                         <td class="align-middle">{{ $user->email }}</td>
                         <td class="align-middle">{{ ucwords($user->sex) }}</td>
+
+                        <td class="align-middle">{{ $this->getValue($user->department) }}</td>
                         <td class="align-middle">
                             <span
                                 class="badge

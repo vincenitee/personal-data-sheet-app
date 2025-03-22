@@ -2,7 +2,7 @@
     <div class="row h-100">
         <div class="col-lg-8 p-4 mx-auto">
             <div class="card p-4 card-body shadow">
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <ul class="mb-0">
                             @foreach ($errors->all() as $error)
@@ -11,7 +11,7 @@
                         </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                @endif --}}
                 <x-forms.form wire:submit="save" method="POST">
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-3">
@@ -49,8 +49,16 @@
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            <x-forms.input model="form.birth_date" icon="bi bi-calendar" label="Birthdate"
+                            <x-forms.input model="form.birth_date" label="Birthdate"
                                 type="date" name="birthdate"></x-forms.input>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <x-forms.select model="form.department" name="department" label="Office">
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department['value'] }}">{{ $department['label'] }}</option>
+                                @endforeach
+                            </x-forms.select>
                         </div>
 
                         <div class="col-md-6 col-lg-4">
@@ -64,12 +72,9 @@
                         <div class="col-12">
                             <div class="row g-3">
                                 <div class="col-md-6 d-flex flex-column gap-3">
-                                    <x-forms.input type="password" model="form.password" name="password"
-                                        label="Password" required />
+                                    <x-forms.input label="Password" model="form.password" name="password" type="password" icon="bi-key" ></x-forms.input>
 
-                                    <x-forms.input type="password" model="form.password_confirmation"
-                                        name="password_confirmation" label="Password Confirmation" required />
-
+                                    <x-forms.input label="Password Confirmation" model="form.password_confirmation" name="password" type="password" icon="bi-key" ></x-forms.input>
                                 </div>
 
                                 <div class="col-md-6 align-items-center">

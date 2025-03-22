@@ -80,7 +80,7 @@
 <?php unset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0); ?>
 <?php endif; ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <?php if (isset($component)) { $__componentOriginal7041cc63efd62f0450fe4bb37aadf484 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal7041cc63efd62f0450fe4bb37aadf484 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.select','data' => ['label' => 'Sex','name' => 'sex']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -108,7 +108,7 @@
 <?php unset($__componentOriginal7041cc63efd62f0450fe4bb37aadf484); ?>
 <?php endif; ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <?php if (isset($component)) { $__componentOriginal4fb6044c7ed6b655352043ff774efcd0 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['label' => 'Birthdate','model' => 'birth_date','name' => 'birth_date','type' => 'date']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -127,6 +127,31 @@
 <?php if (isset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $component = $__componentOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
 <?php unset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0); ?>
+<?php endif; ?>
+                    </div>
+                    <div class="col-md-4">
+                        <?php if (isset($component)) { $__componentOriginal7041cc63efd62f0450fe4bb37aadf484 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7041cc63efd62f0450fe4bb37aadf484 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.select','data' => ['label' => 'Office','model' => 'department','name' => 'department']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('forms.select'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Office','model' => 'department','name' => 'department']); ?>
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($department['value']); ?>"><?php echo e($department['label']); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7041cc63efd62f0450fe4bb37aadf484)): ?>
+<?php $attributes = $__attributesOriginal7041cc63efd62f0450fe4bb37aadf484; ?>
+<?php unset($__attributesOriginal7041cc63efd62f0450fe4bb37aadf484); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7041cc63efd62f0450fe4bb37aadf484)): ?>
+<?php $component = $__componentOriginal7041cc63efd62f0450fe4bb37aadf484; ?>
+<?php unset($__componentOriginal7041cc63efd62f0450fe4bb37aadf484); ?>
 <?php endif; ?>
                     </div>
                 </div>

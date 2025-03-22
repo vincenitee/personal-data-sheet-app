@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\MunicipalOffice;
 use Livewire\Component;
 use App\Models\Settings;
 use App\Services\UserService;
@@ -68,7 +69,9 @@ class RegisterUser extends Component
 
     public function render()
     {
-        return view('livewire.auth.register-user')
+        $departments = MunicipalOffice::options();
+
+        return view('livewire.auth.register-user', ['departments' => $departments])
             ->extends('layouts.auth')
             ->section('content')
             ->title('Register');

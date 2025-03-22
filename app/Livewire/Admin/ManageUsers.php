@@ -6,11 +6,12 @@ use App\Models\User;
 use Livewire\Component;
 use App\Enums\UserStatus;
 use Livewire\Attributes\On;
-use App\Traits\SortableSearchable;
-use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
+use App\Services\UserService;
+use App\Enums\MunicipalOffice;
+use Livewire\Attributes\Computed;
+use App\Traits\SortableSearchable;
+use Illuminate\Support\Facades\Auth;
 
 class ManageUsers extends Component
 {
@@ -59,6 +60,10 @@ class ManageUsers extends Component
                 'title' => "Failed to update User #$userId"
             ]);
         }
+    }
+
+    public function getValue($value){
+        return MunicipalOffice::getValue($value);
     }
 
     public function render()

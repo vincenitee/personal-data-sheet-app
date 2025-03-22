@@ -59,8 +59,8 @@
                 <span>Submission Entries</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a wire:navigate {{-- href="{{ url(route('admin.reports')) }}" --}} class="nav-link text-white">
+        <li class="nav-item {{ request()->is('admin/reports') ? 'bg-white bg-opacity-10' : '' }}">
+            <a wire:navigate href="{{ url(route('admin.generate-report')) }}" class="nav-link text-white">
                 <i class="bi bi-clipboard-data me-1" style="font-size: 1.1rem;"></i>
                 <span>Generate Reports</span>
             </a>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Enums\MunicipalOffice;
 use App\Models\User;
 use App\Enums\UserRole;
 use Livewire\Component;
@@ -38,6 +39,7 @@ class ManageSignup extends Component
                 $query->where('first_name', 'like', "%{$this->search}%")
                     ->orWhere('last_name', 'like', "%{$this->search}%")
                     ->orWhere('sex', 'like', "%{$this->search}%")
+                    ->orWhere('department', 'like', "%{$this->search}%")
                     ->orWhere('email', 'like', "%{$this->search}%");
             })
             ->orderBy($this->sortField, $this->sortDirection) // Apply sorting
@@ -88,6 +90,10 @@ class ManageSignup extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc'; // Default to ascending when switching fields
         }
+    }
+
+    public function getValue($value){
+        return MunicipalOffice::getValue($value);
     }
 
     public function render()

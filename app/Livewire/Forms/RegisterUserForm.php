@@ -22,6 +22,9 @@ class RegisterUserForm extends Form
     #[Validate('required')]
     public $sex = '';
 
+    #[Validate('required')]
+    public $department = '';
+
     #[Validate('required|unique:users|email')]
     public $email = '';
 
@@ -34,6 +37,7 @@ class RegisterUserForm extends Form
         'regex:/[A-Z]/',                    // Uppercase letter
         'regex:/[a-z]/'                     // Lowercase letter
     ])]
+
     public $password = '';
 
     #[Validate('required|same:password')]
@@ -42,7 +46,7 @@ class RegisterUserForm extends Form
     public function validateData()
     {
         $validated = $this->validate();
-        
+
         return $validated;
     }
 }

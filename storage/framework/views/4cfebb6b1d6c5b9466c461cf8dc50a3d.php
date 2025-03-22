@@ -76,6 +76,12 @@
                             <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </th>
+                    <th wire:click="sortBy('department')" style="cursor: pointer;">
+                        Office
+                        <!--[if BLOCK]><![endif]--><?php if($sortField === 'department'): ?>
+                            <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </th>
                     <th wire:click="sortBy('sex')" style="cursor: pointer;">
                         Sex
                         <!--[if BLOCK]><![endif]--><?php if($sortField === 'sex'): ?>
@@ -111,6 +117,7 @@
                         <td class="align-middle"> <?php echo e($user->first_name); ?> </td>
                         <td class="align-middle"> <?php echo e($user->middle_name); ?> </td>
                         <td class="align-middle"> <?php echo e($user->last_name); ?> </td>
+                        <td class="align-middle"> <?php echo e($this->getValue($user?->department)); ?> </td>
                         <td class="align-middle"> <?php echo e(ucwords($user->sex)); ?> </td>
                         <td class="align-middle"> <?php echo e($user->email); ?> </td>
                         <td class="align-middle">
@@ -163,7 +170,7 @@
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                        <td colspan="9" class="text-center text-muted">
+                        <td colspan="9" class="text-center text-muted align-middle">
                             <i class="bi bi-person-x"></i> No users found. Try adjusting your search or filters.
                         </td>
                     </tr>

@@ -8,10 +8,10 @@
     @endif
 
     <div class="input-group">
-        @if ($icon)
+        {{-- @if ($icon)
             <x-forms.input-icon :$icon />
-        @endif
-
+        @endif --}}
+        
         {{ $slot }}
 
     </div>

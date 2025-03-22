@@ -36,7 +36,7 @@
                     'type' => 'select',
                     'options' => array_combine(range(1, 33), range(1, 33)), // Grades 1-33
                     'placeholder' => 'Select salary grade',
-                    'disabled' => true,
+                    // 'disabled' => true,
                     'required' => false,
                 ],
                 [
@@ -44,7 +44,7 @@
                     'type' => 'select',
                     'options' => array_combine(range(0, 8), range(0, 8)), // Steps 1-8
                     'placeholder' => 'Select salary step',
-                    'disabled' => true,
+                    // 'disabled' => true,
                     'required' => false,
                 ],
                 [

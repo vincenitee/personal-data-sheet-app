@@ -15,7 +15,7 @@ body {
 }
 
 .chevron-icon {
-transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
 .chevron-icon.rotated {
@@ -23,7 +23,19 @@ transition: transform 0.2s ease-in-out;
 }
 
 .custom-toast {
-    top: 20px !important; /* Adjust this value as needed */
+    top: 20px !important;
+    /* Adjust this value as needed */
     right: 10px !important;
 }
 
+.accordion-sm .accordion-button {
+    padding: 0.5rem 1rem;
+    /* Reduce padding */
+    font-size: 0.875rem;
+    /* Make text smaller */
+}
+
+.accordion-sm .accordion-body {
+    font-size: 0.875rem;
+    padding: 0.75rem;
+}

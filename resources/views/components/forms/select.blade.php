@@ -3,7 +3,8 @@
     'icon' => false,
     'label' => false,
     'name',
-    'required' => true
+    'required' => true,
+    'placeholder' => null,
 ])
 
 <x-forms.input-field
@@ -22,7 +23,7 @@
         style="font-size: 0.9rem"
         {{ $attributes }}
     >
-        <option value="">Choose an option</option>
+        <option value="">{{ !is_null($placeholder) ? $placeholder : 'Choose an Option'  }}</option>
         {{ $slot }}
     </select>
 </x-forms.input-field>

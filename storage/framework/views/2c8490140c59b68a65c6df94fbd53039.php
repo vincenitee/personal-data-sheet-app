@@ -51,6 +51,12 @@
                             <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </th>
+                    <th wire:click="sortBy('department')" style="cursor: pointer;">
+                        Office
+                        <!--[if BLOCK]><![endif]--><?php if($sortField === 'department'): ?>
+                            <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </th>
                     <th wire:click="sortBy('status')" style="cursor: pointer;">
                         Status
                         <!--[if BLOCK]><![endif]--><?php if($sortField === 'status'): ?>
@@ -81,6 +87,8 @@
                         </td>
                         <td class="align-middle"><?php echo e($user->email); ?></td>
                         <td class="align-middle"><?php echo e(ucwords($user->sex)); ?></td>
+
+                        <td class="align-middle"><?php echo e($this->getValue($user->department)); ?></td>
                         <td class="align-middle">
                             <span
                                 class="badge

@@ -2,16 +2,7 @@
     <div class="row h-100">
         <div class="col-lg-8 p-4 mx-auto">
             <div class="card p-4 card-body shadow">
-                <!--[if BLOCK]><![endif]--><?php if($errors->any()): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <ul class="mb-0">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li><?php echo e($error); ?></li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                
                 <?php if (isset($component)) { $__componentOriginala22641835cdc236e966401327a423643 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala22641835cdc236e966401327a423643 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.form','data' => ['wire:submit' => 'save','method' => 'POST']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -134,14 +125,14 @@
                         <div class="col-md-6 col-lg-4">
                             <?php if (isset($component)) { $__componentOriginal4fb6044c7ed6b655352043ff774efcd0 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['model' => 'form.birth_date','icon' => 'bi bi-calendar','label' => 'Birthdate','type' => 'date','name' => 'birthdate']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['model' => 'form.birth_date','label' => 'Birthdate','type' => 'date','name' => 'birthdate']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['model' => 'form.birth_date','icon' => 'bi bi-calendar','label' => 'Birthdate','type' => 'date','name' => 'birthdate']); ?> <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['model' => 'form.birth_date','label' => 'Birthdate','type' => 'date','name' => 'birthdate']); ?> <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $attributes = $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
@@ -150,6 +141,32 @@
 <?php if (isset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $component = $__componentOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
 <?php unset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0); ?>
+<?php endif; ?>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <?php if (isset($component)) { $__componentOriginal7041cc63efd62f0450fe4bb37aadf484 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7041cc63efd62f0450fe4bb37aadf484 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.select','data' => ['model' => 'form.department','name' => 'department','label' => 'Office']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('forms.select'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['model' => 'form.department','name' => 'department','label' => 'Office']); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($department['value']); ?>"><?php echo e($department['label']); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7041cc63efd62f0450fe4bb37aadf484)): ?>
+<?php $attributes = $__attributesOriginal7041cc63efd62f0450fe4bb37aadf484; ?>
+<?php unset($__attributesOriginal7041cc63efd62f0450fe4bb37aadf484); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7041cc63efd62f0450fe4bb37aadf484)): ?>
+<?php $component = $__componentOriginal7041cc63efd62f0450fe4bb37aadf484; ?>
+<?php unset($__componentOriginal7041cc63efd62f0450fe4bb37aadf484); ?>
 <?php endif; ?>
                         </div>
 
@@ -185,15 +202,14 @@
                                 <div class="col-md-6 d-flex flex-column gap-3">
                                     <?php if (isset($component)) { $__componentOriginal4fb6044c7ed6b655352043ff774efcd0 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['type' => 'password','model' => 'form.password','name' => 'password','label' => 'Password','required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['label' => 'Password','model' => 'form.password','name' => 'password','type' => 'password','icon' => 'bi-key']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['type' => 'password','model' => 'form.password','name' => 'password','label' => 'Password','required' => true]); ?>
-<?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['label' => 'Password','model' => 'form.password','name' => 'password','type' => 'password','icon' => 'bi-key']); ?> <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $attributes = $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
@@ -206,15 +222,14 @@
 
                                     <?php if (isset($component)) { $__componentOriginal4fb6044c7ed6b655352043ff774efcd0 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['type' => 'password','model' => 'form.password_confirmation','name' => 'password_confirmation','label' => 'Password Confirmation','required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.input','data' => ['label' => 'Password Confirmation','model' => 'form.password_confirmation','name' => 'password','type' => 'password','icon' => 'bi-key']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('forms.input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['type' => 'password','model' => 'form.password_confirmation','name' => 'password_confirmation','label' => 'Password Confirmation','required' => true]); ?>
-<?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['label' => 'Password Confirmation','model' => 'form.password_confirmation','name' => 'password','type' => 'password','icon' => 'bi-key']); ?> <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4fb6044c7ed6b655352043ff774efcd0)): ?>
 <?php $attributes = $__attributesOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
@@ -224,7 +239,6 @@
 <?php $component = $__componentOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
 <?php unset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0); ?>
 <?php endif; ?>
-
                                 </div>
 
                                 <div class="col-md-6 align-items-center">

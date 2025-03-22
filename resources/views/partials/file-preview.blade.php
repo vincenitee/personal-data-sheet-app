@@ -1,10 +1,28 @@
 {{-- resources/views/partials/file-preview.blade.php --}}
 @if (!empty($file))
     @php
-        $filePath = is_string($file) ? Storage::url($file) : null;
-        $fileExtension = is_string($file) ? pathinfo($filePath, PATHINFO_EXTENSION) : null;
-        $isImage = $file && is_object($file) && $file->getMimeType() ? str_starts_with($file->getMimeType(), 'image') : in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-        $fileName = is_string($file) ? basename($file) : null;
+        // Check if file is a string (path) or an uploaded file object
+        $isUploadedFile = is_object($file) && method_exists($file, 'getClientOriginalName');
+
+        // Get file details based on type
+        if ($isUploadedFile) {
+            // For temporary uploads
+            $fileName = $file->getClientOriginalName();
+            $fileExtension = $file->getClientOriginalExtension();
+            $isImage = str_starts_with($file->getMimeType(), 'image');
+            $filePath = null;
+        } else {
+            // For stored files
+            // Handle both full paths and relative paths correctly
+            $storagePrefix = 'public/';
+            $storagePath = str_starts_with($file, $storagePrefix) ? $file : $storagePrefix . $file;
+            $publicPath = Storage::url(str_replace($storagePrefix, '', $file));
+
+            $fileName = basename($file);
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+            $isImage = in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);
+            $filePath = $publicPath;
+        }
     @endphp
 
     <div class="card shadow-sm mt-3">
@@ -15,7 +33,7 @@
         </div>
         <div class="card-body">
             {{-- Loading Indicator --}}
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center" wire:loading wire:target="{{ $wireTarget }}">
                 @include('partials.loading', [
                     'target' => $wireTarget,
                     'message' => 'Uploading document',
@@ -26,19 +44,31 @@
             <div wire:loading.remove wire:target="{{ $wireTarget }}">
                 @if ($isImage)
                     <div class="text-center mb-3">
-                        @if (is_object($file))
-                            {{-- Show temporary URL if it's a Livewire file object --}}
-                            <img src="{{ $file->temporaryUrl() }}" alt="{{ $title ?? 'File Preview' }}" class="img-fluid rounded"
+                        @if ($isUploadedFile)
+                            {{-- Show temporary URL for Livewire upload --}}
+                            <img src="{{ $file->temporaryUrl() }}" alt="{{ $fileName }}" class="img-fluid rounded"
                                 style="max-width: 300px; max-height: 300px; object-fit: contain;">
                         @else
-                            {{-- Show stored file from public disk --}}
-                            <img src="{{ $filePath }}" alt="{{ $title ?? 'File Preview' }}" class="img-fluid rounded"
+                            {{-- Show stored file from public storage --}}
+                            <img src="{{ $filePath }}" alt="{{ $fileName }}" class="img-fluid rounded"
                                 style="max-width: 300px; max-height: 300px; object-fit: contain;">
                         @endif
                     </div>
                 @else
                     <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-file-earmark-text fs-2 me-3 text-secondary"></i>
+                        {{-- File icon based on extension --}}
+                        @php
+                            $iconClass = match(strtolower($fileExtension)) {
+                                'pdf' => 'bi-file-earmark-pdf',
+                                'doc', 'docx' => 'bi-file-earmark-word',
+                                'xls', 'xlsx' => 'bi-file-earmark-excel',
+                                'ppt', 'pptx' => 'bi-file-earmark-ppt',
+                                'zip', 'rar' => 'bi-file-earmark-zip',
+                                'txt' => 'bi-file-earmark-text',
+                                default => 'bi-file-earmark'
+                            };
+                        @endphp
+                        <i class="{{ $iconClass }} fs-2 me-3 text-secondary"></i>
                         <div>
                             <h6 class="mb-1">{{ $fileName }}</h6>
                             <small class="text-muted text-uppercase">{{ strtoupper($fileExtension) }} File</small>
@@ -51,8 +81,8 @@
                         <i class="bi bi-paperclip me-1"></i>{{ $title ?? 'Uploaded File' }}
                     </span>
 
-                    {{-- Download Button --}}
-                    @if (is_string($file))
+                    {{-- Download Button - only show for stored files --}}
+                    @if (!$isUploadedFile && $filePath)
                         <a href="{{ $filePath }}" download="{{ $fileName }}" class="btn btn-sm btn-outline-primary">
                             <i class="bi bi-download me-1"></i>Download
                         </a>

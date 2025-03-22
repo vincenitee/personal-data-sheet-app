@@ -23,6 +23,7 @@
         'admin/backup' => 'Manage Backup',
         'admin/submissions' => 'Submissions',
         'admin/submissions/*/review' => 'Review Entry',
+        'admin/reports' => 'Generate Reports',
     ];
 
     // Function to match dynamic routes (e.g., users/*/edit)

@@ -130,6 +130,12 @@
                             <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </th>
+                    <th wire:click="sortBy('first_name')" style="cursor: pointer">
+                        Office
+                        <!--[if BLOCK]><![endif]--><?php if($sortField === 'first_name'): ?>
+                            <i class="bi bi-arrow-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </th>
                     <th wire:click="sortBy('status')" style="cursor: pointer">
                         Status
                         <!--[if BLOCK]><![endif]--><?php if($sortField === 'status'): ?>
@@ -175,6 +181,10 @@
                             </div>
                         </td>
                         <td class="align-middle">
+                            <?php echo e($this->getValue($pdsEntry->user->department)); ?>
+
+                        </td>
+                        <td class="align-middle">
                             <?php
                                 $status = $pdsEntry->status;
                                 $statusColor = match ($status) {
@@ -195,7 +205,7 @@
                         </td>
                         <td class="align-middle">
                             <div class="dropdown">
-                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown">
+                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown" data-bs-boundary="viewport">
                                     <i class="bi bi-three-dots text-secondary"></i>
                                 </button>
 

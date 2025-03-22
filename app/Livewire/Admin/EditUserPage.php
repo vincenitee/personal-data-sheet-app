@@ -4,8 +4,9 @@ namespace App\Livewire\Admin;
 
 use App\Enums\Sex;
 use App\Models\User;
-use App\Traits\HasFlashMessage;
 use Livewire\Component;
+use App\Enums\MunicipalOffice;
+use App\Traits\HasFlashMessage;
 use Illuminate\Validation\Rule;
 
 class EditUserPage extends Component
@@ -19,6 +20,7 @@ class EditUserPage extends Component
     public $last_name;
     public $sex;
     public $birth_date;
+    public $department;
     public $email;
     public $password;
     public $status;
@@ -44,6 +46,7 @@ class EditUserPage extends Component
         $this->birth_date = $user->birth_date;
         $this->email = $user->email;
         $this->status = $user->deactivated;
+        $this->department = $user->department;
     }
 
     public function save()
@@ -57,6 +60,7 @@ class EditUserPage extends Component
             'last_name' => $this->last_name,
             'sex' => $this->sex,
             'birth_date' => $this->birth_date,
+            'department' => $this->department,
             'email' => $this->email,
             'password' => $this->password ? bcrypt($this->password) : $this->user->password,
             'deactivated' => $this->status,
@@ -71,6 +75,7 @@ class EditUserPage extends Component
     {
         return view('livewire.admin.edit-user-page', [
             'sexOptions' => Sex::labels(),
+            'departments' => MunicipalOffice::options(),
         ])
             ->extends('layouts.app')
             ->title('Edit User Information')

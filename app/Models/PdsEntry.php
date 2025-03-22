@@ -48,7 +48,7 @@ class PdsEntry extends Model
 
     public function volWorkExperiences()
     {
-        return $this->hasMany(VoluntaryWorkExperience::class);
+        return $this->hasMany(VoluntaryWorkExperience::class, 'pds_entry_id');
     }
 
     public function trainings()

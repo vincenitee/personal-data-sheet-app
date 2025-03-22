@@ -26,9 +26,10 @@ use App\Livewire\Admin\SubmissionEntries;
 use App\Livewire\Employee\SubmissionLogs;
 use App\Livewire\Admin\Profile as AdminProfile;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\GenerateReport;
 use App\Livewire\Employee\Dashboard as EmployeeDashboard;
 
-// Route::get('/', Welcome::class);
+Route::get('/', Welcome::class);
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
@@ -73,6 +74,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('backup/download/{path}', DownloadBackupController::class)
         ->name('backup.download');
+
+    Route::get('/admin/reports', GenerateReport::class)
+        ->name('admin.generate-report');
 });
 
 // Common Routes

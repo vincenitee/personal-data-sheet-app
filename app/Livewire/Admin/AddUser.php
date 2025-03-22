@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Enums\MunicipalOffice;
 use App\Enums\Sex;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
@@ -16,6 +17,7 @@ class AddUser extends Component
     public $last_name = null;
     public $sex = 'male';
     public $birth_date = null;
+    public $department = null;
 
     // Account Information
     public $email = null;
@@ -86,6 +88,7 @@ class AddUser extends Component
         return view('livewire.admin.add-user', [
             'sexOptions' => Sex::labels(),
             'userRoleOptions' => UserRole::labels(),
+            'departments' => MunicipalOffice::options(),
         ])
             ->extends('layouts.app')
             ->section('content')

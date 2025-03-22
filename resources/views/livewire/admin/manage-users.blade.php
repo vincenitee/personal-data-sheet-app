@@ -39,6 +39,12 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
+                    <th wire:click="sortBy('department')" style="cursor: pointer;">
+                        Office
+                        @if ($sortField === 'department')
+                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                    </th>
                     <th wire:click="sortBy('sex')" style="cursor: pointer;">
                         Sex
                         @if ($sortField === 'sex')
@@ -74,6 +80,7 @@
                         <td class="align-middle"> {{ $user->first_name }} </td>
                         <td class="align-middle"> {{ $user->middle_name }} </td>
                         <td class="align-middle"> {{ $user->last_name }} </td>
+                        <td class="align-middle"> {{ $this->getValue($user?->department) }} </td>
                         <td class="align-middle"> {{ ucwords($user->sex) }} </td>
                         <td class="align-middle"> {{ $user->email }} </td>
                         <td class="align-middle">
@@ -124,7 +131,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="text-center text-muted">
+                        <td colspan="9" class="text-center text-muted align-middle">
                             <i class="bi bi-person-x"></i> No users found. Try adjusting your search or filters.
                         </td>
                     </tr>

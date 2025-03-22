@@ -5,15 +5,16 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use App\Models\PdsEntry;
 use Livewire\Attributes\On;
+use App\Services\PdsService;
 use Livewire\WithPagination;
+use App\Enums\MunicipalOffice;
 use App\Enums\SubmissionStatus;
 use App\Mail\PdsEntryStatusMail;
 use Livewire\Attributes\Computed;
 use App\Traits\SortableSearchable;
+use App\Services\SubmissionService;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\PdsStatusNotification;
-use App\Services\PdsService;
-use App\Services\SubmissionService;
 
 class SubmissionEntries extends Component
 {
@@ -98,6 +99,11 @@ class SubmissionEntries extends Component
             ->orderBy("users.{$this->sortField}", $this->sortDirection) // Sorting by user field
             ->select('pds_entries.*') // Ensure only PdsEntry fields are selected
             ->paginate(10);
+    }
+
+    public function getValue($value)
+    {
+        return MunicipalOffice::getValue($value);
     }
 
     public function getUserFullName($user)

@@ -139,6 +139,12 @@
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
                     </th>
+                    <th wire:click="sortBy('first_name')" style="cursor: pointer">
+                        Office
+                        @if ($sortField === 'first_name')
+                            <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                        @endif
+                    </th>
                     <th wire:click="sortBy('status')" style="cursor: pointer">
                         Status
                         @if ($sortField === 'status')
@@ -184,6 +190,9 @@
                             </div>
                         </td>
                         <td class="align-middle">
+                            {{ $this->getValue($pdsEntry->user->department) }}
+                        </td>
+                        <td class="align-middle">
                             @php
                                 $status = $pdsEntry->status;
                                 $statusColor = match ($status) {
@@ -203,7 +212,7 @@
                         </td>
                         <td class="align-middle">
                             <div class="dropdown">
-                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown">
+                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown" data-bs-boundary="viewport">
                                     <i class="bi bi-three-dots text-secondary"></i>
                                 </button>
 
