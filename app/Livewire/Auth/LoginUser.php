@@ -30,15 +30,28 @@ class LoginUser extends Component
     public function mount()
     {
         $this->sidebarColor = get_setting('sidebar_color', 'dark');
-        $this->logoPath = get_setting('logo') ? asset('uploads/system_logo/' . get_setting('logo')) : asset('images/hris-logo-white.png');
+
+        $logo = get_setting('logo');
+        $defaultLogo = asset('images/hris-logo-white.png');
+
+        if ($logo) {
+            $fullPath = 'system_logo/' . $logo;
+
+            if (Storage::disk('public')->exists($fullPath)) {
+                $this->logoPath = Storage::disk('public')->url($fullPath);
+            } else {
+                $this->logoPath = $defaultLogo;
+            }
+        } else {
+            $this->logoPath = $defaultLogo;
+        }
     }
 
     public function submit()
     {
-        // dd($this->all());
         // Validates the credentials
         $credentials = $this->validate();
-    
+
         // Authenticate the user
         return $this->authService
             ->authenticate($credentials);

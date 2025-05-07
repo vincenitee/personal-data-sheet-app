@@ -57,3 +57,36 @@
  .table-body.question-block tr td:nth-child(2) {
      padding-left: 15px;
  }
+
+ @media print {
+
+  #pds-table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+
+  #pds-table td, #pds-table th {
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #pds-table .separator {
+    background-color: #757575 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #pds-table td.s-label {
+    background-color: #dddddd !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}

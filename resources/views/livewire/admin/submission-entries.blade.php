@@ -153,7 +153,7 @@
                     </th>
 
                     <th wire:click="sortBy('created_at')" style="cursor: pointer">
-                        Date Submitted
+                        Date Created
                         @if ($sortField === 'created_at')
                             <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                         @endif
@@ -173,10 +173,25 @@
                         <td class="align-middle">
                             <div class="d-flex align-items-center gap-3">
                                 <div>
-                                    {{-- @dump($submissionEntry->attachment?->passport_photo) --}}
-                                    <img src="{{ asset($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png') }}"
-                                        loading="lazy" alt="Employee Photo" class="rounded border shadow-sm"
-                                        width="45" height="45" style="object-fit: cover">
+                                    {{-- @dump($pdsEntry->attachment?->passport_photo) --}}
+                                    @php
+                                        $user = $pdsEntry?->user;
+                                        $passportPhoto = $pdsEntry?->attachment?->passport_photo;
+
+                                        $avatarPath = '';
+
+                                        if (!empty($passportPhoto) && Storage::disk('public')->exists($passportPhoto)) {
+                                            // File exists in storage
+                                            $avatarPath = Storage::disk('public')->url($passportPhoto);
+                                        } else {
+                                            $avatarPath = asset('images/avatar-placeholder.gif');
+                                        }
+                                    @endphp
+
+                                    <img src="{{ $avatarPath }}" loading="lazy" alt="Employee Photo"
+                                        class="rounded border shadow-sm" width="45" height="45"
+                                        style="object-fit: cover">
+
                                 </div>
                                 <div class="employee-details">
                                     <h6 class="fw-semibold mb-1"><a
@@ -208,11 +223,12 @@
                         </td>
 
                         <td class="align-middle">
-                            {{ $pdsEntry->updated_at->format('M d, Y') }}
+                            {{ $pdsEntry->created_at->format('M d, Y') }}
                         </td>
                         <td class="align-middle">
                             <div class="dropdown">
-                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown" data-bs-boundary="viewport">
+                                <button type="button" class="btn btn-sm" data-bs-toggle="dropdown"
+                                    data-bs-boundary="viewport">
                                     <i class="bi bi-three-dots text-secondary"></i>
                                 </button>
 
@@ -225,8 +241,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a wire:navigate href="{{ route('pds.print', $pdsEntry->id) }}"
-                                                class="dropdown-item">
+                                            <a target="_blank" href="{{ route('pds.print', $pdsEntry->id) }}" class="dropdown-item">
                                                 Print
                                             </a>
                                         </li>
@@ -237,14 +252,13 @@
                                             </a>
                                         </li>
                                     @elseif ($pdsEntry->status === 'approved')
-                                        <li>
+                                        {{-- <li>
                                             <a class="dropdown-item">
                                                 Download
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li>
-                                            <a wire:navigate href="{{ route('pds.print', $pdsEntry->id) }}"
-                                                class="dropdown-item">
+                                            <a target="_blank" href="{{ route('pds.print', $pdsEntry->id) }}" class="dropdown-item">
                                                 Print
                                             </a>
                                         </li>

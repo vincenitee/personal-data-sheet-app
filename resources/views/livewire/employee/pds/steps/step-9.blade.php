@@ -227,7 +227,7 @@
                     <i class="bi bi-trash3-fill me-1"></i>
                     Clear All Entries
                 </button>
-                <button type="button" wire:click="addReferencePeople()" class="btn btn-primary btn-sm">
+                <button type="button" wire:click="addReferencePeople()" class="btn btn-primary btn-sm" @if(count($references) >= 3) disabled @endif>
                     <i class="bi bi-plus-circle-fill me-1"></i>
                     Add Another Entry
                 </button>

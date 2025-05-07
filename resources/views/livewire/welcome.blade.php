@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="img/data_sheet.jpg" alt="Personal Data Sheet Dashboard" class="img-fluid rounded shadow">
+                    <img src="{{ asset('images/admin-dashboard.png') }}" alt="Personal Data Sheet Dashboard" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>

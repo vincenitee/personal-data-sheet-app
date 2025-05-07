@@ -10,6 +10,7 @@ class RevisedPdsEntries extends Component
     public $revisionPdsSubmissionCount;
     public $totalPdsEntriesCount;
     public $percentageRevised;
+    public $link;
 
     public function mount(){
         $this->revisionPdsSubmissionCount = PdsEntry::where('status', 'needs_revision')->count();
@@ -17,6 +18,8 @@ class RevisedPdsEntries extends Component
         $this->percentageRevised = ($this->totalPdsEntriesCount > 0)
             ? round(($this->revisionPdsSubmissionCount / $this->totalPdsEntriesCount) * 100, 2)
             : 0;
+
+        $this->link = route('admin.submissions');
     }
 
     public function placeholder()

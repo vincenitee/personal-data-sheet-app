@@ -69,7 +69,7 @@
                     class="btn btn-sm btn-success d-inline-flex align-items-center gap-2 {{ $currentStep !== count($steps) ? 'd-none' : '' }}"
                     wire:loading.attr="disabled"
                 >
-                    <span>Submit</span>
+                    <span>Submit Entry</span>
                     <div wire:loading wire:target="incrementSteps" class="spinner-border spinner-border-sm" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>

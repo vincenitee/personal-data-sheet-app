@@ -3,7 +3,7 @@
     style="z-index: 1050;">
     <div class="container-fluid">
         
-        <button @click="open = !open" class="btn btn-sm" id="sidebar-toggler">
+        <button @click="open = !open; console.log(open)" class="btn btn-sm" id="sidebar-toggler">
             <i class="bi bi-grid" style="font-size: 1.3rem;"></i>
         </button>
 

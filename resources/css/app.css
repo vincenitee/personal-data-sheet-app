@@ -4,6 +4,7 @@
 @import './buttons.css';
 @import './timeline.css';
 @import './pds.css';
+@import './pds-table.css';
 
 /* General Styles */
 body {
@@ -38,4 +39,12 @@ body {
 .accordion-sm .accordion-body {
     font-size: 0.875rem;
     padding: 0.75rem;
+}
+
+.offcanvas{
+    z-index: 1100 !important;
+}
+
+.offcanvas-backdrop {
+    z-index: 1050 !important; /* Ensures the backdrop covers the navbar */
 }

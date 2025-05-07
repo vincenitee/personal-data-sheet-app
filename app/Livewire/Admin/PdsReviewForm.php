@@ -234,7 +234,7 @@ class PdsReviewForm extends Component
         ]);
 
         // Redirect to the submissions page
-        return $this->redirect(route('admin.submissions'), navigate: true);
+        return $this->redirect(route('submissions.review', ['pdsEntry' => $pdsEntry->id]), navigate: true);
     }
 
     public function render()

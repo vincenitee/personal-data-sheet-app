@@ -2,13 +2,15 @@
 
 namespace App\Livewire\Admin\Charts;
 
+use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\PdsEntry;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Lazy;
 use App\Models\WorkExperience;
 use App\Enums\EmploymentStatus;
-use Spatie\Browsershot\Browsershot;
 
 class EmployeeChart extends Component
 {
@@ -51,40 +53,100 @@ class EmployeeChart extends Component
         ];
     }
 
-
     #[On('downloadEmployeeList')]
     public function downloadEmployeeList($employmentStatus)
     {
-        // dd($employmentStatus);
         // Fetch employees with the selected employment status
         if ($employmentStatus === "No Prior Work Experience") {
-            $employees = PdsEntry::where('status', 'approved')->doesntHave('workExperiences')->get();
+            $entries = PdsEntry::where('status', 'approved')->doesntHave('workExperiences')->get();
         } else {
             $employmentStatus = strtolower(str_replace(' ', '_', $employmentStatus));
-            $employees = PdsEntry::where('status', 'approved')
+            $entries = PdsEntry::where('status', 'approved')
                 ->whereHas('workExperiences', function ($query) use ($employmentStatus) {
                     $query->where('status', $employmentStatus);
                 })->get();
-
-            // dd($employees);
         }
 
+        // Define the columns to display in the report
+        $columns = [
+            'name' => 'Name',
+            // 'sex' => 'Sex',
+            // 'position' => 'Position',
+            'office' => 'Office',
+            'email' => 'Email',
+            'mobile_no' => 'Mobile No',
+            'employment_status' => 'Employment Status',
+        ];
+
+        // Set the title and generated date
+        $title = 'Employee List - ' . Str::title(str_replace('_', ' ', ucwords($employmentStatus))) . ' Status';
+        $generatedDate = now()->format('F d, Y');
+
         // Generate HTML content for PDF
-        $html = view('pdf.employee_list', compact('employees', 'employmentStatus'))->render();
+        $html = view('reports.entries-report', compact('entries', 'columns', 'title', 'generatedDate'))->render();
 
         $fileName = 'employee_list_' . Str::slug($employmentStatus, '_') . '_' . now()->format('Ymd_His') . '.pdf';
 
-        // Generate PDF with Browsershot
+        // Generate PDF with Dompdf
+        $dompdf = new Dompdf([
+            'defaultFont' => 'Arial',
+            'isRemoteEnabled' => true
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Store the file
+        $output = $dompdf->output();
         $pdfPath = storage_path("app/public/reports/$fileName");
-        Browsershot::html($html)
-            ->waitUntilNetworkIdle()
-            ->format('A4')
-            ->save($pdfPath);
+        file_put_contents($pdfPath, $output);
 
         // Return download response
         return response()->download($pdfPath);
     }
 
+    #[On('downloadAllEmployees')]
+    public function downloadAllEmployee(){
+
+        // Define the columns to display in the report
+        $columns = [
+            'name' => 'Name',
+            // 'sex' => 'Sex',
+            // 'position' => 'Position',
+            'office' => 'Office',
+            'email' => 'Email',
+            'mobile_no' => 'Mobile No',
+            'employment_status' => 'Employment Status',
+        ];
+
+        $entries = PdsEntry::where('status', 'approved')
+                ->whereHas('workExperiences')->get();
+
+        $title = 'Complete List Overview (Employment Status)';
+        $generatedDate = now()->format('F d, Y');
+
+        // Generate HTML content for PDF
+        $html = view('reports.entries-report', compact('entries', 'columns', 'title', 'generatedDate'))->render();
+
+        $fileName = 'employee_list_by_employment_status_' . now()->format('Ymd_His') . '.pdf';
+
+        // Generate PDF with Dompdf
+        $dompdf = new Dompdf([
+            'defaultFont' => 'Arial',
+            'isRemoteEnabled' => true
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        // Store the file
+        $output = $dompdf->output();
+        $pdfPath = storage_path("app/public/reports/$fileName");
+        file_put_contents($pdfPath, $output);
+
+        // Return download response
+        return response()->download($pdfPath);
+    }
 
     public function refreshChart()
     {

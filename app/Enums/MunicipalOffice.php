@@ -51,13 +51,26 @@ enum MunicipalOffice: string
     /**
      * Get the value of an enum case using the key
      */
-    public static function getValue(string $name): ?string
+    public static function getValue(?string $name): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->name === $name) {
                 return $case->value;
             }
         }
+        return null;
+    }
+
+    /**
+     * Get enum case using the value
+     */
+    public static function fromValue(string $value): ?self{
+        foreach(self::cases() as $case){
+            if($case->value === $value){
+                return $case;
+            }
+        }
+
         return null;
     }
 }

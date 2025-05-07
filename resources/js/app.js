@@ -28,3 +28,5 @@ if (!window.Alpine) {
 window.Swal = Swal;
 window.flatpickr = flatpickr;
 window.ApexCharts = ApexCharts;
+window.bootstrap = bootstrap;
+

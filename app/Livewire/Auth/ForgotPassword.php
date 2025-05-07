@@ -6,8 +6,7 @@ use Livewire\Component;
 use App\Models\Settings;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Password;
 
 class ForgotPassword extends Component
@@ -28,9 +27,9 @@ class ForgotPassword extends Component
         if (!empty($logo) && Str::startsWith($logo, ['http', 'https'])) {
             // External URL
             $this->logoPath = $logo;
-        } elseif (!empty($logo) && file_exists(public_path('uploads/system_logo/' . $logo))) {
-            // Logo in public/uploads/system_logo directory
-            $this->logoPath = asset('uploads/system_logo/' . $logo);
+        } elseif (!empty($logo) && Storage::disk('public')->exists('system_logo/' . $logo)) {
+            // Logo in storage/app/public/system_logo directory
+            $this->logoPath = Storage::disk('public')->url('system_logo/' . $logo);
         } else {
             // Default logo
             $this->logoPath = asset('images/hris-logo-white.png');

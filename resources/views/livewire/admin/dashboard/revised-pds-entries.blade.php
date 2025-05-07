@@ -6,4 +6,5 @@
     colorClass="danger"
     capacityLabel="Revised Percentage"
     changeLabel="out of total submissions"
+    :href="$link"
 />

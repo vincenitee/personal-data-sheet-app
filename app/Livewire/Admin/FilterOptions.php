@@ -5,72 +5,109 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use App\Enums\BloodType;
 use App\Enums\CivilStatus;
-use Illuminate\Support\Str;
+use App\Enums\MunicipalOffice;
+use App\Enums\EducationalLevel;
 use App\Enums\EmploymentStatus;
-use App\Enums\TrainingTypes;
+use App\Enums\SubmissionStatus;
 
 class FilterOptions extends Component
 {
-    // Personal Information
-    public $nameSearch;
-    public $minAge;
-    public $maxAge;
-    public $birthDateFrom;
-    public $birthDateTo;
-    public $sexFilter;
-    public $civilStatusFilter;
-    public $bloodTypeFilter;
+    public $offices, $civilStatus, $bloodTypes, $educationalLevels, $submissionStatus, $employmentStatus;
 
-    // Educational Background Filters
-    public $educationLevelFilter;
-    public $schoolNameSearch;
-    public $degreeEarnedSearch;
-    public $attendanceFrom;
-    public $attendanceTo;
-    public $minUnits;
-    public $maxUnits;
-    public $minYearGraduated;
-    public $maxYearGraduated;
-    public $academicHonorsSearch;
+    // Common Filters
+    public $employeeName = null;
+    public $selectedDepartment = null;
+    public $selectedSex = null;
+    public $selectedEmploymentStatus = null;
 
-    public function applyFilters()
+    // Planning Filters
+    public $selectedAgeRange = null;
+    public $selectedCivilStatus = null;
+    public $selectedWorkPosition = null;
+    public $selectedYearsInService = null;
+    public $selectedDateOfAppointment = null;
+
+    // Compliance Filters
+    public $selectedEligibility = null;
+    public $selectedEligibilityExpirationDate = null;
+    public $selectedEducationLevel = null;
+    public $selectedTrainingHours = null;
+    public $selectedSubmissionStatus = null;
+    public $selectedDateUpdated = null;
+
+    // Inventory
+    public $selectedCitizenship = null;
+    public $selectedSalaryGrade = null;
+    public $selectedSalaryStep = null;
+
+    public function mount()
     {
-        $this->dispatch('filtersApplied', [
-            'personalInformation' => [
-                'nameSearch' => $this->nameSearch,
-                'minAge' => $this->minAge,
-                'maxAge' => $this->maxAge,
-                'birthDateFrom' => $this->birthDateFrom,
-                'birthDateTo' => $this->birthDateTo,
-                'sexFilter' => $this->sexFilter,
-                'civilStatusFilter' => $this->civilStatusFilter,
-                'bloodTypeFilter' => $this->bloodTypeFilter,
-            ],
-            'educationalBackground' => [
-                'educationLevelFilter' => $this->educationLevelFilter,
-                'degreeEarnedSearch' => $this->degreeEarnedSearch,
-                'attendanceFrom' => $this->attendanceFrom,
-                'attendanceTo' => $this->attendanceTo,
-                'minUnits' => $this->minUnits,
-                'maxUnits' => $this->maxUnits,
-                'minYearGraduated' => $this->minYearGraduated,
-                'maxYearGraduated' => $this->maxYearGraduated,
-                'academicHonorsSearch' => $this->academicHonorsSearch,
-            ],
-        ]);
+        $this->offices = MunicipalOffice::options();
+        $this->civilStatus = CivilStatus::labels();
+        $this->bloodTypes = BloodType::cases();
+        $this->educationalLevels = EducationalLevel::options();
+        $this->submissionStatus = array_merge([['label' => 'No Submissions', 'value' => 'no_submissions']], SubmissionStatus::options());
+        $this->employmentStatus = EmploymentStatus::options();
     }
 
-    public function resetFilters() {
-        $this->reset();
+    public function filterUpdate(){
+        $filters = [
+            'common' => [
+                'employeeName' => $this->employeeName,
+                'selectedDepartment' => $this->selectedDepartment,
+                'selectedSex' => $this->selectedSex,
+                'selectedEmploymentStatus' => $this->selectedEmploymentStatus,
+            ],
+            'planning' => [
+                'selectedAgeRange' => $this->selectedAgeRange,
+                'selectedCivilStatus' => $this->selectedCivilStatus,
+                'selectedWorkPosition' => $this->selectedWorkPosition,
+                'selectedYearsInService' => $this->selectedYearsInService,
+                'selectedDateOfAppointment' => $this->selectedDateOfAppointment,
+            ],
+            'compliance' => [
+                'selectedEligibility' => $this->selectedEligibility,
+                'selectedEligibilityExpirationDate' => $this->selectedEligibilityExpirationDate,
+                'selectedEducationLevel' => $this->selectedEducationLevel,
+                'selectedTrainingHours' => $this->selectedTrainingHours,
+                'selectedSubmissionStatus' => $this->selectedSubmissionStatus,
+                'selectedDateUpdated' => $this->selectedDateUpdated,
+            ],
+            'inventory' => [
+                'selectedCitizenship' => $this->selectedCitizenship,
+                'selectedSalaryGrade' => $this->selectedSalaryGrade,
+                'selectedSalaryStep' => $this->selectedSalaryStep,
+            ],
+        ];
+
+        $this->dispatch('filtersApplied', filters: $filters);
+    }
+
+    public function resetFilters(){
+        $this->reset(
+            'employeeName',
+            'selectedDepartment',
+            'selectedSex',
+            'selectedEmploymentStatus',
+            'selectedAgeRange',
+            'selectedCivilStatus',
+            'selectedWorkPosition',
+            'selectedYearsInService',
+            'selectedDateOfAppointment',
+            'selectedEligibility',
+            'selectedEligibilityExpirationDate',
+            'selectedEducationLevel',
+            'selectedTrainingHours',
+            'selectedSubmissionStatus',
+            'selectedDateUpdated',
+            'selectedCitizenship',
+            'selectedSalaryGrade',
+            'selectedSalaryStep'
+        );
     }
 
     public function render()
     {
-        return view('livewire.admin.filter-options', [
-            'civilStatus' => CivilStatus::cases(),
-            'bloodType' => BloodType::cases(),
-            'employmentStatus' => EmploymentStatus::cases(),
-            'trainingTypes' => TrainingTypes::cases(),
-        ]);
+        return view('livewire.admin.filter-options');
     }
 }

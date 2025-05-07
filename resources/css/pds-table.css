@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'Arial Black Custom';
+    src: url('fonts/arial_black.ttf') format('truetype');
+}
+
+.pds-table {
+    border-collapse: collapse;
+    max-width: 9in;
+    margin: auto;
+    font-size: 0.875rem;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    border: 3px solid #000;
+    /* table-layout: fixed; */
+}
+
+.pds-table h2 {
+    font-family: 'Arial Black Custom', Arial Black, Arial, sans-serif;
+}
+
+.pds-table .form-check-input:checked {
+    background-color: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important
+}
+
+.pds-table input[type="text"]{
+    border: solid #000;
+    border-width: 0 0 1px 0;
+}
+
+.border-right{
+    border: solid #000;
+    border-width: 0 3px 0 0;
+    margin: 1.5rem;
+}
+
+.border-top-secondary {
+    border-top-color: var(--bs-secondary-bg) !important;
+}
+
+.py-compact {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+    font-size: 0.7rem !important;
+}
+
+.font-xsm{
+    font-size: 0.6rem;
+}
+
+.check-sm{
+    height: 10px;
+}

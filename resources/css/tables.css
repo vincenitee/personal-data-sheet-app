@@ -1,25 +1,4 @@
-.table-responsive {
-    overflow-x: visible !important;
-    /* Allow dropdowns to overflow */
-}
-
 @media(max-width: 768px) {
-    .responsive-table thead {
-        display: none;
-    }
-
-    .table-responsive {
-        overflow-x: visible !important;
-        /* Allow table to overflow */
-    }
-
-    .table-responsive table {
-        width: 100%;
-        /* Ensure the table takes full width */
-        white-space: nowrap;
-        /* Prevent wrapping of table content */
-    }
-
     /* Optional: Add horizontal scroll to the entire page if the table overflows */
     body {
         overflow-x: auto;

@@ -35,7 +35,7 @@ class AuthService
         // Optional: Handle users without a recognized role
         Auth::logout();
         throw ValidationException::withMessages([
-            'email' => 'Your account does not have a valid role assignment.',
+            'email' => 'Your account is not approved yet, please wait for approval notice.',
         ]);
     }
 }

@@ -10,18 +10,11 @@
 
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-2">
-                        @if (!empty($logoPath) && Str::startsWith($logoPath, 'http'))
-                            <img src="{{ $logoPath }}" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        @elseif (!empty($logoPath) && Storage::disk('public')->exists($logoPath))
-                            <img src="{{ Storage::url($logoPath) }}" alt="Logo" id="logo"
-                                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                                style="height: 85px; width: 85px; object-fit: cover;">
-                        @else
-                            <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="Default Logo"
-                                id="logo" style="height: 85px; width: 85px; object-fit: cover;">
-                        @endif
+
+                        <img src="{{ $logoPath }}" alt="Logo" id="logo"
+                            class="img-fluid mb-2 shadow-sm rounded-circle border"
+                            style="height: 85px; width: 85px; object-fit: cover;">
+
                         <div class="d-flex flex-column align-items-center mb-3">
                             <h3 class="text-centerfw-bold">Forgot your password?</h3>
                             <span class="text-center text-muted mx-auto" style="font-size: 0.9rem">No problem. Just let

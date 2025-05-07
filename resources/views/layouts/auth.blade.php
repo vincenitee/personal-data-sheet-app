@@ -7,8 +7,9 @@
     <title> PDS | {{ $title ?? 'Page Title' }} </title>
 
     <link rel="shortcut icon" href="{{ asset('images/hris-logo-white.png') }}" type="image/x-icon">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('build/assets/app-D7eHD1Gb.css') }}">
 
+    <script defer src="{{ asset('build/assets/app-BdMOg7Xo.js') }}"></script>
     @stack('styles')
 
     @livewireStyles
@@ -18,6 +19,7 @@
     @yield('content')
 
     @stack('scripts')
+
     @livewireScripts
 </body>
 </html>

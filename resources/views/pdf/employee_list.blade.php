@@ -1,142 +1,268 @@
-@extends('layouts.print')
+<!-- resources/views/reports/entries-report.blade.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $title }}</title>
+    <style>
+        :root {
+            --primary-color: #0f4c81;
+            --accent-color: #c8102e;
+            --text-color: #333;
+        }
 
-@section('title')
-    Employee Directory: {{ ucwords(str_replace('_', ' ', $employmentStatus)) }} Staff
-@endsection
+        body {
+            font-family: 'Arial', sans-serif;
+            color: var(--text-color);
+            line-height: 1.5;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            font-size: 11px;
+        }
 
-@section('content')
-<div class="employee-directory">
-    <div class="directory-header mb-4">
-        <div class="directory-meta">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Status:</strong> {{ ucwords(str_replace('_', ' ', $employmentStatus)) }}</p>
-                    <p><strong>Total Employees:</strong> {{ count($employees) }}</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p><strong>Generated on:</strong> {{ now()->format('F d, Y') }}</p>
-                </div>
+        .header {
+            padding: 1.5rem 0 1rem;
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .location {
+            font-size: 0.85rem;
+            color: #555;
+            margin: 0;
+        }
+
+        .municipality {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin: 0.3rem 0 0;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            padding-bottom: 0.5rem;
+            font-size: 18px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .generated-date {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .meta-info {
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 9px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            th {
+                background-color: var(--primary-color) !important;
+                color: white !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <p class="location">Republic of the Philippines</p>
+                <p class="location">Province of La Union</p>
+                <h1 class="municipality">Municipality of Rosario</h1>
             </div>
         </div>
-    </div>
 
-    @if(count($employees) > 0)
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered" style="font-size: .875rem">
-            <thead class="table-dark">
+        <h2 class="page-title">{{ $title }}</h2>
+
+        <p class="generated-date">Generated on: {{ $generatedDate }}</p>
+
+        <div class="meta-info">
+            <p><strong>Total Entries:</strong> {{ $entries->count() }}</p>
+        </div>
+
+        <table>
+            <thead>
                 <tr>
-                    <th width="5%" class="text-center">#</th>
-                    <th width="30%">Employee Name</th>
-                    <th width="30%">Current Position</th>
-                    <th width="15%">Contact</th>
+                    @foreach($columns as $key => $label)
+                        <th>{{ $label }}</th>
+                    @endforeach
                 </tr>
             </thead>
             <tbody>
-                @foreach($employees as $index => $employee)
+                @forelse($entries as $entry)
                     <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td>
-                            <div class="fw-bold">
-                                {{ $employee->personalInformation->last_name ?? 'N/A' }},
-                                {{ $employee->personalInformation->first_name ?? '' }}
-                                {{ $employee->personalInformation->middle_name ? substr($employee->personalInformation->middle_name, 0, 1).'.' : '' }}
-                            </div>
-                            <div class="text-muted small">{{ $employee->employee_id ?? 'ID Pending' }}</div>
-                        </td>
-                        <td>
-                            @if($employee->workExperiences && $employee->workExperiences->last())
-                                <div>{{ $employee->workExperiences->last()->position }}</div>
-                                <div class="text-muted small">Since {{ $employee->workExperiences->last()->date_from ? date('M Y', strtotime($employee->workExperiences->last()->date_from)) : 'N/A' }}</div>
-                            @else
-                                <span class="text-muted">No Position Data</span>
-                            @endif
-                        </td>
+                        @foreach($columns as $key => $label)
+                            <td>
+                                @switch($key)
+                                    @case('name')
+                                        {{ $entry->personalInformation->first_name }}
+                                        {{ $entry->personalInformation->middle_name }}
+                                        {{ $entry->personalInformation->last_name }}
+                                        @break
 
-                        <td>
-                            @if($employee->personalInformation && $employee->personalInformation->email)
-                                <div class="small">{{ $employee->personalInformation->email }}</div>
-                            @endif
-                            @if($employee->personalInformation && $employee->personalInformation->mobile_no)
-                                <div class="small">{{ $employee->personalInformation->mobile_no }}</div>
-                            @endif
+                                    @case('position')
+                                        {{ optional($entry->workExperiences->sortByDesc('date_to'))->first()?->position ?? 'N/A' }}
+                                        @break
+
+                                    @case('office')
+                                        {{ \App\Enums\MunicipalOffice::getValue($entry->user->department) }}
+                                        @break
+
+                                    @case('education')
+                                        @php
+                                            $educationPriority = [
+                                                'graduates_studies' => 5,
+                                                'college' => 4,
+                                                'vocational' => 3,
+                                                'secondary' => 2,
+                                                'elementary' => 1,
+                                            ];
+
+                                            $highestEducationalAttainment =
+                                                $entry->educationalBackgrounds
+                                                    ->sortByDesc(
+                                                        fn($edu) => [
+                                                            $educationPriority[$edu->level] ?? 0,
+                                                            $edu->attendance_to ?? PHP_INT_MAX,
+                                                        ],
+                                                    )
+                                                    ->first()?->level ?? 'Unknown';
+                                        @endphp
+                                        {{ Str::title(str_replace('_', ' ', $highestEducationalAttainment)) }}
+                                        @break
+
+                                    @case('employment_status')
+                                        @php
+                                            $currentWork = optional(
+                                                $entry->workExperiences->sortByDesc('date_to'),
+                                            )->first();
+                                            $workType = $currentWork?->status;
+                                        @endphp
+                                        {{ Str::title(str_replace('_', ' ', $workType)) | str_replace(' Of ', ' of ', Str::title(str_replace('_', ' ', $workType))) }}
+                                        @break
+
+                                    @case('years_experience')
+                                        @php
+                                            $totalDuration = $entry->workExperiences->reduce(function (
+                                                $carry,
+                                                $work,
+                                            ) {
+                                                $start = \Carbon\Carbon::parse($work->date_from);
+                                                $end = $work->date_to
+                                                    ? \Carbon\Carbon::parse($work->date_to)
+                                                    : now();
+
+                                                return $carry->add($start->diff($end));
+                                            }, \Carbon\CarbonInterval::years(0));
+
+                                            $years = $totalDuration->y;
+                                            $months = $totalDuration->m;
+
+                                            $yearsInService = "{$years} years, {$months} months";
+                                        @endphp
+                                        {{ $yearsInService }}
+                                        @break
+
+                                    @case('eligibility')
+                                        @php
+                                            $currentEligibility = $entry->eligibilities->sortByDesc(
+                                                fn($eligibility) => $eligibility->exam_date ?? now(),
+                                            );
+                                        @endphp
+                                        {{ $currentEligibility->first()->career_service ?? 'N/A' }}
+                                        @break
+
+                                    @case('trainings')
+                                        @php
+                                            $trainingCount = count($entry->trainings);
+                                        @endphp
+                                        {{ $trainingCount }}
+                                        @break
+
+                                    @default
+                                        N/A
+                                @endswitch
+                            </td>
+                        @endforeach
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="{{ count($columns) }}" style="text-align: center; padding: 20px;">
+                            No approved entries found
                         </td>
                     </tr>
-                @endforeach
+                @endforelse
             </tbody>
         </table>
-    </div>
 
-    <div class="pagination-info mt-3 text-end small">
-        <span>Showing {{ count($employees) }} of {{ count($employees) }} employees</span>
-    </div>
-    @else
-    <div class="alert alert-info">
-        <i class="bi bi-info-circle me-2"></i>
-        No employees found with {{ ucwords(str_replace('_', ' ', $employmentStatus)) }} status.
-    </div>
-    @endif
-
-    <div class="directory-footer mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="small">
-                    <strong>Note:</strong> This report contains confidential employee information and is intended for authorized personnel only.
-                </p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <p class="small">
-                    <strong>Report ID:</strong> EMP-{{ $employmentStatus }}-{{ now()->format('Ymd') }}
-                </p>
-            </div>
+        <div class="footer">
+            <p>This report contains confidential information. Do not distribute without authorization.</p>
         </div>
     </div>
-</div>
-
-<style>
-    .employee-directory {
-        font-family: 'Segoe UI', Arial, sans-serif;
-    }
-    .directory-header {
-        border-bottom: 2px solid #dee2e6;
-        padding-bottom: 1rem;
-    }
-    .directory-meta {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        border-radius: 5px;
-    }
-    .table {
-        box-shadow: 0 2px 3px rgba(0,0,0,0.03);
-    }
-    .table thead th {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .table tbody tr:hover {
-        background-color: #f5f5f5;
-    }
-    .directory-footer {
-        border-top: 1px solid #dee2e6;
-        padding-top: 1rem;
-    }
-    @media print {
-        .directory-meta {
-            background-color: #f8f9fa !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .table thead th {
-            background-color: #212529 !important;
-            color: white !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0,0,0,.05) !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-    }
-</style>
-@endsection
+</body>
+</html>

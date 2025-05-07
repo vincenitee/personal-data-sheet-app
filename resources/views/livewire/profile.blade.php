@@ -23,10 +23,7 @@
                 <div class="col-md-6 col-lg-5">
                     <x-forms.select label="Sex" name="sex">
                         @foreach ($sexOptions as $key => $value)
-                            <option
-                                value="{{ $key }}"
-                                @if($sex === $key) selected @endif
-                            >
+                            <option value="{{ $key }}" @if ($sex === $key) selected @endif>
                                 {{ $value }}
                             </option>
                         @endforeach
@@ -34,7 +31,8 @@
                 </div>
 
                 <div class="col-md-6 col-lg-5">
-                    <x-forms.input label="Birthdate" model="birth_date" name="birth_date" type="date"></x-forms.input>
+                    <x-forms.input label="Birthdate" model="birth_date" name="birth_date"
+                        type="date"></x-forms.input>
                 </div>
 
                 <div class="col-md-6 col-lg-5">
@@ -44,7 +42,7 @@
                 <div class="col-12">
                     <x-forms.button class="btn-sm px-3">
 
-                    Save</x-forms.button>
+                        Save</x-forms.button>
                 </div>
             </x-forms.form>
         </div>
@@ -59,22 +57,24 @@
 
             <x-forms.form method="POST" class="row g-3" wire:submit="saveSecurityInformation">
                 <div class="col-md-6 col-lg-5">
-                    <x-forms.input label="Current Password" model="current_password" name="current_password" type="password"></x-forms.input>
-                </div>
-
-                <div class="col-lg-7 d-none d-lg-block">
-                </div>
-
-                <div class="col-md-6 col-lg-5">
-                    <x-forms.input label="New Password" model="password" name="password" type="password"></x-forms.input>
-                </div>
-
-                <div class="col-lg-7 d-none d-lg-block">
-                </div>
-
-                <div class="col-md-6 col-lg-5">
-                    <x-forms.input label="Password Confirmation" model="password_confirmation" name="password_confirmation"
+                    <x-forms.input label="Current Password" model="current_password" name="current_password"
                         type="password"></x-forms.input>
+                </div>
+
+                <div class="col-lg-7 d-none d-lg-block">
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <x-forms.input label="New Password" model="password" name="password"
+                        type="password"></x-forms.input>
+                </div>
+
+                <div class="col-lg-7 d-none d-lg-block">
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <x-forms.input label="Password Confirmation" model="password_confirmation"
+                        name="password_confirmation" type="password"></x-forms.input>
                 </div>
 
                 <div class="col-12">
@@ -83,4 +83,5 @@
             </x-forms.form>
         </div>
     </div>
+
 </div>

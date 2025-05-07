@@ -120,7 +120,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center"><i class="bi bi-person-x"></i> No new signups</td>
+                        <td colspan="8" class="text-center"><i class="bi bi-person-x"></i> No new signups</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -42,6 +42,16 @@
                             ({{ ucwords($personalInfo->citizenship_by) }})</span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="info-item">
+                        <span class="info-label">Country</span>
+                    @if($personalInfo->citizenship_by === 'birth' && $personalInfo->citizenship === 'filipino')
+                        <span class="info-value">Philippines</span>
+                    @else
+                        <span class="info-value">{{ $personalInfo?->country }}</span>
+                    @endif
+                    </div>
+                </div>
             </div>
         </div>
 

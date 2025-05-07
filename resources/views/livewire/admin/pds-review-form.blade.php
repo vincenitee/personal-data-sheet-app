@@ -3,8 +3,26 @@
     <div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 
         <div class="d-flex align-items-center gap-3 p-2">
-            <img src="{{ asset(($pdsEntry->attachment?->passport_photo ?? 'passport_photos/default.png')) }}" alt=""
-                class="img-fluid rounded shadow-sm" style="width: 60px; heigth: 60px; object-fit: cover">
+
+            @php
+                $user = $pdsEntry?->user;
+                $passportPhoto = $pdsEntry?->attachment?->passport_photo;
+
+                $avatarPath = '';
+
+                if (!empty($passportPhoto) && Storage::disk('public')->exists($passportPhoto)) {
+                    // File exists in storage
+                    $avatarPath = Storage::disk('public')->url($passportPhoto);
+                } else {
+                    // Use external avatar if no photo or file not found
+                    $avatarPath = asset('images/avatar-placeholder.gif');
+                }
+            @endphp
+
+
+                <img src="{{ $avatarPath }}"
+                    loading="lazy" alt="Employee Photo" class="rounded border shadow-sm"
+                    width="45" height="45" style="object-fit: cover">
             <div class="d-flex justify-content-center flex-column">
                 <h4 class="fw-bold mb-0">PDS Entry Review Form</h4>
                 <p class="text-muted mb-0">
@@ -175,7 +193,7 @@
                         <label for="revision-feedback" class="form-label text-secondary mb-2">Be specific about what
                             needs to be corrected or improved</label>
                         <textarea id="revision-feedback" name="remarks" class="form-control"
-                            placeholder="Example: Please review sections 2 and 3, add more supporting data, and fix formatting issues in the tables..."
+                            placeholder="Place your overall feedback here"
                             rows="5" wire:model="remarks"></textarea>
                     </div>
 

@@ -7,8 +7,9 @@
     <title> PDS | <?php echo e($title ?? 'Page Title'); ?> </title>
 
     <link rel="shortcut icon" href="<?php echo e(asset('images/hris-logo-white.png')); ?>" type="image/x-icon">
-    <?php echo app('Illuminate\Foundation\Vite')(['resources/sass/app.scss', 'resources/js/app.js']); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('build/assets/app-D7eHD1Gb.css')); ?>">
 
+    <script defer src="<?php echo e(asset('build/assets/app-BdMOg7Xo.js')); ?>"></script>
     <?php echo $__env->yieldPushContent('styles'); ?>
 
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
@@ -19,6 +20,7 @@
     <?php echo $__env->yieldContent('content'); ?>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
+
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
 </body>

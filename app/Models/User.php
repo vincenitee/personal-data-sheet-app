@@ -38,15 +38,26 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(PdsEntry::class);
     }
 
-    public function submissions(){
+    public function submissions()
+    {
         return $this->hasMany(Submission::class);
     }
 
-    public function getFormattedBirthDate(){
+    public function getFullName()
+    {
+        return $this->first_name . ' ' .
+            (!empty($this->middle_name) ? strtoupper($this->middle_name[0]) . '. ' : '') .
+            $this->last_name;
+    }
+
+
+    public function getFormattedBirthDate()
+    {
         return Carbon::parse($this->birth_date)->format('F d, Y');
     }
 
-    public function getFormattedCreatedAt(){
+    public function getFormattedCreatedAt()
+    {
         return Carbon::parse($this->created_at)->format('F d, Y');
     }
 }

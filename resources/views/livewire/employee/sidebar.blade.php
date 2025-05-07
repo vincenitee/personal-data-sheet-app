@@ -5,8 +5,11 @@
     id="sidebar">
     {{-- Logo and Brand --}}
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-light" style="height: 80px;">
-        <img src="{{ $logoPath }}" alt="Logo" id="logo" class="img-fluid mb-2 shadow-sm rounded-circle border"
-            style="height: 45px; width: 45px; object-fit: cover;">
+        <a href="{{ route('employee.dashboard') }}">
+            <img src="{{ $logoPath }}" alt="Logo" id="logo"
+                class="img-fluid mb-2 shadow-sm rounded-circle border"
+                style="height: 45px; width: 45px; object-fit: cover;">
+        </a>
 
         <span>Digital PDS</span>
         <button @click="open = false" class="ms-auto btn btn-sm text-white">
@@ -47,7 +50,7 @@
                 @endphp
 
                 @if ($notificationCount > 0)
-                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;">{{ $no7tificationCount }}</span>
+                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;">{{ $notificationCount }}</span>
                 @endif
             </div>
         </li>

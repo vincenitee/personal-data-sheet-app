@@ -49,8 +49,11 @@ class C1 extends Component
 
         // Use `?? collect()` to prevent issues when `null`
         $this->spouse = $pdsEntry?->spouse ?? collect();
-        $this->father = $pdsEntry?->parents->get(0) ?? collect();
-        $this->mother = $pdsEntry?->parents->get(1) ?? collect();
+
+        // dd($pdsEntry?->parents);
+        $this->father = $pdsEntry?->parents->where('relationship', 'father')->first() ?? collect();
+        $this->mother = $pdsEntry?->parents->where('relationship', 'mother')->first() ?? collect();
+
         $this->children = $pdsEntry?->children ?? collect();
 
         // Ensure educational backgrounds are grouped correctly and null-safe

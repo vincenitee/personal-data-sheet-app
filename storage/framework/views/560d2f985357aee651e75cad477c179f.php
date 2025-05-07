@@ -81,11 +81,33 @@ unset($__defined_vars); ?>
                 <i class="bi" :class="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
             </button>
         </div>
+
+    <?php elseif($type === 'date'): ?>
+        <div class="input-group">
+            
+                <span class="input-group-text">
+                    <i class="bi bi-calendar" style="font-size: 0.8rem"></i>
+                </span>
+            
+            <input
+                type="<?php echo e($type); ?>"
+                name="<?php echo e($name); ?>"
+                id="<?php echo e($name); ?>"
+                class="form-control"
+                value="<?php echo e(old($name)); ?>"
+                <?php if($model): ?> wire:model.blur="<?php echo e($model); ?>" <?php endif; ?>
+                <?php if($type === 'file'): ?> accept="application/pdf,image/*"  <?php endif; ?>
+                autocomplete="off"
+                style="font-size: 0.9rem"
+                <?php echo e($attributes); ?>
+
+            >
+        </div>
     <?php else: ?>
         <div class="input-group">
             <!--[if BLOCK]><![endif]--><?php if($icon): ?>
                 <span class="input-group-text">
-                    <i class="bi <?php echo e($icon); ?>"></i>
+                    <i class="bi <?php echo e($icon); ?>" style="font-size: 0.8rem;"></i>
                 </span>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             <input

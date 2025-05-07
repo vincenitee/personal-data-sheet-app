@@ -5,8 +5,11 @@
     id="sidebar">
     
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-light" style="height: 80px;">
-        <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo" class="img-fluid mb-2 shadow-sm rounded-circle border"
-            style="height: 45px; width: 45px; object-fit: cover;">
+        <a href="<?php echo e(route('employee.dashboard')); ?>">
+            <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
+                class="img-fluid mb-2 shadow-sm rounded-circle border"
+                style="height: 45px; width: 45px; object-fit: cover;">
+        </a>
 
         <span>Digital PDS</span>
         <button @click="open = false" class="ms-auto btn btn-sm text-white">
@@ -44,7 +47,7 @@
                 ?>
 
                 <!--[if BLOCK]><![endif]--><?php if($notificationCount > 0): ?>
-                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;"><?php echo e($no7tificationCount); ?></span>
+                    <span class="badge bg-danger me-2" style="font-size: 0.8rem;"><?php echo e($notificationCount); ?></span>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </li>

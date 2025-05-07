@@ -27,8 +27,8 @@ class FamilyBackground extends Component
     ){
         $this->entryStatus = $entryStatus;
 
-        $this->mother = $parents->get(1);
-        $this->father = $parents->get(0);
+        $this->mother = $parents->where('relationship', 'mother')->first();
+        $this->father = $parents->where('relationship', 'father')->first();
 
         $this->submissionId = $submissionId;
         $this->spouse = $spouse;

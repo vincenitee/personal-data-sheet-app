@@ -31,7 +31,7 @@
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 @elseif ($logo)
-                                                    <img src="{{ asset('uploads/system_logo/' . $logo) }}" alt="Current Logo"
+                                                    <img src="{{ Storage::disk('public')->url('system_logo/' . $logo) }}" alt="Current Logo"
                                                         class="img-fluid shadow-sm rounded-circle border"
                                                         style="height: 100px; width: 100px; object-fit: cover;">
                                                 @else

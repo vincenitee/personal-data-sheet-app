@@ -38,7 +38,6 @@ use App\Services\PdsAttachmentService;
 use App\Services\VoluntaryWorkService;
 use App\Services\EmployeeParentService;
 use App\Services\WorkExperienceService;
-use Illuminate\Support\Facades\Storage;
 use App\Services\ReferencePersonService;
 use App\Services\AdditionalQuestionService;
 use App\Services\EmployeeIdentifierService;
@@ -47,6 +46,7 @@ use App\Services\EducationalBackgroundService;
 use Illuminate\Validation\ValidationException;
 use App\Services\CivilServiceEligibilityService;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Create extends Component
 {
@@ -298,7 +298,6 @@ class Create extends Component
 
     public function mount()
     {
-        // Make the entry available to the blade file
         $this->currentStep = session('current_step', 1);
         $this->highestStepReached = session('highest_step_reached', 0);
         $this->user = Auth::user();
@@ -346,16 +345,18 @@ class Create extends Component
 
             switch ($entry->status) {
                 case SubmissionStatus::APPROVED->value:
-                    // User can update 1 year after last approval
+                    session(['highest_step_reached' => 10]);
+                    $this->highestStepReached = session('highest_step_reached', 0);
+
                     $this->nextUpdateAllowedAt = Carbon::parse($entry->updated_at)->addYear();
+                    $this->loadEntryData($entry); // Load data for editing
                     break;
 
                 case SubmissionStatus::UNDER_REVIEW->value:
-                    // No need for special handling, just set the status
+                    // Keep status tracking for under review entries
                     break;
 
                 case SubmissionStatus::NEEDS_REVISION->value:
-                    // Fetch comments associated with the revision
                     $this->comments = $entry->submissions()
                         ->where('status', SubmissionStatus::UNDER_REVIEW->value)
                         ->latest()
@@ -363,8 +364,8 @@ class Create extends Component
                         ?->comments ?? collect();
 
                     $this->highestStepReached = 10;
-                    // dd($this->comments);
-                    // No break; allow data loading
+                    // No break; continue to load data
+
                 case SubmissionStatus::DRAFT->value:
                     $this->loadEntryData($entry);
                     break;
@@ -543,7 +544,7 @@ class Create extends Component
 
         // Fetch the current PDS entry for the user
         $entry = PdsEntry::where('user_id', $this->user->id)
-            ->whereIn('status', [SubmissionStatus::DRAFT, SubmissionStatus::NEEDS_REVISION]) // Only allow drafts or rejected entries to be edited
+            ->whereIn('status', [SubmissionStatus::DRAFT, SubmissionStatus::NEEDS_REVISION, SubmissionStatus::APPROVED]) // Only allow drafts or rejected entries to be edited
             ->first();
 
         // Prevent saving if the entry is under review or approved
@@ -811,6 +812,7 @@ class Create extends Component
         }
     }
 
+    // Work on here tomorrow
     protected function saveImages()
     {
         $fileProperties = [
@@ -1065,6 +1067,9 @@ class Create extends Component
         if (str_ends_with($key, '.certificate')) {
             $index = explode('.', $key)[0]; // Get the training entry index
 
+            // Store old file path before overwriting it
+            $oldFilePath = $this->trainings[$index]['certificate_path'] ?? null;
+
             // Check if the uploaded file is valid
             if (isset($this->trainings[$index]['certificate']) && is_object($this->trainings[$index]['certificate'])) {
                 try {
@@ -1078,17 +1083,14 @@ class Create extends Component
                         'public'
                     );
 
-                    // Delete the previous file if it exists and is not the default path
-                    if (!empty($this->trainings[$index]['certificate_path']) && Storage::disk('public')->exists($this->trainings[$index]['certificate_path'])) {
-                        Storage::disk('public')->delete($this->trainings[$index]['certificate_path']);
+                    // Delete the previous file if it exists
+                    if (!empty($oldFilePath) && Storage::disk('public')->exists($oldFilePath)) {
+                        Storage::disk('public')->delete($oldFilePath);
                     }
 
                     // Save the file path
-                    $this->trainings[$index]['certificate_path'] = $path;
-                    $this->trainings[$index]['certificate'] = null; // Clear the file object
-                    
-                    // For accessing the file in views, you would use Storage::url($path)
-                    // which returns something like: /storage/training/filename.pdf
+                    $this->trainings[$index]['certificate'] = $path; // Clear the file object
+
                 } catch (\Exception $e) {
                     $this->dispatch('show-toast', [
                         'type' => 'error',
@@ -1101,62 +1103,59 @@ class Create extends Component
 
     public function uploadImage($fileProperty, $dir)
     {
-        // Ensure the file exists and is an object (to prevent issues with empty values)
         if (!isset($this->{$fileProperty}) || !is_object($this->{$fileProperty})) {
-            return;
+            \Log::error("Upload failed: File not set or not an object.");
+            return null;
         }
 
         try {
-            // Validate file size (max: 2MB)
+            \Log::info("Processing file upload for property: $fileProperty");
+
             if ($this->{$fileProperty}->getSize() > 2 * 1024 * 1024) { // 2MB in bytes
+                \Log::warning("Upload failed: File size exceeds limit.");
                 $this->addError($fileProperty, "The uploaded file must not exceed 2MB.");
-                return;
+                return null;
             }
 
-            // Validate file type
             $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            if (!in_array($this->{$fileProperty}->getMimeType(), $allowedMimeTypes)) {
+            $fileMimeType = $this->{$fileProperty}->getMimeType();
+            \Log::info("File MIME type: " . $fileMimeType);
+
+            if (!in_array($fileMimeType, $allowedMimeTypes)) {
+                \Log::warning("Upload failed: Invalid file type ($fileMimeType).");
                 $this->addError($fileProperty, "Invalid file format. Allowed formats: JPG, JPEG, PNG, GIF, WEBP.");
-                return;
+                return null;
             }
 
-            // Ensure the directory exists
-            $uploadPath = public_path("uploads/{$dir}");
-            if (!file_exists($uploadPath)) {
-                if (!mkdir($uploadPath, 0755, true)) {
-                    throw new \Exception("Failed to create upload directory.");
-                }
-            }
-
-            // Generate a unique filename
             $filename = time() . '_' . uniqid() . '.' . $this->{$fileProperty}->getClientOriginalExtension();
-            $filePath = "uploads/{$dir}/{$filename}"; // Relative path for storing
+            $filePath = "{$dir}/{$filename}";
 
-            // Get the temporary file path
-            $tempPath = $this->{$fileProperty}->getRealPath();
+            \Log::info("Storing file as: $filePath");
 
-            // Copy the file instead of moving it
-            if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
-                throw new \Exception("Failed to copy the file.");
+            $path = $this->{$fileProperty}->storeAs($dir, $filename, 'public');
+
+            if (!$path) {
+                throw new \Exception("Failed to store the file.");
             }
+
+            \Log::info("File stored successfully at: $path");
 
             // Delete the old file if it exists
             $oldFile = $this->{$fileProperty . 'Path'} ?? null;
-            if ($oldFile && file_exists(public_path($oldFile))) {
-                @unlink(public_path($oldFile));
+            if ($oldFile && Storage::exists("public/{$oldFile}")) {
+                \Log::info("Deleting old file: $oldFile");
+                Storage::delete("public/{$oldFile}");
             }
 
-            // Store the relative path instead of the object
             $this->{$fileProperty} = $filePath;
 
-            // Return the relative path
             return $filePath;
         } catch (\Exception $e) {
+            \Log::error("Error uploading image: " . $e->getMessage());
             $this->addError($fileProperty, "Error uploading image: " . $e->getMessage());
             return null;
         }
     }
-
 
     #[On('remove-entry')]
     public function removeItem($type, $index)

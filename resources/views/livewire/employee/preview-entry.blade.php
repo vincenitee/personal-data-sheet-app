@@ -1,3 +1,4 @@
+
 <div class="card card-body p-0 shadow border-0 overflow-hidden">
     @if ($pdsEntry)
         <!-- Header with improved styling -->
@@ -77,31 +78,23 @@
 
         <!-- Content container with better spacing and subtle design -->
         <div class="p-4">
-            <div class="bg-light bg-opacity-50 p-4 rounded-3 border border-light">
+            <div class="bg-light bg-opacity-50 p-4 rounded-3 border border-light scalable-container">
                 {{-- Form Preview --}}
                 @switch($currentStep)
                     @case(1)
-                        @livewire('print.sections.c1', [
-                            'pdsEntry' => $pdsEntry,
-                        ])
+                        @livewire('print.sections.c1', ['pdsEntry' => $pdsEntry])
                     @break
 
                     @case(2)
-                        @livewire('print.sections.c2', [
-                            'pdsEntry' => $pdsEntry,
-                        ])
+                        @livewire('print.sections.c2', ['pdsEntry' => $pdsEntry])
                     @break
 
                     @case(3)
-                        @livewire('print.sections.c3', [
-                            'pdsEntry' => $pdsEntry,
-                        ])
+                        @livewire('print.sections.c3', ['pdsEntry' => $pdsEntry])
                     @break
 
                     @case(4)
-                        @livewire('print.sections.c4', [
-                            'pdsEntry' => $pdsEntry,
-                        ])
+                        @livewire('print.sections.c4', ['pdsEntry' => $pdsEntry])
                     @break
 
                     @default

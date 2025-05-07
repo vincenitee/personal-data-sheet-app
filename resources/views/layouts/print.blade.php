@@ -12,7 +12,7 @@
         rel="stylesheet">
 
     <!-- CSS -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('build/assets/app-D7eHD1Gb.css') }}">
 
     <style>
         :root {
@@ -109,6 +109,8 @@
             @yield('content')
         </div>
     </main>
+
+    <script src="{{ asset('build/assets/app-BdMOg7Xo.js') }}"></script>
 </body>
 
 </html>

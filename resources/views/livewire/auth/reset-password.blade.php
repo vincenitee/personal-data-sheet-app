@@ -5,7 +5,7 @@
                 <x-forms.form wire:submit="updatePassword" method="POST">
                     {{-- Logo and Text --}}
                     <div class="d-flex flex-column gap-1 align-items-center mb-3">
-                        <img src="{{ Vite::asset('resources/images/hris-logo-white.png') }}" alt="logo"
+                        <img src="{{ asset('images/hris-logo-white.png') }}" alt="logo"
                             class="img-fluid" id="login-logo">
                         <div class="d-flex flex-column align-items-center mb-3">
                             <h3 class="text-centerfw-bold">Forgot your password?</h3>

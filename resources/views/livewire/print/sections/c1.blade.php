@@ -1,673 +1,850 @@
-<div class="table-responsive">
-    <form action="">
-        <table id="pds-table">
-            <tbody class="table-header">
-                <tr>
-                    <td colspan="12">
-                        <i><b>CS Form No. 212</b></i>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="align-top" style="max-height: 12px">
-                        <i><b>Revised 2017</b></i>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="text-center">
-                        <h1><b>PERSONAL DATA SHEET</b></h1>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="12">
-                        <i><b>WARNING: Any misrepresentation main in the Personal Data
-                                Sheet and the Work Experience Sheet shall cause the filing
-                                of administative/criminal case/s against the person
-                                concerned.</b></i>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="12">
-                        <i><b>READ THE ATTACHED GUIDE TO FILLING OUT THE PERSONAL DATA
-                                SHEET (PDS) BEFORE ACCOMPLISHING THE PDS FORM</b></i>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="9">
-                        Print legibly. Tick appropriate boxes (
-                        <input type="checkbox" checked /> ) ad use seperate sheet if
-                        necessary. Indicate N/A if not applicable.
-                        <b>DO NOT ABBREVIATE.</b>
-                    </td>
-                    <td colspan="1" style="border: 1px solid#000b; background: #757575; width: 8%">
-                        <small>1. CS ID No.</small>
-                    </td>
-                    <td colspan="2" class="text-right" style="border: 1px solid #000; width: 20%">
-                        <small>(Do not fill up. For CSC use only)</small>
-                    </td>
-                </tr>
-            </tbody>
+<div>
+    <!-- Document Head -->
+    <table class="table table-bordered pds-table">
+        <tbody>
+            <tr class="border-0 font-xsm">
+                <td colspan="3" class="py-0 fw-bold"><i>CSC Form No. 212</i></td>
+            </tr>
 
-            <tbody class="table-body">
-                <tr>
-                    <td colspan="12" class="text-white separator">
-                        I. PERSONAL INFORMATION
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">2.</span> SURNAME
-                    </td>
-                    <td colspan="11" class="fw-bold">{{ strtoupper($personalInformation->last_name) ?? 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> FIRST NAME
-                    </td>
-                    <td colspan="9" class="fw-bold">{{ strtoupper($personalInformation->first_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="align-top" style="background: #dddddd">
-                        <small>NAME EXTENSION (JR.,SR)</small>
-                        <strong>{{ strtoupper($personalInformation->suffix) ?? 'N/A' }}</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> MIDDLE NAME
-                    </td>
-                    <td colspan="11" class="fw-bold">{{ strtoupper($personalInformation->middle_name) ?? 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">3.</span> DATE OF BIRTH<br />
-                        <span class="count"></span> (mm/dd/yyyy)
-                    </td>
-                    <td colspan="5" class="text-center fw-bold" style="border: none;">
-                        {{ $personalInformation->birth_date ? \Carbon\Carbon::parse($personalInformation->birth_date)->format('m/d/Y') : 'N/A' }}
-                    </td>
-                    <td colspan="3" class="s-label align-top border-bottom-0">
-                        <span class="count">16.</span> CITIZENSHIP
-                    </td>
-                    <td colspan="3" class="border-bottom-0">
-                        <div class="d-flex gap-2 ps-2">
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" name="" id=""
-                                    {{ $personalInformation->citizenship === 'filipino' ? 'checked' : '' }} disabled>
-                                <label for="">Filipino</label>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" name="" id=""
-                                    {{ $personalInformation->citizenship === 'dual' ? 'checked' : '' }} disabled>
-                                <label for="">Dual Citizenship</label>
-                            </div>
+            <tr class="border-0 font-xsm">
+                <td colspan="3" class="py-0 fw-bold"><i>Revised 2017</i></td>
+            </tr>
+
+            <tr class="border-0">
+                <td colspan="3" class="py-0 fw-bold text-center">
+                    <h2>PERSONAL DATA SHEET</h2>
+                </td>
+            </tr>
+
+            <tr class="border-0 font-xsm">
+                <td colspan="3" class="py-0 text-nowrap fw-bold">
+                    <i>WARNING: Any misrepresentation made in the Personal Data Sheet and the Work Experience Sheet
+                        shall cause the filing of administrative/criminal case/s against the person<br>
+                        concerned.</i>
+                </td>
+            </tr>
+
+            <tr class="border-0 font-xsm">
+                <td colspan="3" class="py-0 text-nowrap fw-bold">
+                    <i>READ THE ATTACHED GUIDE TO FILLING OUT THE PERSONAL DATA SHEET (PDS) BEFORE ACCOMPLISHING THE PDS
+                        FORM.</i>
+                </td>
+            </tr>
+
+            <tr class="border-0 font-xsm">
+                <td class="py-0 text-nowrap">
+                    Print legibly. Tick appropriate boxes (<input type="checkbox" name="" id=""
+                        style="height: 10px;">)
+                    and use separate sheet if necessary. Indicate N/A if not applicable. <b>DO NOT ABBREVIATE</b>
+                </td>
+                <td class="py-0 text-nowrap bg-secondary border-1" style="width: 3%;">
+                    1. CS ID No.
+                </td>
+                <td class="py-0 border-1 text-end">
+                    (Do not fill up for CSC use only)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <!-- PERSONAL INFORMATION -->
+    <table class="table table-bordered pds-table border-bottom-0">
+        <tbody>
+            <tr class="border-3 border-top-0" style="font-size: 0.7rem;">
+                <td colspan="16" class="bg-secondary text-white pt-1 pb-1"><b><i>I. PERSONAL INFORMATION</i></b></td>
+            </tr>
+
+            <tr class="font-xsm border-bottom-0">
+                <td class="py-1 bg-secondary-subtle" style="width: 20%;">2. SURNAME</td>
+                <td colspan="3" class="py-1 fw-bold text-uppercase">{{ strtoupper($personalInformation->last_name) ?? 'N/A' }}</td>
+            </tr>
+
+            <tr class="font-xsm border-top-0 border-bottom-0">
+                <td class="bg-secondary-subtle ps-3" style="width: 20%;">FIRST NAME</td>
+                <td colspan="2" class="border-1 fw-bold text-uppercase">{{ strtoupper($personalInformation->first_name) ?? 'N/A' }}</td>
+                <td class="border-1 bg-secondary-subtle pt-0 ps-0 text-nowrap text-uppercase"
+                    style="width: 20%; font-size: 0.5rem;">
+                    NAME EXTENSION (JR., SR.)
+                    <span class="float-end">
+                        {{ empty($personalInformation->suffix) ? 'N/A' : $personalInformation->suffix }}
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr class="font-xsm border-top-0">
+                <td class="py-1 bg-secondary-subtle ps-3" style="width: 20%;">MIDDLE NAME</td>
+                <td colspan="3" class="py-1 border-1 fw-bold text-uppercase">{{ strtoupper($personalInformation->middle_name) ?? 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered pds-table border-top-0 border-bottom-0">
+        <tbody>
+            <tr class="font-xsm border-bottom-0">
+                <td class="bg-secondary-subtle py-1" style="width: 20%;">
+                    3. DATE OF BIRTH<br>
+                    <span class="d-inline-block ps-2">(mm/dd/yyyy)</span>
+                </td>
+                <td class="text-center align-middle fw-bold text-uppercase py-1" style="width: 23%;">
+                    {{ $personalInformation->birth_date ? \Carbon\Carbon::parse($personalInformation->birth_date)->format('m/d/Y') : 'N/A' }}
+                </td>
+                <td class="bg-secondary-subtle py-1">16. CITIZENSHIP</td>
+                <td class="text-center border-bottom-0 py-1" style="width: 33%;">
+                    <div class="d-flex align-items-center gap-4 mb-1">
+                        <div class="d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->citizenship === 'filipino' ? 'checked' : '' }}>
+                            <label for="">Filipino</label>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0"></td>
-                    <td colspan="5" class="border-top-0"></td>
-                    <td colspan="3" class="s-label align-top border-0 text-center small">
-                        If holder of dual citizenship,
-                    </td>
-                    <td colspan="3" class="border-top-0 border-bottom-0">
-                        <div class="d-flex gap-2 ps-4 align-items-start">
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" name="" id=""
-                                    {{ $personalInformation->citizenship_by === 'birth' ? 'checked' : '' }} disabled>
-                                <label for="">by birth</label>
-                            </div>
-                            <div class="d-flex align-items-center"
-                                {{ $personalInformation->citizenship === 'naturalization' ? 'checked' : '' }} disabled>
-                                <input type="checkbox" name="" id="">
-                                <label for="">by naturalization</label>
-                            </div>
+                        <div class="d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->citizenship === 'dual' ? 'checked' : '' }}>
+                            <label for="">Dual Citizenship</label>
                         </div>
-                        <span class="mt-3">Pls. indicate country:</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">4.</span> PLACE OR BIRTH
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">
-                        {{ strtoupper($personalInformation->birth_place) ?? 'N/A' }}</td>
-                    <td colspan="3" class="s-label align-top border-0 text-center small">
-                        please indicate the details.
-                    </td>
-                    <td colspan="3" class="border-top-0"></td>
-                </tr>
-
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">5.</span> SEX
-                    </td>
-                    <td colspan="5" class="">
-                        <div class="d-flex justify-content-between px-2 align-items-start">
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" name="" id=""
-                                    {{ $personalInformation->sex === 'male' ? 'checked' : '' }} disabled>
-                                <label for="">Male</label>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox" name="" id=""
-                                    {{ $personalInformation->sex === 'female' ? 'checked' : '' }} disabled>
-                                <label for="">Female</label>
-                            </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->citizenship_by === 'birth' ? 'checked' : '' }}>
+                            <label for="">by birth</label>
                         </div>
-                    </td>
-                    <td colspan="3" class="s-label align-top border-0"></td>
-                    <td colspan="3"></td>
-                </tr>
-
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">6.</span> CIVIL STATUS
-                    </td>
-                    <td colspan="5" class="border-bottom-0" style="border-bottom: none;">
-                        <div class="d-flex flex-wrap">
-                            <div class="row pds-2 w-100">
-                                <div class="col-6 d-flex align-items-center">
-                                    <input type="checkbox" name="" id=""
-                                        {{ $personalInformation->civil_status === 'single' ? 'checked' : '' }}
-                                        disabled>
-                                    <label for="" class="ms-2">Single</label>
-                                </div>
-                                <div class="col-6 d-flex align-items-center">
-                                    <input type="checkbox" name="" id=""
-                                        {{ $personalInformation->civil_status === 'married' ? 'checked' : '' }}
-                                        disabled>
-                                    <label for="" class="ms-2">Married</label>
-                                </div>
-                                <div class="col-6 d-flex align-items-center">
-                                    <input type="checkbox" name="" id=""
-                                        {{ $personalInformation->civil_status === 'widowed' ? 'checked' : '' }}
-                                        disabled>
-                                    <label for="" class="ms-2">Widowed</label>
-                                </div>
-                                <div class="col-6 d-flex align-items-center">
-                                    <input type="checkbox" name="" id=""
-                                        {{ $personalInformation->civil_status === 'separated' ? 'checked' : '' }}
-                                        disabled>
-                                    <label for="" class="ms-2">Separated</label>
-                                </div>
-                                <div class="col-6 d-flex align-items-center">
-                                    <input type="checkbox" name="" id=""
-                                        {{ $personalInformation->civil_status === 'others' ? 'checked' : '' }}
-                                        disabled>
-                                    <label for="" class="ms-2">Other/s</label>
-                                </div>
-                            </div>
+                        <div class="d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->citizenship_by === 'naturalization' ? 'checked' : '' }}>
+                            <label for="">by naturalization</label>
                         </div>
-                    </td>
-                    <td colspan="2" class="s-label align-top border-bottom-0 small">
-                        <span class="count">17.</span> RESIDENTIAL ADDRESS
-                    </td>
-                    <td colspan="2" class="fw-bold text-center border-end-0">
-                        {{ strtoupper($residentialAddress->house_no) ?? 'N/A' }}</td>
-                    <td colspan="2" class="fw-bold text-center border-start-0">
-                        {{ strtoupper($residentialAddress->street) ?? 'N/A' }}</td>
-                </tr>
+                    </div>
+                </td>
+            </tr>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">House/Block/Lot No.</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Street</td>
-                </tr>
+            <tr class="font-xsm border-top-0 border-bottom-0">
+                <td class="bg-secondary-subtle border-1 " style="width: 20%;">
+                    4. PLACE OF BIRTH<br>
+                </td>
+                <td class="text-center align-middle fw-bold text-uppercase border-1 " style="width: 23%;">
+                    {{ !empty($personalInformation->birth_place) ? $personalInformation->birth_place : 'N/A' }}
+                </td>
+                <td class="bg-secondary-subtle text-center ">If holder of dual citizenship,</td>
+                <td class="text-center border-top-0 " style="width: 33%;">
+                    Pls. indicate country:
+                </td>
+            </tr>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fw-bold text-center border-end-0">
-                        {{ strtoupper($residentialAddress->subdivision) ?? 'N/A' }}</td>
-                    <td colspan="2" class="fw-bold text-center border-start-0">
-                        {{ strtoupper($residentialAddress->barangay->name) ?? 'N/A' }}</td>
-                </tr>
+            <tr class="font-xsm border-top-0">
+                <td class="bg-secondary-subtle border-1 py-1" style="width: 20%;">
+                    5. SEX
+                </td>
+                <td class="text-center py-1">
+                    <div class="row gx-4">
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->sex === 'male' ? 'checked' : '' }}>
+                            <label for="">Male</label>
+                        </div>
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->sex === 'female' ? 'checked' : '' }}>
+                            <label for="">Female</label>
+                        </div>
+                    </div>
+                </td>
+                <td class="bg-secondary-subtle text-center py-1">please indicate the details</td>
+                <td class="border-1 text-uppercase py-1" style="width: 33%;">
+                    {{ empty($personalInformation->country) ? 'PHILIPPINES' : $personalInformation->country }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">Subdivision/Village</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Barangay</td>
-                </tr>
+    <table class="table table-bordered pds-table border-top-0 border-bottom-0">
+        <tbody>
+            <tr class="font-xsm border-0">
+                <td rowspan="4" class="bg-secondary-subtle py-1" style="width: 20%;">6. CIVIL STATUS</td>
+                <td rowspan="2" style="width: 23%;">
+                    <div class="row gx-4 gy-1">
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->civil_status === 'single' ? 'checked' : '' }}>
+                            <label for="">Single</label>
+                        </div>
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->civil_status === 'married' ? 'checked' : '' }}>
+                            <label for="">Married</label>
+                        </div>
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->civil_status === 'widowed' ? 'checked' : '' }}>
+                            <label for="">Widowed</label>
+                        </div>
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->civil_status === 'separated' ? 'checked' : '' }}>
+                            <label for="">Separated</label>
+                        </div>
+                    </div>
+                </td>
 
-                {{-- Height --}}
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">7.</span> HEIGHT (m)
-                    </td>
-                    <td colspan="5" class="border-bottom-0 fw-bold text-center">
-                        {{ $personalInformation->height ?? 'N/A' }}m</td>
-                    <td colspan="2" class="s-label align-top border-bottom-0"></td>
-                    <td colspan="2" class="border-end-0 fw-bold text-center">
-                        {{ $residentialAddress->municipality->name ?? 'N/A' }}</td>
-                    <td colspan="2" class="border-start-0 fw-bold text-center">
-                        {{ strtoupper($residentialAddress->province->name) ?? 'N/A' }}</td>
-                </tr>
+                <td rowspan="6" class="bg-secondary-subtle text-nowrap" style="width: 17.5%;">
+                    17.RESIDENTIAL ADDRESS
+                </td>
 
-                {{-- Weight --}}
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">City/Municipality</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Province</td>
-                </tr>
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-end-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->house_no) ? $residentialAddress->house_no : 'N/A' }}
+                </td>
 
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">8.</span> WEIGHT (kg)
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">
-                        {{ (int) $personalInformation->weight ?? 'N/A' }}kg</td>
-                    <td colspan="2" class="s-label border-top-0 text-center">ZIP CODE</td>
-                    <td colspan="4" class="fw-bold text-center">{{ $residentialAddress->zip ?? 'N/A' }}</td>
-                </tr>
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-start-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->street) ? $residentialAddress->street : 'N/A' }}
+                </td>
+            </tr>
 
-                {{-- Blood Type --}}
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">9.</span> BLOOD TYPE
-                    </td>
-                    <td colspan="5" class="border-bottom-0 fw-bold text-center">
-                        {{ $personalInformation->blood_type ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label border-bottom-0">
-                        <span class="count">18.</span> PERMANENT ADDRESS
-                    </td>
-                    <td colspan="2" class="border-end-0 fw-bold text-center">
-                        {{ $permanentAddress->house_no ?? 'N/A' }}</td>
-                    <td colspan="2" class="border-start-0 fw-bold text-center">
-                        {{ strtoupper($permanentAddress->street) ?? 'N/A' }}</td>
-                </tr>
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 " style="width: 20%;">
+                    <i>House/Block/Lot No.</i>
+                </td>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">House/Block/Lot No.</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Street</td>
-                </tr>
+                <td class="text-center align-middle border-1 border-start-0 " style="width: 20%;">
+                    <i>Street</i>
+                </td>
+            </tr>
 
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">10.</span> 10 GSIS ID NO.
-                    </td>
-                    <td colspan="5" class="border-bottom-0 fw-bold text-center">
-                        {{ $employeeIdentifiers['gsis'] ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label border-0"></td>
-                    <td colspan="2" class="border-end-0 fw-bold text-center">
-                        {{ $permanentAddress->subdivision ?? 'N/A' }}</td>
-                    <td colspan="2" class="border-start-0 fw-bold text-center">
-                        {{ strtoupper($permanentAddress->barangay->name) ?? 'N/A' }}</td>
-                </tr>
+            <tr class="font-xsm border-0">
+                <td rowspan="2" class="py-0">
+                    <div class="row gx-4 gy-1">
+                        <div class="col-6 d-flex gap-2">
+                            <input type="checkbox" name="" id="" {{ $personalInformation->civil_status === 'others' ? 'checked' : '' }}>
+                            <label for="">Other/s:</label>
+                        </div>
+                    </div>
+                </td>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">Subdivision/Village</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Barangay</td>
-                </tr>
+                <!-- Residential Subdivision -->
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-end-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->subdivision) ? $residentialAddress->subdivision : 'N/A' }}
+                </td>
 
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">11.</span> PAG-IBIG NO.
-                    </td>
-                    <td colspan="5" class="border-bottom-0 fw-bold text-center">
-                        {{ $employeeIdentifiers['pagibig'] ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label border-0"></td>
-                    <td colspan="2" class="border-end-0 fw-bold text-center">
-                        {{ strtoupper($permanentAddress->municipality->name) ?? 'N/A' }}</td>
-                    <td colspan="2" class="border-start-0 fw-bold text-center">
-                        {{ strtoupper($permanentAddress->province->name) ?? 'N/A' }}</td>
-                </tr>
+                <!-- Residential Barangay -->
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-start-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->barangay->name) ? $residentialAddress->barangay->name : 'N/A' }}
+                </td>
+            </tr>
 
-                <tr>
-                    <td colspan="1" class="s-label border-top-0 border-bottom-0">
-                        <span class="count"></span>
-                    </td>
-                    <td colspan="5" class="border-top-0 border-bottom-0"></td>
-                    <td colspan="2" class="s-label align-top border-0 border-top-0"></td>
-                    <td colspan="2" class="fst-italic text-center border-end-0">City/Municipality</td>
-                    <td colspan="2" class="fst-italic text-center border-start-0">Province</td>
-                </tr>
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 py-0" style="width: 20%;">
+                    <i>Subdivision/Village</i>
+                </td>
 
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">12.</span> PHILHEALTH NO.
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">{{ $employeeIdentifiers['philhealth'] ?? 'N/A' }}
-                    </td>
-                    <td colspan="2" class="s-label text-center border-0">ZIP CODE</td>
-                    <td colspan="4" class="fw-bold text-center">{{ $permanentAddress->zip ?? 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">13.</span> SSS NO.
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">{{ $employeeIdentifiers['sss'] ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label">
-                        <span class="count">19.</span> TELEPHONE NO.
-                    </td>
-                    <td colspan="4" class="fw-bold text-center">{{ $personalInformation->telephone_no ?? 'N/A' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">14.</span> TIN NO.
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">{{ $employeeIdentifiers['tin'] ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label">
-                        <span class="count">20.</span> MOBILE NO.
-                    </td>
-                    <td colspan="4" class="fw-bold text-center">{{ $personalInformation->mobile_no ?? 'N/A' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count">15.</span> AGENCY EMPLOYEE NO.
-                    </td>
-                    <td colspan="5" class="fw-bold text-center">{{ $employeeIdentifiers['agency'] ?? 'N/A' }}</td>
-                    <td colspan="2" class="s-label">
-                        <span class="count">21.</span> EMAIL ADDRESS (if any)
-                    </td>
-                    <td colspan="4" class="fw-bold text-center">{{ $personalInformation->email ?? 'N/A' }}</td>
-                </tr>
-            </tbody>
+                <td class="text-center align-middle border-1 border-start-0 py-0" style="width: 20%;">
+                    <i>Barangay</i>
+                </td>
+            </tr>
 
-            <tbody class="table-body">
-                <tr>
-                    <td colspan="12" class="text-white separator">
-                        II. FAMILY BACKGROUND
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">22.</span> SPOUSE SURNAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($spouse->last_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="s-label">
-                        <span class="count">23.</span> NAME of CHILDREN (Write full name
-                        and list all)
-                    </td>
-                    <td colspan="3" class="s-label text-center" style="width: 18%">
-                        DATE OF BIRTH (mm/dd/yyyy)
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> FIRST NAME
-                    </td>
-                    <td colspan="4" class="fw-bold">{{ strtoupper($spouse->first_name) ?? 'N/A' }}</td>
-                    <td colspan="1" class="align-top s-label">
-                        <small> NAME EXTENSION (JR.,SR)</small>
-                        <strong>{{ strtoupper($spouse->suffix) ?? 'N/A' }}</strong>
-                    </td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(0)) ? strtoupper($children->get(0)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(0)) ? \Carbon\Carbon::parse($children->get(0)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> MIDDLE NAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($spouse->middle_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(1)) ? strtoupper($children->get(1)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(1)) ? \Carbon\Carbon::parse($children->get(1)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count"></span> OCCUPATION
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($spouse->occupation) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(2)) ? strtoupper($children->get(2)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(2)) ? \Carbon\Carbon::parse($children->get(2)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count"></span> EMPLOYER/BUSINESS NAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($spouse->employer) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(3)) ? strtoupper($children->get(0)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(3)) ? \Carbon\Carbon::parse($children->get(3)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count"></span> BUSINESS ADDRESS
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($spouse->businesss_address) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(4)) ? strtoupper($children->get(4)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(4)) ? \Carbon\Carbon::parse($children->get(4)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label">
-                        <span class="count"></span> TELEPHONE NO.
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ $spouse->telephone_no ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(5)) ? strtoupper($children->get(5)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(5)) ? \Carbon\Carbon::parse($children->get(5)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">24.</span> FATHER'S SURNAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ $father->last_name ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(6)) ? strtoupper($children->get(6)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(6)) ? \Carbon\Carbon::parse($children->get(6)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> FIRST NAME
-                    </td>
-                    <td colspan="4"class="fw-bold">{{ strtoupper($father->first_name) ?? 'N/A' }}</td>
-                    <td colspan="1" class="align-top s-label">
-                        <small> NAME EXTENSION (JR.,SR)</small>
-                        <strong>{{ $father->suffix ?? 'N/A' }}</strong>
-                    </td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(7)) ? strtoupper($children->get(7)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(7)) ? \Carbon\Carbon::parse($children->get(7)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> MIDDLE NAME
-                    </td>
-                    <td colspan="5"class="fw-bold">{{ strtoupper($father->middle_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(8)) ? strtoupper($children->get(8)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(8)) ? \Carbon\Carbon::parse($children->get(8)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="s-label border-bottom-0">
-                        <span class="count">25.</span> MOTHERS MAIDEN NAME
-                    </td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(9)) ? strtoupper($children->get(9)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(9)) ? \Carbon\Carbon::parse($children->get(9)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> SURNAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($mother->last_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(10)) ? strtoupper($children->get(10)->fullname) : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(10)) ? \Carbon\Carbon::parse($children->get(10)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> FIRST NAME
-                    </td>
-                    <td colspan="5" class="fw-bold">{{ strtoupper($mother->first_name) ?? 'N/A' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(11)) ? $children->get(11)->fullname : '' }}</td>
-                    <td colspan="3" class="text-center fw-bold">
-                        {{ !empty($children->get(11)) ? \Carbon\Carbon::parse($children->get(11)->birth_date)->format('m/d/Y') : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="s-label border-0">
-                        <span class="count"></span> MIDDLE NAME
-                    <td colspan="5" class="fw-bold">{{ strtoupper($mother->middle_name) ?? 'N/A' }}</td>
-                    <td class="small-text text-danger text-center s-label" colspan="6">
-                        <i>(Continue on separate sheet if necessary)</i>
-                    </td>
-                </tr>
-                </tr>
-            </tbody>
+            <tr class="font-xsm border-0">
+                <td rowspan="2" class="bg-secondary-subtle border-1 align-middle">7. HEIGHT (m)</td>
 
-            <tbody class="table-body">
-                <tr>
-                    <td colspan="12" class="text-white separator">
-                        III. EDUCATIONAL BACKGROUND
-                    </td>
-                </tr>
-                <tr class="text-center">
-                    <td colspan="1" class="s-label border-bottom-0">
-                        <span class="count">26.</span>
-                        <span class="d-block text-center">LEVEL</span>
-                    </td>
-                    <td colspan="4" class="s-label border-bottom-0">
-                        NAME OF SCHOOL<br />(Write in full)
-                    </td>
-                    <td colspan="2" class="s-label border-bottom-0">
-                        BASIC EDUCATION/DEGREE/COURSE<br />
-                        (Write in full)
-                    </td>
-                    <td colspan="2" class="s-label border-bottom-0">
-                        PERIOD OF ATTENDANCE
-                    </td>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        HIGHEST LEVEL/UNITS EARNED<br />(If not graduated)
-                    </td>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        YEAR GRADUATED
-                    </td>
-                    <td colspan="1" class="s-label border-bottom-0">
-                        SCHOLARSHIP/<br />ACADEMIC<br />HONORS<br />RECEIVED
-                    </td>
-                </tr>
-                <tr class="text-center" style="margin-top: -20px">
-                    <td colspan="1" class="s-label border-top-0"></td>
-                    <td colspan="4" class="s-label border-top-0"></td>
-                    <td colspan="2" class="s-label border-top-0"></td>
-                    <td colspan="1" class="s-label">From</td>
-                    <td colspan="1" class="s-label">To</td>
-                    <td colspan="1" class="s-label border-top-0"></td>
-                    <td colspan="1" class="s-label border-top-0"></td>
-                    <td colspan="1" class="s-label border-top-0"></td>
-                </tr>
-                @php
-                    // Define the five education levels that must always appear
-                    $educationLevels = [
-                        'Elementary',
-                        'Secondary',
-                        'Vocational/Trade Course',
-                        'College',
-                        'Graduate Studies',
+                <td rowspan="2" class="border-1 text-center fw-bold align-middle text-uppercase">
+                    {{ !empty($personalInformation->height) ? $personalInformation->height : 'N/A' }}
+                </td>
+                <!-- Residential Municipality -->
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-end-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->municipality->name) ? $residentialAddress->municipality->name : 'N/A' }}
+                </td>
+                <!-- Residential Province -->
+                <td class="text-center align-middle py-1 fw-bold text-uppercase border-start-0" style="width: 20%;">
+                    {{ !empty($residentialAddress->province->name) ? $residentialAddress->province->name : 'N/A' }}
+                </td>
+            </tr>
+
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 py-0" style="width: 20%;">
+                    <i>City/Municipality</i>
+                </td>
+
+                <td class="text-center align-middle border-1 border-start-0 py-0" style="width: 20%;">
+                    <i>Province</i>
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td class="border-1 bg-secondary-subtle align-middle py-1">8. WEIGHT (kg)</td>
+
+                <td class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ !empty($personalInformation->weight) ? (int) $personalInformation->weight : 'N/A' }}
+                </td>
+
+                <td class="bg-secondary-subtle text-center py-1">ZIP CODE</td>
+
+                <td colspan="2" class="text-center fw-bold py-1">
+                    {{ !empty($residentialAddress->zip) ? $residentialAddress->zip : 'N/A' }}
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td rowspan="2" class="border-1 bg-secondary-subtle align-middle">9. BLOOD TYPE</td>
+
+                <td rowspan="2" class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ !empty($personalInformation->blood_type) ? $personalInformation->blood_type : 'N/A' }}
+                </td>
+
+                <td rowspan="6" class="bg-secondary-subtle border-1 text-nowrap" style="width: 17.5%;">
+                    18.PERMANENT ADDRESS
+                </td>
+
+                <!-- Permanent House No -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-end-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->house_no) ? $permanentAddress->house_no : 'N/A' }}
+                </td>
+
+                <!-- Permanent Street -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-start-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->street) ? $permanentAddress->street : 'N/A' }}
+                </td>
+            </tr>
+
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 py-0" style="width: 20%;">
+                    <i>House/Block/Lot No.</i>
+                </td>
+
+                <td class="text-center align-middle border-1 border-start-0 py-0" style="width: 20%;">
+                    <i>Street</i>
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td rowspan="2" class="border-1 bg-secondary-subtle align-middle">10. GSIS ID NO</td>
+
+                <td rowspan="2" class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['gsis'] ?? 'N/A' }}
+                </td>
+
+                <!-- Permanent Subdivision -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-end-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->subdivision) ? $permanentAddress->subdivision : 'N/A' }}
+                </td>
+
+                <!-- Permanent Barangay -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-start-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->barangay->name) ? $permanentAddress->barangay->name : 'N/A' }}
+                </td>
+            </tr>
+
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 py-0" style="width: 20%;">
+                    <i>Subdivision/Village</i>
+                </td>
+
+                <td class="text-center align-middle border-1 border-start-0 py-0" style="width: 20%;">
+                    <i>Barangay</i>
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td rowspan="2" class="border-1 bg-secondary-subtle align-middle">11. PAG-IBIG ID NO</td>
+
+                <td rowspan="2" class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['pagibig'] ?? 'N/A' }}
+                </td>
+
+                <!-- Permanent Municipality -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-end-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->municipality->name) ? $permanentAddress->municipality->name : 'N/A' }}
+                </td>
+
+                <!-- Permanent Province -->
+                <td class="text-center align-middle py-1 fw-bold border-1 text-uppercase border-start-0"
+                    style="width: 20%;">
+                    {{ !empty($permanentAddress->province->name) ? $permanentAddress->province->name : 'N/A' }}
+                </td>
+            </tr>
+
+            <!-- Labels -->
+            <tr class="font-xsm border-0">
+                <td class="text-center align-middle border-1 border-end-0 py-0" style="width: 20%;">
+                    <i>City/Municipality</i>
+                </td>
+
+                <td class="text-center align-middle border-1 border-start-0 py-0" style="width: 20%;">
+                    <i>Province</i>
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td class="border-1 bg-secondary-subtle align-middle py-1">12. PHILHEALTH NO</td>
+
+                <td class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['philhealth'] ?? 'N/A' }}
+                </td>
+
+                <td class="bg-secondary-subtle text-center py-1 border-1">ZIP CODE</td>
+
+                <td colspan="2" class="text-center fw-bold py-1 border-1">
+                    {{ !empty($permanentAddress->zip) ? $permanentAddress->zip : 'N/A' }}
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td class="border-1 bg-secondary-subtle align-middle py-1">13. SSS NO</td>
+
+                <td class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['sss'] ?? 'N/A' }}
+                </td>
+
+                <td class="bg-secondary-subtle py-1 border-1">19. TELEPHONE NO</td>
+
+                <td colspan="2" class="text-center fw-bold py-1 border-1 text-uppercase">
+                    {{ $personalInformation->telephone_no ?? 'N/A' }}
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td class="border-1 bg-secondary-subtle align-middle py-1">14. TIN NO</td>
+
+                <td class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['tin'] ?? 'N/A' }}
+                </td>
+
+                <td class="bg-secondary-subtle py-1 border-1">20. MOBILE NO</td>
+
+                <td colspan="2" class="text-center fw-bold py-1 border-1 text-uppercase">
+                    {{ $personalInformation->mobile_no ?? 'N/A' }}
+                </td>
+            </tr>
+
+            <tr class="font-xsm border-0">
+                <td class="border-1 bg-secondary-subtle align-middle py-1">15. AGENCY EMPLOYEE NO</td>
+
+                <td class="border-1 text-center fw-bold align-middle text-uppercase py-1">
+                    {{ $employeeIdentifiers['agency'] ?? 'N/A' }}
+                </td>
+
+                <td class="bg-secondary-subtle py-1 border-1">21. E-MAIL ADDRESS <span style="font-size: 0.5rem;">(if
+                        any)</span></td>
+
+                <td colspan="2" class="text-center fw-bold py-1 border-1">
+                    {{ $personalInformation->email ?? 'N/A' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Family Background -->
+    <table class="table table-bordered pds-table border-top-0">
+        <tr class="border-3 border-top-0" style="font-size: 0.7rem;">
+            <td colspan="16" class="bg-secondary text-white pt-1 pb-1"><b><i>II. FAMILY BACKGROUND</i></b></td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 border-1 border-bottom-0" style="width: 20%;">22.
+                SPOUSE'S SURNAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->last_name ?? 'N/A'  }}
+            </td>
+            <td class="align-middle bg-secondary-subtle py-1 border-1">23. NAME of CHILDREN</td>
+            <td class="align-middle bg-secondary-subtle  py-1 border-1">DATE OF BIRTH <span
+                    style="font-size: 0.5rem;">(mm/dd/yyyy)</span></td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">FIRST NAME</td>
+            <td class="fw-bold align-middle text-uppercase py-1" style="width: 23%;">
+                {{ $spouse->first_name ?? 'N/A'  }}
+            </td>
+            <td class="pt-0 bg-secondary-subtle py-1 ps-0" style="width: 17.5%; font-size: 0.5rem;">NAME
+                EXTENSION(JR., SR.) <span class="float-end">{{ $spouse->suffix ?? 'N/A'  }}</span></td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1">
+                {{ $children->get(0)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1">
+                {{ !empty($children->get(0)) ? \Carbon\Carbon::parse($children->get(0)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">MIDDLE NAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->middle_name ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(1)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(1)) ? \Carbon\Carbon::parse($children->get(1)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4 border-1" style="width: 20%;">OCCUPATION</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->occupation ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(2)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(2)) ? \Carbon\Carbon::parse($children->get(2)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-3 border-1 text-nowrap" style="width: 20%;">EMPLOYER/BUSINESS NAME
+            </td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->employer ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(3)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(3)) ? \Carbon\Carbon::parse($children->get(3)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4 border-1" style="width: 20%;">BUSINESS ADDRESS</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->business_address ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(4)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(4)) ? \Carbon\Carbon::parse($children->get(4)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4 border-1" style="width: 20%;">TELEPHONE NO</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $spouse->telephone_no ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(5)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(5)) ? \Carbon\Carbon::parse($children->get(5)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 border-1 border-bottom-0" style="width: 20%;">24.
+                FATHER'S SURNAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $father->last_name ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(6)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(6)) ? \Carbon\Carbon::parse($children->get(6)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">FIRST NAME</td>
+            <td class="fw-bold align-middle text-uppercase py-1" style="width: 23%;">
+                {{ $father->first_name ?? 'N/A'}}
+            </td>
+            <td class="pt-0 bg-secondary-subtle py-1 ps-0" style="width: 17.5%; font-size: 0.5rem;">NAME
+                EXTENSION(JR., SR.) <span class="float-end">{{ $father->suffix ?? 'N/A' }}</span></td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1">
+                {{ $children->get(7)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1">
+                {{ !empty($children->get(7)) ? \Carbon\Carbon::parse($children->get(7)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">MIDDLE NAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $father->middle_name ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(8)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(8)) ? \Carbon\Carbon::parse($children->get(8)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td colspan="3" class="bg-secondary-subtle align-middle py-1 border-1 border-bottom-0"
+                style="width: 20%;">25. MOTHER'S MAIDEN NAME</td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(9)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(9)) ? \Carbon\Carbon::parse($children->get(9)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">SURNAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $mother->last_name ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(10)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(10)) ? \Carbon\Carbon::parse($children->get(10)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">FIRST NAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $mother->first_name ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ $children->get(11)->fullname ?? 'N/A' }}
+            </td>
+            <td class="text-center fw-bold align-middle text-uppercase py-1 border-1">
+                {{ !empty($children->get(11)) ? \Carbon\Carbon::parse($children->get(11)->birth_date)->format('m/d/Y') : 'N/A' }}
+            </td>
+        </tr>
+
+        <tr class="font-xsm border-0">
+            <td class="bg-secondary-subtle align-middle py-1 ps-4" style="width: 20%;">MIDDLE NAME</td>
+            <td colspan="2" class="fw-bold align-middle text-uppercase py-1 border-1" style="width: 23%;">
+                {{ $mother->middle_name ?? 'N/A' }}
+            </td>
+            <td colspan="2" class="text-center fw-bold align-middle bg-secondary-subtle text-danger py-1 border-1">
+                <i>(Continue on separate sheet if necessary)</i></td>
+        </tr>
+    </table>
+
+    <!-- Educational Background -->
+    <table class="table table-bordered pds-table border-top-0 border-bottom-0">
+        <tbody>
+            <tr class="border-3 border-top-0" style="font-size: 0.7rem;">
+                <td colspan="16" class="bg-secondary text-white pt-1 pb-1"><b><i>III. EDUCATIONAL BACKGROUND</i></b>
+                </td>
+            </tr>
+
+            <tr class="border-0" style="font-size: 0.5rem;">
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle text-nowrap"
+                    style="width: 20%;">
+                    <span class="float-start align-self-start">26. </span>
+                    LEVEL
+                </td>
+
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle" style="width: 23%;">
+                    NAME OF SCHOOL<br>
+                    (Write in full)
+                </td>
+
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle px-1">
+                    BASIC EDUCATION/DEGREE/COURSE<br>
+                    (Write in full)
+                </td>
+
+                <td colspan="2" class="bg-secondary-subtle text-center align-middle px-0">
+                    PERIOD OF ATTENDANCE<br>
+                </td>
+
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle px-1">
+                    HIGHEST LEVEL/<br>
+                    UNITS EARNED<br>
+                    (If not graduated)
+                </td>
+
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle px-0">
+                    YEAR<br>
+                    GRADUATED
+                </td>
+
+                <td rowspan="2" class="bg-secondary-subtle text-center align-middle px-0">
+                    SCHOLARHIP/<br>
+                    ACADEMIC HONORS<br>
+                    RECEIVED
+                </td>
+            </tr>
+
+            <tr style="font-size: 0.5rem;">
+                <td class="bg-secondary-subtle text-center align-middle py-0">From</td>
+                <td class="bg-secondary-subtle text-center align-middle py-0">To</td>
+            </tr>
+
+            @php
+                // Define the five education levels that must always appear
+                $educationLevels = [
+                    'Elementary',
+                    'Secondary',
+                    'Vocational/Trade Course',
+                    'College',
+                    'Graduate Studies',
+                ];
+
+                // Fetch and filter the latest education background per level
+                $latestEducation = collect($educationLevels)->mapWithKeys(function ($level) use (
+                    $educationalBackgrounds,
+                ) {
+                    return [
+                        $level => $educationalBackgrounds
+                            ->where('level', strtolower($level))
+                            ->sortByDesc('year_graduated')
+                            ->first(),
                     ];
+                });
 
-                    // Fetch and filter the latest education background per level
-                    $latestEducation = collect($educationLevels)->mapWithKeys(function ($level) use (
-                        $educationalBackgrounds,
-                    ) {
-                        return [
-                            $level => $educationalBackgrounds
-                                ->where('level', strtolower($level))
-                                ->sortByDesc('year_graduated')
-                                ->first(),
-                        ];
-                    });
+                // Check if all entries are null
+                $allEducationalLevelEmpty = $latestEducation->every(fn($e) => empty($e));
+                $paddingClass = $allEducationalLevelEmpty ? 'py-2' : 'py-2';
+            @endphp
+
+            @foreach ($latestEducation as $level => $e)
+                <tr style="font-size: {{ empty($e) ? '0.5rem' : '0.6rem' }};">
+                    <td class="bg-secondary-subtle align-middle ps-3 text-uppercase {{ $paddingClass }}">{{ $level }}</td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ optional($e)->school_name ? strtoupper($e->school_name) : 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ optional($e)->degree_earned ? strtoupper($e->degree_earned) : 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ $e && $e->attendance_from ? \Carbon\Carbon::parse($e->attendance_from)->format('Y') : 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ $e && $e->attendance_to ? \Carbon\Carbon::parse($e->attendance_to)->format('Y') : 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ $e->highest_level_units ?? 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ $e->year_graduated ?? 'N/A' }}
+                    </td>
+                    <td class="fw-bold text-center align-middle text-uppercase {{ $paddingClass }}">
+                        {{ optional($e)->academic_honors ? $e->academic_honors : 'N/A' }}
+                    </td>
+                </tr>
+            @endforeach
+
+
+            <tr class="font-xsm">
+                <td colspan="8"
+                    class="text-center fw-bold align-middle bg-secondary-subtle text-danger py-0 border-1 border-dark">
+                    <i>(Continue on separate sheet if necessary)</i></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Signatories -->
+    <table class="table table-bordered pds-table border-top-0" style="border-top: 0;">
+        <tr class="border-3 font-xsm">
+            <td class="bg-secondary-subtle align-middle text-center" style="width: 21%;">SIGNATURE</td>
+            <td style="width: 30%;" class="py-1"></td>
+            <td class="bg-secondary-subtle align-middle text-center">DATE</td>
+            <td style="width: 28%;" class="text-center align-middle">
+                {{ \Carbon\Carbon::parse($dateAccomplished)->format('m/d/Y') }}
+            </td>
+            <td class="align-middle text-center text-nowrap text-white">CSC FORM 212 (Revised 2017) Page 1 of 4</td>
+        </tr>
+    </table>
+
+    {{-- EXTRA SHEETS FOR CHILDREN --}}
+    @if ($children->count() > 12)
+        <br>
+        <table class="table table-bordered pds-table border-top-0">
+            <tr class="font-xsm border-0">
+                <td class="align-middle bg-secondary-subtle py-1 border-1">23. NAME of CHILDREN</td>
+                <td class="align-middle bg-secondary-subtle  py-1 border-1">DATE OF BIRTH <span style="font-size: 0.5rem;">(mm/dd/yyyy)</span></td>
+            </tr>
+
+            @for ($i = 12; $i < 70; $i++)
+                @php
+                    $additionalChild = $children->get($i);
                 @endphp
 
-                @foreach ($latestEducation as $level => $e)
-                    <tr>
-                        <td colspan="1" class="s-label">
-                            <span class="count"></span> {{ strtoupper($level) }}
-                        </td>
-                        <td colspan="4" class="fw-bold text-center text-nowrap">
-                            {{ optional($e)->school_name ? strtoupper($e->school_name) : 'N/A' }}
-                        </td>
-                        <td colspan="2" class="fw-bold text-center text-nowrap">
-                            {{ optional($e)->degree_earned ? strtoupper($e->degree_earned) : 'N/A' }}
-                        </td>
-                        <td colspan="1" class="fw-bold text-center text-nowrap">
-                            {{ $e && $e->attendance_from ? \Carbon\Carbon::parse($e->attendance_from)->format('Y') : 'N/A' }}
-                        </td>
-                        <td colspan="1" class="fw-bold text-center text-nowrap">
-                            {{ $e && $e->attendance_to ? \Carbon\Carbon::parse($e->attendance_to)->format('Y') : 'N/A' }}
-                        </td>
-                        <td colspan="1" class="fw-bold text-center text-nowrap">
-                            {{ $e->highest_level_units ?? 'N/A' }}</td>
-                        <td colspan="1" class="fw-bold text-center text-nowrap">{{ $e->year_graduated ?? 'N/A' }}
-                        </td>
-                        <td colspan="1" class="fw-bold text-center text-nowrap">
-                            {{ optional($e)->academic_honors ? strtoupper($e->academic_honors) : 'N/A' }}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+                <tr style="font-size: 0.6rem;">
+                    <td class="text-center fw-bold align-middle text-uppercase py-1">
+                        {{ !empty($additionalChild) ? $additionalChild->fullname : 'N/A' }}
+                    </td>
+                    <td class="text-center fw-bold align-middle text-uppercase py-1">
+                        {{ !empty($additionalChild) ? \Carbon\Carbon::parse($additionalChild->birth_date)->format('m/d/Y') : 'N/A' }}
+                    </td>
+                </tr>
+            @endfor
 
-            <tbody class="table-body">
-                <tr>
-                    <td class="small-text text-danger text-center s-label" colspan="12">
-                        <i>(Continue on separate sheet if necessary)</i>
-                    </td>
+            <table class="table table-bordered pds-table" style="border-top: 0;">
+                <tr class="border-3 py-compact">
+                    <td class="bg-secondary-subtle align-middle text-center" style="width: 21%;">SIGNATURE</td>
+                    <td style="width: 30%;"></td>
+                    <td class="bg-secondary-subtle align-middle text-center">DATE</td>
+                    <td style="width: 28%;" class="text-center align-middle">03/17/2025</td>
+                    <td class="align-middle text-center text-nowrap text-white">CSC FORM 212 (Revised 2017) Page 3 of 4</td>
                 </tr>
-                <tr>
-                    <td colspan="1" class="text-center s-label">
-                        <i><b>SIGNATURE</b></i>
-                    </td>
-                    <td colspan="6"></td>
-                    <td colspan="2" class="text-center s-label">
-                        <i><b>DATE</b></i>
-                    </td>
-                    <td colspan="3" class="text-center fw-bold text-uppercase">
-                        {{ $dateAccomplished }}
-                    </td>
-                </tr>
-            </tbody>
+            </table>
         </table>
-    </form>
+    @endif
+
+    {{-- @dd($levelsWithNoBackground) --}}
+    @if($allEducationalLevelEmpty)
+        <br>
+    @endif
 </div>
+
+@push('styles')
+    <style>
+        @font-face {
+            font-family: 'Arial Black Custom';
+            src: url('fonts/arial_black.ttf') format('truetype');
+        }
+
+        .pds-table {
+            border-collapse: collapse;
+            max-width: 9in;
+            margin: auto;
+            font-size: 0.875rem;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            border: 3px solid #000;
+            /* table-layout: fixed; */
+        }
+
+        .pds-table h2 {
+            font-family: 'Arial Black Custom', Arial Black, Arial, sans-serif;
+        }
+
+        .pds-table input[type="checkbox"]{
+            accent-color: gray;
+        }
+
+        .pds-table .form-check-input:checked {
+            background-color: var(--bs-secondary) !important;
+            border-color: var(--bs-secondary) !important
+        }
+
+        .pds-table input[type="text"] {
+            border: solid #000;
+            border-width: 0 0 1px 0;
+        }
+
+        .border-right {
+            border: solid #000;
+            border-width: 0 3px 0 0;
+            margin: 1.5rem;
+        }
+
+        .border-top-secondary {
+            border-top-color: var(--bs-secondary-bg) !important;
+        }
+
+        .py-compact {
+            padding-top: 0.1rem !important;
+            padding-bottom: 0.1rem !important;
+            font-size: 0.7rem !important;
+        }
+
+        .font-xsm {
+            font-size: 0.6rem;
+        }
+
+        .check-sm {
+            height: 10px;
+        }
+
+    </style>
+@endpush

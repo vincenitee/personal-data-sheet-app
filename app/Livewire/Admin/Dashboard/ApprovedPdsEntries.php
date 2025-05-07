@@ -7,15 +7,18 @@ use App\Models\PdsEntry;
 
 class ApprovedPdsEntries extends Component
 {
+
     public $approvedPdsSubmissionsCount;
     public $totalPdsEntriesCount;
     public $percentageApproved;
+    public $link;
 
     public function mount()
     {
         $this->approvedPdsSubmissionsCount = PdsEntry::where('status', 'approved')->count();
         $this->totalPdsEntriesCount = PdsEntry::count(); // Total PDS entries
 
+        $this->link = route('admin.submissions');
         // Avoid division by zero
         $this->percentageApproved = ($this->totalPdsEntriesCount > 0)
             ? round(($this->approvedPdsSubmissionsCount / $this->totalPdsEntriesCount) * 100, 2)

@@ -1,89 +1,124 @@
-<div class="card card-body" wire:ignore>
+<div class="card card-body" wire:ignore x-data="employeeTenureData()">
     <div id="employmentTenureChart" style="height: 350px; width: 100%;"></div>
 
-    {{-- <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('employmentTenureChart', () => ({
-                chart: null,
-                init() {
-                    this.chart = new ApexCharts(document.querySelector("#employmentTenureChart"), {
-
-
-                    this.chart.render();
-
-                    // Listen for Livewire updates
-                    Livewire.on('chartUpdated', (newData) => {
-                        this.chart.updateOptions({
-                            series: newData.series, // ✅ Fixed: Directly use the newData
-                            xaxis: { categories: newData.labels }
-                        });
-                    });
-                }
-            }));
-        });
-    </script> --}}
-    {{-- <pre>{{ json_encode($chartData) }}</pre> --}}
+    <div>
+        <button class="btn btn-sm btn-success mt-2 float-end"
+                wire:click="downloadAllEmployee"
+                wire:loading.attr="disabled"
+                title="Download full list">
+            <span wire:loading.remove wire:target="downloadAllEmployee">
+                <i class="bi bi-download"></i> Download
+            </span>
+            <span wire:loading wire:target="downloadAllEmployee">
+                <div class="spinner-border spinner-border-sm text-light" role="status"></div>
+            </span>
+        </button>
+    </div>
 </div>
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            function generateDistinctColors(numColors) {
-                let colors = [];
-                const baseHues = [210, 180, 145, 330, 280, 45]; // Blues, teals, oranges, magentas, purples, yellows
+        function employeeTenureData() {
+            let chart = null;
 
-                for (let i = 0; i < numColors; i++) {
-                    const hue = baseHues[i % baseHues.length] + (Math.floor(i / baseHues.length) * 30);
-                    const saturation = 65 + (i % 3) * 10;
-                    const lightness = 45 + (i % 4) * 5;
-                    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-                    colors.push(color);
+            function initChart(chartData) {
+                if (chart) {
+                    chart.destroy();
                 }
 
-                return colors;
+                function generateDistinctColors(numColors) {
+                    let colors = [];
+                    const baseHues = [210, 180, 145, 330, 280, 45]; // Blues, teals, oranges, magentas, purples, yellows
+
+                    for (let i = 0; i < numColors; i++) {
+                        const hue = baseHues[i % baseHues.length] + (Math.floor(i / baseHues.length) * 30);
+                        const saturation = 65 + (i % 3) * 10;
+                        const lightness = 45 + (i % 4) * 5;
+                        const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                        colors.push(color);
+                    }
+
+                    return colors;
+                }
+
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        events: {
+                            dataPointSelection: function(event, chartContext, config) {
+                                // Get the clicked category/label
+                                const tenureRange = chartData.labels[config.dataPointIndex];
+
+                                // Dispatch to Livewire to trigger the download
+                                // Pass the tenure range directly
+                                @this.call('downloadEmployeeList', tenureRange);
+                            }
+                        }
+                    },
+                    series: chartData.series,
+                    xaxis: {
+                        categories: chartData.labels,
+                        labels: {
+                            style: {
+                                fontSize: '14px'
+                            }
+                        }
+                    },
+                    title: {
+                        text: "Employment Tenure Analysis"
+                    },
+                    subtitle: {
+                        text: "Based on approved entries (Click on bars to download employee list)"
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return `${value} Employees`;
+                            }
+                        }
+                    },
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '50%',
+                            distributed: true,
+                            dataLabels: {
+                                position: 'top'
+                            }
+                        }
+                    },
+                    colors: generateDistinctColors(chartData.labels.length),
+                    legend: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val) {
+                            return val;
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ['#304758']
+                        }
+                    }
+                };
+
+                chart = new ApexCharts(document.querySelector('#employmentTenureChart'), options);
+                chart.render();
             }
 
-            var options = {
-                chart: {
-                    type: 'bar',
-                    height: 350
-                },
-                series: @json($chartData['series']),
-                xaxis: {
-                    categories: @json($chartData['labels']),
-                    labels: {
-                        style: {
-                            fontSize: '14px'
-                        }
-                    }
-                },
-                title: {
-                    text: "Employment Tenure Analysis"
-                },
-                subtitle: {
-                    text: "Based on approved entries"
-                },
-                tooltip: {
-                    y: {
-                        formatter: function(value) {
-                            return `${value} Employees`;
-                        }
-                    }
-                },
-                plotOptions: {
-                    bar: {
-                        columnWidth: '50%',
-                        distributed: true
-                    }
-                },
-                colors: generateDistinctColors(@json(count($chartData['labels']))),
-                legend: {
-                    show: false
-                }
-            };
+            return {
+                init() {
+                    // Initialize with data from Livewire
+                    initChart(@json($chartData));
 
-            var chart = new ApexCharts(document.querySelector('#employmentTenureChart'), options);
-            chart.render();
-        });
+                    // Listen for chart updates from Livewire
+                    Livewire.on('employeeTenureChartUpdated', (data) => {
+                        initChart(data.chartData);
+                    });
+                }
+            }
+        }
     </script>
 @endpush

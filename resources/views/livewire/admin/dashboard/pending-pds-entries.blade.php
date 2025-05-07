@@ -7,5 +7,6 @@
     iconClass="bi-ticket-perforated-fill"
     colorClass="warning"
     capacityLabel="Review Progress"
+    :href="$link"
 />
 

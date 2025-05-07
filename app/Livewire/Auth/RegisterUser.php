@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use App\Enums\MunicipalOffice;
 use Livewire\Component;
 use App\Models\Settings;
 use App\Services\UserService;
+use App\Enums\MunicipalOffice;
 use App\Traits\HasAlertMessage;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\RegisterUserForm;
 use Illuminate\Validation\ValidationException;
 
@@ -29,10 +30,8 @@ class RegisterUser extends Component
 
     public function mount()
     {
-
         $this->sidebarColor = get_setting('sidebar_color', 'dark');
-
-        $this->logoPath = get_setting('logo') ? asset('uploads/system_logo/' . get_setting('logo')) : asset('images/hris-logo-white.png');
+        $this->logoPath = get_setting('logo') ? Storage::disk('public')->url('system_logo/' . get_setting('logo')) : asset('images/hris-logo-white.png');
     }
 
     public function save()

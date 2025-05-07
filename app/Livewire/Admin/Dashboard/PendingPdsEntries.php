@@ -11,12 +11,13 @@ class PendingPdsEntries extends Component
     public $pendingPdsSubmissionsCount;
     public $totalPdsEntriesCount;
     public $percentageUnderReview;
+    public $link;
 
     public function mount()
     {
         $this->pendingPdsSubmissionsCount = PdsEntry::where('status', 'under_review')->count();
         $this->totalPdsEntriesCount = PdsEntry::count(); // Total PDS entries
-
+        $this->link = route('admin.submissions');
         // Avoid division by zero
         $this->percentageUnderReview = ($this->totalPdsEntriesCount > 0)
             ? round(($this->pendingPdsSubmissionsCount / $this->totalPdsEntriesCount) * 100, 2)

@@ -44,15 +44,15 @@
         ])
 
         {{-- Replace the current certificate preview with the file preview component --}}
-        @if (!empty($entry['certificate_path']))
+        @if (!empty($entry['certificate']))
             <!-- Debug info -->
-            <div class="alert alert-info">
-                Path stored: {{ $entry['certificate_path'] }}<br>
-                Full URL: {{ Storage::url($entry['certificate_path']) }}
-            </div>
+            {{-- <div class="alert alert-info">
+                Path stored: {{ $entry['certificate'] }}<br>
+                Full URL: {{ Storage::url($entry['certificate']) }}
+            </div> --}}
 
             @include('partials.file-preview', [
-                'file' => $entry['certificate_path'],
+                'file' => $entry['certificate'],
                 'title' => 'Certificate Document',
                 'wireTarget' => "trainings.{$index}.certificate",
             ])

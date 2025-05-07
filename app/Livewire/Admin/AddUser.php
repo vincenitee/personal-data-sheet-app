@@ -42,7 +42,8 @@ class AddUser extends Component
             'last_name' => ['required', 'string', 'max:255'],
             'sex' => ['required', 'in:male,female'], // Assuming only these two options
             'birth_date' => ['required', 'date', 'before:today'],
-
+            'department' => ['required'],
+            
             // Account Information
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],

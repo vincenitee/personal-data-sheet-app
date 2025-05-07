@@ -17,10 +17,16 @@ class C2 extends Component
         ?PdsEntry $pdsEntry
     ) {
         $this->eligibilities = $pdsEntry->eligibilities;
-        $this->workExperiences = $pdsEntry->workExperiences;
+
+        // Fetches the work experiences from latest to oldest
+        $this->workExperiences = $pdsEntry->workExperiences->sortBy(function ($item){
+            return $item->date_to ?? now()->addCentury();
+        })
+        ->reverse()
+        ->values();
 
         // dd($eligibilities, $workExperiences);
-        $this->dateAccomplished = Carbon::parse($pdsEntry->created_at)->format('m/d/Y');
+        $this->dateAccomplished = Carbon::parse($pdsEntry->updated_at)->format('m/d/Y');
     }
 
     public function render()

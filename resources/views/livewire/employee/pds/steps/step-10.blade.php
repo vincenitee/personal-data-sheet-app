@@ -11,7 +11,8 @@
     ])
 
     @include('partials.file-preview', [
-        'file' => $passport_photo ?? null,
+        'file' => $passport_photo,
+        'title' => 'Passport Photo',
         'wireTarget' => 'passport_photo',
     ])
 </x-card>
@@ -30,7 +31,8 @@
     ])
 
     @include('partials.file-preview', [
-        'file' => $right_thumbmark_photo ?? null,
+        'file' => $right_thumbmark_photo,
+        'title' => 'Right Thumbmark Photo',
         'wireTarget' => 'right_thumbmark_photo',
     ])
 </x-card>
@@ -43,7 +45,7 @@
             [
                 'label' => 'Government ID Type',
                 'type' => 'select',
-                'options' => $governmentIdOptions
+                'options' => $governmentIdOptions,
             ],
             [
                 'label' => 'Government ID No',
@@ -51,18 +53,18 @@
             ],
             [
                 'label' => 'Date of Issuance',
-                'type' => 'date'
+                'type' => 'date',
             ],
             [
                 'label' => 'Government ID Photo',
-                'type' => 'file'
+                'type' => 'file',
             ],
-        ]
+        ],
     ])
 
     @include('partials.file-preview', [
-        'file' => $government_id_photo ?? null,
-        'title' => 'Uploaded Government ID Photo',
+        'file' => $government_id_photo,
+        'title' => 'Government ID Photo',
         'wireTarget' => 'government_id_photo',
     ])
 </x-card>
@@ -74,14 +76,14 @@
         'fields' => [
             [
                 'label' => 'Signature Photo',
-                'type' => 'file'
+                'type' => 'file',
             ],
-        ]
+        ],
     ])
 
     @include('partials.file-preview', [
-        'file' => $signature_photo ?? null,
-        'title' => 'Uploaded Signature Photo',
+        'file' => $signature_photo,
+        'title' => 'Signature Photo',
         'wireTarget' => 'signature_photo',
     ])
 </x-card>
@@ -93,14 +95,14 @@
         'fields' => [
             [
                 'label' => 'OTR Photo',
-                'type' => 'file'
+                'type' => 'file',
             ],
-        ]
+        ],
     ])
 
     @include('partials.file-preview', [
-        'file' => $otr_photo ?? null,
-        'title' => 'Uploaded OTR Photo',
+        'file' => $otr_photo,
+        'title' => 'OTR Photo',
         'wireTarget' => 'otr_photo',
     ])
 </x-card>
@@ -115,12 +117,12 @@
                 'type' => 'file',
                 'required' => false,
             ],
-        ]
+        ],
     ])
 
     @include('partials.file-preview', [
-        'file' => $diploma_photo ?? null,
-        'title' => 'Uploaded Diploma Photo',
+        'file' => $diploma_photo,
+        'title' => 'Diploma Photo',
         'wireTarget' => 'diploma_photo',
     ])
 </x-card>
@@ -135,12 +137,12 @@
                 'type' => 'file',
                 'required' => false,
             ],
-        ]
+        ],
     ])
 
     @include('partials.file-preview', [
-        'file' => $employement_certificate ?? null,
-        'title' => 'Uploaded Employement Certificate',
+        'file' => $employement_certificate,
+        'title' => 'Employment Certificate Photo',
         'wireTarget' => 'employement_certificate',
     ])
 </x-card>

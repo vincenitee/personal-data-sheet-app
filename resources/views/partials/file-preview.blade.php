@@ -1,4 +1,3 @@
-{{-- resources/views/partials/file-preview.blade.php --}}
 @if (!empty($file))
     @php
         // Check if file is a string (path) or an uploaded file object
@@ -17,7 +16,7 @@
             $storagePrefix = 'public/';
             $storagePath = str_starts_with($file, $storagePrefix) ? $file : $storagePrefix . $file;
             $publicPath = Storage::url(str_replace($storagePrefix, '', $file));
-
+            // dd($publicPath);
             $fileName = basename($file);
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
             $isImage = in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);

@@ -90,11 +90,11 @@ class SubmissionEntries extends Component
             })
             ->when(!$this->statusFilter, function ($query) {
                 $query->orderByRaw("
-            CASE
-                WHEN pds_entries.status = 'under_review' THEN 1
-                ELSE 2
-            END
-        ");
+                CASE
+                    WHEN pds_entries.status = 'under_review' THEN 1
+                    ELSE 2
+                END
+            ");
             })
             ->orderBy("users.{$this->sortField}", $this->sortDirection) // Sorting by user field
             ->select('pds_entries.*') // Ensure only PdsEntry fields are selected

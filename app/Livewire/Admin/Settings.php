@@ -63,28 +63,20 @@ class Settings extends Component
 
         if ($this->newLogo) {
             try {
-                // Ensure directory exists
-                $uploadPath = public_path('uploads/system_logo/');
-                if (!file_exists($uploadPath)) {
-                    if (!mkdir($uploadPath, 0755, true)) {
-                        throw new \Exception("Failed to create upload directory");
-                    }
-                }
-
-                // Generate unique filename
+                // Store the file in storage/app/public/system_logo
                 $filename = time() . '.' . $this->newLogo->getClientOriginalExtension();
+                $path = $this->newLogo->storeAs('system_logo', $filename, 'public');
 
-                // Get the temporary file path
-                $tempPath = $this->newLogo->getRealPath();
-
-                // Copy the file instead of moving it
-                if (!copy($tempPath, $uploadPath . DIRECTORY_SEPARATOR . $filename)) {
-                    throw new \Exception("Failed to copy the file");
+                if (!$path) {
+                    throw new \Exception("Failed to store the file");
                 }
 
                 // Delete old logo if exists
-                if ($this->logo && file_exists(public_path('uploads/system_logo/' . $this->logo))) {
-                    @unlink(public_path('uploads/' . $this->logo));
+                if ($this->logo) {
+                    $oldPath = 'public/system_logo/' . $this->logo;
+                    if (Storage::exists($oldPath)) {
+                        Storage::delete($oldPath);
+                    }
                 }
 
                 // Update logo in DB

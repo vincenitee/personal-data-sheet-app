@@ -6,4 +6,5 @@
     iconClass="bi-patch-check-fill"
     colorClass="success"
     capacityLabel="Approval Progress"
+    :href="$link"
 />

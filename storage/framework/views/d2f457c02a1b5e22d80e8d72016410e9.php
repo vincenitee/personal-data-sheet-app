@@ -1,24 +1,26 @@
 <aside 
     class="bg-<?php echo e($sidebarColor); ?> bg-gradient text-white vh-100 position-sticky top-0 overflow-hidden position-relative"
     :class="{ 'w-0': !open, 'w-250': open }"
-    @click.outside="if (! event.target.closest('#sidebar-toggler')) open = false" id="sidebar">
+    id="sidebar">
 
     
     <div class="d-flex align-items-center px-3 gap-2 border-bottom border-light" style="height: 80px;">
 
-        <!--[if BLOCK]><![endif]--><?php if(!empty($logoPath) && Str::startsWith($logoPath, 'http')): ?>
-            <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        <?php elseif(!empty($logoPath) && file_exists(public_path('uploads/system_logo/' . $logoPath))): ?>
-            <img src="<?php echo e(asset('uploads/system_logo/' . $logoPath)); ?>" alt="Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        <?php else: ?>
-            <img src="<?php echo e(asset('images/hris-logo-white.png')); ?>" alt="Default Logo" id="logo"
-                class="img-fluid mb-2 shadow-sm rounded-circle border"
-                style="height: 45px; width: 45px; object-fit: cover;">
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <a href="<?php echo e(route('admin.dashboard')); ?>">
+            <!--[if BLOCK]><![endif]--><?php if(!empty($logoPath) && Str::startsWith($logoPath, 'http')): ?>\
+                <img src="<?php echo e($logoPath); ?>" alt="Logo" id="logo"
+                    class="img-fluid mb-2 shadow-sm rounded-circle border"
+                    style="height: 45px; width: 45px; object-fit: cover;">
+            <?php elseif(!empty($logoPath)): ?>
+                <img src="<?php echo e(Storage::disk('public')->url('system_logo/' . $logoPath)); ?>" alt="Logo" id="logo"
+                    class="img-fluid mb-2 shadow-sm rounded-circle border"
+                    style="height: 45px; width: 45px; object-fit: cover;">
+            <?php else: ?>
+                <img src="<?php echo e(asset('images/hris-logo-white.png')); ?>" alt="Default Logo" id="logo"
+                    class="img-fluid mb-2 shadow-sm rounded-circle border"
+                    style="height: 45px; width: 45px; object-fit: cover;">
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        </a>
 
 
         <span>Digital PDS</span>

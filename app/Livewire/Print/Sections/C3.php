@@ -18,14 +18,17 @@ class C3 extends Component
 
     public function mount(?PdsEntry $pdsEntry
     ){
-        $this->volWorkExperiences = $pdsEntry?->volWorkExperiences->sortBy('date_to') ?? collect();
-        $this->trainings = $pdsEntry?->trainings->sortByDesc('date_to') ?? collect();
+        // dd($rows);
+        $this->volWorkExperiences = $pdsEntry?->volWorkExperiences?->sortBy('date_to') ?? collect();
+
+        $this->trainings = $pdsEntry?->trainings?->sortByDesc('date_to') ?? collect();
+        // dd($this->trainings->count());
         $this->skills = $pdsEntry?->skills ?? collect();
         $this->recognitions = $pdsEntry?->recognitions ?? collect();
         $this->organizations = $pdsEntry?->organizations ?? collect();
 
-        $this->dateAccomplished = Carbon::parse($pdsEntry->created_at)->format('m/d/Y');
-        // dd($this->recognitions);
+        $this->dateAccomplished = optional($pdsEntry?->updated_at)->format('m/d/Y');
+
     }
 
     public function render()

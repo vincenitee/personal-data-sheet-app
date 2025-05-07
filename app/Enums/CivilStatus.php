@@ -32,4 +32,19 @@ enum CivilStatus: string
             array_map(fn(self $case) => ucfirst($case->value), self::cases()) // Format labels
         );
     }
+
+
+    /**
+     * Get the value of an enum case using the key
+     */
+    public static function getValue(?string $name): ?string
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return $case->value;
+            }
+        }
+        return null;
+    }
+
 }

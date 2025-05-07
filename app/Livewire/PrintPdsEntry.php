@@ -21,6 +21,6 @@ class PrintPdsEntry extends Component
         return view('livewire.print-pds-entry', [
             'pdsEntry' => $this->pdsEntry
         ])
-            ->extends('layouts.auth');
+        ->extends('layouts.auth');
     }
 }

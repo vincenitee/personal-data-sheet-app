@@ -13,6 +13,6 @@ class Training extends Model
 
     public function entry()
     {
-        return $this->belongsTo(PdsEntry::class);
+        return $this->belongsTo(PdsEntry::class, 'pds_entry_id');
     }
 }
